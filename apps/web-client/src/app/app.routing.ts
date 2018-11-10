@@ -14,7 +14,11 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: './features/home/home.module#HomeModule'
-  }
+  },
+{ 
+              path: 'profile-pages',
+              loadChildren: './features/profile-pages/profile-pages.module#ProfilePagesModule'
+          }
 ];
 
 @NgModule({
