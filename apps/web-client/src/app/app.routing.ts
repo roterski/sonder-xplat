@@ -8,17 +8,18 @@ import { SharedModule } from './features/shared/shared.module';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/profiles',
     pathMatch: 'full'
   },
   {
     path: 'home',
     loadChildren: './features/home/home.module#HomeModule'
   },
-{ 
-              path: 'profile-pages',
-              loadChildren: './features/profile-pages/profile-pages.module#ProfilePagesModule'
-          }
+  {
+    path: 'profiles',
+    loadChildren:
+      './features/profile-pages/profile-pages.module#ProfilePagesModule'
+  }
 ];
 
 @NgModule({
