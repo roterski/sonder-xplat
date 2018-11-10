@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProfilePagesModule as SharedProfilePagesModule } from '@sonder/features';
+// import { ProfilePagesModule as SharedProfilePagesModule } from '@sonder/features';
 
 import { SharedModule } from '../shared/shared.module';
 import { PROFILEPAGES_COMPONENTS, ProfilePagesComponent } from './components';
@@ -14,7 +14,7 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [
-    SharedProfilePagesModule,
+    // SharedProfilePagesModule,
     SharedModule,
     RouterModule.forChild(routes)
   ],
