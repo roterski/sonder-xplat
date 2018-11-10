@@ -8,7 +8,7 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-    "defaultCollection": "@nrwl/schematics",
+    "defaultCollection": "@nstudio/schematics",
     "packageManager": "npm"
   }
 }
