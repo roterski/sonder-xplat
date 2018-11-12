@@ -24,7 +24,10 @@
       "tags": []
     },
     "ionic-client": {
-      "tags": []
+      "tags": [
+        "ionic",
+        "client"
+      ]
     }
   }
 }
