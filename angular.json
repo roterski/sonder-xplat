@@ -185,6 +185,17 @@
           }
         }
       }
+    },
+    "ionic-client": {
+      "root": "apps/ionic-client/",
+      "sourceRoot": "apps/ionic-client/src",
+      "projectType": "application",
+      "prefix": "sonder",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

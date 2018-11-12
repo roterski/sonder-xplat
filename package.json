@@ -25,8 +25,17 @@
     "dep-graph": "./node_modules/.bin/nx dep-graph",
     "help": "./node_modules/.bin/nx help",
     "clean.shared": "cd libs/ && git clean -dfX && cd ../xplat/ && git clean -dfX",
-    "clean": "npx rimraf hooks node_modules package-lock.json && npm i",
-    "start.web.client": "ng serve web-client"
+    "clean": "npx rimraf -- hooks node_modules package-lock.json && npm i",
+    "start.web.client": "ng serve web-client",
+    "build.ionic.client": "cd apps/ionic-client && npm run build:web",
+    "prepare.ionic.client": "npm run clean && npm run clean.ionic.client && npm run build.ionic.client",
+    "prepare.ionic.client.ios": "npm run prepare.ionic.client && cd apps/ionic-client && npm run cap.add.ios",
+    "prepare.ionic.client.android": "npm run prepare.ionic.client && cd apps/ionic-client && npm run cap.add.android",
+    "open.ionic.client.ios": "cd apps/ionic-client && npm run cap.ios",
+    "open.ionic.client.android": "cd apps/ionic-client && npm run cap.android",
+    "sync.ionic.client": "cd apps/ionic-client && npm run cap.copy",
+    "start.ionic.client": "cd apps/ionic-client && npm start",
+    "clean.ionic.client": "cd apps/ionic-client && npx rimraf -- hooks node_modules platforms www plugins ios android package-lock.json && npm i && rimraf -- package-lock.json"
   },
   "private": true,
   "dependencies": {
