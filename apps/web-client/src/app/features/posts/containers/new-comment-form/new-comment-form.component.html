@@ -1,0 +1,14 @@
+<mat-card>
+  <form [formGroup]="commentForm">
+    <mat-card-title>
+      <mat-form-field class="form-group">
+        <textarea matInput placeholder="New comment..." formControlName="body" required></textarea>
+      </mat-form-field>
+      <mat-error *ngIf="(errors$ | async) && (errors$ | async).body">{{(errors$ | async).body}}</mat-error>
+    </mat-card-title>
+    <mat-card-actions>
+      <button mat-raised-button (click)="addComment()">Add</button>
+      <mat-error *ngIf="(errors$ | async)">Something went wrong. 😓</mat-error>
+    </mat-card-actions>
+  </form>
+</mat-card>

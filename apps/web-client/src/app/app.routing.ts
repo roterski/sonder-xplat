@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: './features/home/home.module#HomeModule'
   },
   {
+    path: 'posts',
+    loadChildren: './features/posts/posts.module#PostsModule'
+  },
+  {
     path: 'profiles',
     loadChildren:
       './features/profile-pages/profile-pages.module#ProfilePagesModule'

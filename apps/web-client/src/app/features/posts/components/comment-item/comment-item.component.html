@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-content>
+    {{ comment.body }}
+  </mat-card-content>
+  <mat-card-actions>
+    <app-vote-buttons
+      [points]="comment.points"
+      [voted]="voted"
+      (upvoted)="upvote()"
+      (downvoted)="downvote()">
+    </app-vote-buttons>
+    <button mat-mini-fab (click)="openNewCommentBottomSheet()">+</button>
+    <!-- <button *ngIf="expandable" mat-button matTreeNodeToggle [matTreeNodeToggleRecursive]="true">{{ expanded ? 'Collapse' : 'Expand' }}</button> -->
+  </mat-card-actions>
+</mat-card>

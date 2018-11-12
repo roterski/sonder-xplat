@@ -1,0 +1,8 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" >
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <app-comment-item [comment]="node.comment"
+                      [voted]="votes && votes[node.comment.id]"
+                      [expandable]="node.expandable"
+                      [expanded]="treeControl.isExpanded(node)"></app-comment-item>
+  </mat-tree-node>
+</mat-tree>

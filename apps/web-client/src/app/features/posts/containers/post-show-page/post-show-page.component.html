@@ -1,0 +1,15 @@
+<mat-card *ngIf="(post$ | async) as post">
+  <mat-card-title>{{ post.title }}</mat-card-title>
+  <mat-card-content>{{ post.body }}</mat-card-content>
+</mat-card>
+<mat-card *ngIf="(commentsLoaded$ | async)">
+  <mat-card-subtitle>Comments</mat-card-subtitle>
+  <mat-card-actions>
+    <button mat-mini-fab (click)="openNewCommentBottomSheet()">+</button>
+  </mat-card-actions>
+  <mat-card-content>
+    <app-comment-tree [comments]="comments$"
+                      [commentEntities]="commentEntities$"
+                      [votes]="commentVotes$ | async"></app-comment-tree>
+  </mat-card-content>
+</mat-card>

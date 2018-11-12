@@ -1,0 +1,13 @@
+<mat-card mat-list-item  role="listitem">
+  <mat-card-title [routerLink]="['/posts', post.id]">
+    {{post.title}}
+  </mat-card-title>
+  <mat-card-actions>
+    <app-vote-buttons
+      [points]="post.points"
+      [voted]="voted"
+      (upvoted)="upvote()"
+      (downvoted)="downvote()">
+    </app-vote-buttons>
+  </mat-card-actions>
+</mat-card>
