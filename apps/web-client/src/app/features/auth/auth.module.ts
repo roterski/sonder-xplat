@@ -16,6 +16,7 @@ import { MatCardModule, MatButtonModule } from '@angular/material';
     MatButtonModule
   ],
   declarations: [LoginPageComponent],
+  exports: [LoginPageComponent],
   providers: [FacebookService, AuthenticatedGuard]
 })
-export class AuthModule { }
+export class AuthModule {}

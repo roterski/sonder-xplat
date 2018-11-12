@@ -19,12 +19,7 @@ import { NewCommentFormComponent } from './containers/new-comment-form/new-comme
 import { TagChipsComponent } from './components/tag-chips/tag-chips.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    RouterModule,
-    ReactiveFormsModule
-  ],
+  imports: [CommonModule, SharedModule, RouterModule, ReactiveFormsModule],
   declarations: [
     PostsListPageComponent,
     PostShowPageComponent,
@@ -36,10 +31,18 @@ import { TagChipsComponent } from './components/tag-chips/tag-chips.component';
     NewCommentFormComponent,
     TagChipsComponent
   ],
-  entryComponents: [
+  exports: [
+    PostsListPageComponent,
+    PostShowPageComponent,
+    NewPostPageComponent,
+    CommentTreeComponent,
+    PostItemComponent,
+    VoteButtonsComponent,
     CommentItemComponent,
-    NewCommentFormComponent
+    NewCommentFormComponent,
+    TagChipsComponent
   ],
+  entryComponents: [CommentItemComponent, NewCommentFormComponent],
   providers: [
     PostsApiService,
     VotesApiService,
@@ -47,4 +50,4 @@ import { TagChipsComponent } from './components/tag-chips/tag-chips.component';
     postsPaginatorProvider
   ]
 })
-export class PostsModule { }
+export class PostsModule {}

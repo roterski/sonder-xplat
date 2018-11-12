@@ -5,24 +5,42 @@ import { RouterModule, Routes } from '@angular/router';
 // app
 import { SharedModule } from './features/shared/shared.module';
 
-const routes: Routes = [
+import { AuthenticatedAppComponent } from './containers';
+import { AuthenticatedGuard } from './features/auth/guards';
+import { authRoutes } from './features/auth/auth-routing.module';
+import { postsRoutes } from './features/posts/posts-routing.module';
+
+export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/profiles',
-    pathMatch: 'full'
+    component: AuthenticatedAppComponent,
+    canActivate: [AuthenticatedGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'posts'
+      },
+      {
+        path: 'posts',
+        // loadChildren: './features/posts/posts.module#PostsModule',
+        children: postsRoutes
+      },
+      {
+        path: 'profiles',
+        loadChildren:
+          './features/profile-pages/profile-pages.module#ProfilePagesModule'
+      }
+    ]
   },
   {
     path: 'home',
     loadChildren: './features/home/home.module#HomeModule'
   },
   {
-    path: 'posts',
-    loadChildren: './features/posts/posts.module#PostsModule'
-  },
-  {
-    path: 'profiles',
-    loadChildren:
-      './features/profile-pages/profile-pages.module#ProfilePagesModule'
+    path: 'login',
+    // loadChildren: './features/auth/auth.module#AuthModule',
+    children: authRoutes
   }
 ];
 
