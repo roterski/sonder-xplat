@@ -19,12 +19,10 @@ export class TagChipsComponent implements OnInit {
   @Output() added = new EventEmitter<Tag>();
   @Output() removed = new EventEmitter<Tag>();
 
-  private separatorKeysCodes: number[] = [ENTER, COMMA];
-  private tagCtrl = new FormControl();
+  public separatorKeysCodes: number[] = [ENTER, COMMA];
+  public tagCtrl = new FormControl();
+  public suggestedTags$: Observable<Tag[]>;
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
-
-  private suggestedTags$: Observable<Tag[]>;
-  private newPostTags$: Observable<Tag[]>;
 
   constructor(private tagsService: TagsService) {
   }

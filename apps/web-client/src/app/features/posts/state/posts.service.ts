@@ -33,7 +33,8 @@ export class PostsService {
     );
   }
 
-  getPostsPage(params: { tags?: Tag[], page?: number, perPage?: number } = {}) {
+  getPostsPage(params: { page?: number, perPage?: number } = {}, tags: Tag[]) {
+    if (tags.length > 0) { params['tags[]'] = tags.map(tag => tag.id); }
     return this.postsApi
       .getPosts(params)
       .pipe(

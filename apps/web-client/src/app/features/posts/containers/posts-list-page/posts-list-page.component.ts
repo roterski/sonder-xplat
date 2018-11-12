@@ -52,7 +52,7 @@ export class PostsListPageComponent implements OnInit, OnDestroy {
       ),
       switchMap(([page, tags]) => {
         return this.paginatorRef.getPage(() => {
-          return this.postsService.getPostsPage({ page, tags, perPage: this.perPage });
+          return this.postsService.getPostsPage({ page, perPage: this.perPage }, tags);
         });
       })
     );
