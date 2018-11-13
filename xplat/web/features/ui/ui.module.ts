@@ -43,8 +43,6 @@ const MODULES = [
 @NgModule({
   imports: [...MODULES],
   exports: [...MODULES, LoadingSplashComponent],
-  declarations: [
-    LoadingSplashComponent
-  ]
+  declarations: [LoadingSplashComponent]
 })
 export class UIModule {}
