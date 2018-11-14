@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionService } from '../../state';
+import { SessionService } from '@sonder/features/auth/state';
 import { Router } from '@angular/router';
 
 @Component({

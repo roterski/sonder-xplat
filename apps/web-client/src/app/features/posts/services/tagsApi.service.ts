@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Tag } from '../models';
-import { BackendService } from '../../auth/services/backend.service';
+import { BackendService } from '@sonder/features/auth/services/backend.service';
 
 @Injectable()
 export class TagsApiService {

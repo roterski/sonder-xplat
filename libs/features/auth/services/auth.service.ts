@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FacebookService, InitParams, AuthResponse } from 'ngx-facebook';
 import { Observable, from, of } from 'rxjs';
 import { map, catchError, exhaustMap } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
+import { environment } from '@sonder/core/environments/environment';
 
 @Injectable({
   providedIn: 'root'

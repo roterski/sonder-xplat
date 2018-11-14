@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
-  api_url: 'http://127.0.0.1:4000',
-  baseRoutePath: ''
+  baseRoutePath: '',
+  facebookAppId: '897988177030305',
+  backendUrl: 'http://0.0.0.0:4000'
 };

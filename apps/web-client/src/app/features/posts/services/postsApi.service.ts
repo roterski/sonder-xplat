@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ID } from '@datorama/akita';
 import { Post, PostComment, Tag } from '../models';
-import { BackendService } from '../../auth/services/backend.service';
+import { BackendService } from '@sonder/features/auth/services/backend.service';
 
 @Injectable()
 export class PostsApiService {

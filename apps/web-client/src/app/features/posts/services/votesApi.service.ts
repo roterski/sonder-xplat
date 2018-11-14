@@ -3,7 +3,7 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Vote } from '../models';
-import { BackendService } from '../../auth/services/backend.service';
+import { BackendService } from '@sonder/features/auth/services/backend.service';
 
 @Injectable({
   providedIn: 'root'

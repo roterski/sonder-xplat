@@ -3,8 +3,8 @@ import { SessionStore } from './session.store';
 import { AuthService, BackendService } from '../services';
 import { map, tap, catchError, exhaustMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { ClearStoresService, POSTS_PAGINATOR } from '../../posts/state';
-import { Post } from '../../posts/models';
+// import { ClearStoresService, POSTS_PAGINATOR } from '../../posts/state';
+// import { Post } from '../../posts/models';
 import { PaginatorPlugin, PaginationResponse } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
@@ -14,8 +14,9 @@ export class SessionService {
     private sessionStore: SessionStore,
     private authService: AuthService,
     private backendService: BackendService,
-    @Inject(POSTS_PAGINATOR) private paginatorRef: PaginatorPlugin<Post>,
-    private clearStoresService: ClearStoresService) {
+    // @Inject(POSTS_PAGINATOR) private paginatorRef: PaginatorPlugin<Post>,
+    // private clearStoresService: ClearStoresService
+  ) {
   }
 
   logIn(): Observable<boolean> {
@@ -32,9 +33,9 @@ export class SessionService {
   }
 
   logOut() {
-    this.paginatorRef.clearCache();
+    // this.paginatorRef.clearCache();
     this.sessionStore.logOut();
-    this.clearStoresService.clearStores();
+    // this.clearStoresService.clearStores();
   }
 
 }

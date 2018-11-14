@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginPageComponent } from './containers/login-page/login-page.component';
-import { UnauthenticatedGuard } from './guards';
+import { UnauthenticatedGuard } from '@sonder/features/auth/guards';
 
 export const authRoutes: Routes = [
   {

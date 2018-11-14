@@ -3,7 +3,7 @@ import { Observable, throwError, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { switchMap } from 'rxjs/operators';
 import { map, catchError, concat, mergeMap, delay, filter } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
+import { environment } from '@sonder/core/environments/environment';
 import { SessionQuery } from '../state/session.query';
 import { LogOutService } from '../state/log-out.service';
 

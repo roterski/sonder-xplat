@@ -4,7 +4,7 @@ import { FacebookService } from 'ngx-facebook';
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginPageComponent } from './containers/login-page/login-page.component';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthenticatedGuard, UnauthenticatedGuard } from './guards';
+import { AuthenticatedGuard, UnauthenticatedGuard } from '@sonder/features/auth/guards';
 import { MatCardModule, MatButtonModule } from '@angular/material';
 
 @NgModule({

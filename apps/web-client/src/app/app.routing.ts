@@ -6,7 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from './features/shared/shared.module';
 
 import { AuthenticatedAppComponent } from './containers';
-import { AuthenticatedGuard } from './features/auth/guards';
+import { AuthenticatedGuard } from '@sonder/features/auth/guards';
 import { authRoutes } from './features/auth/auth-routing.module';
 import { postsRoutes } from './features/posts/posts-routing.module';
 

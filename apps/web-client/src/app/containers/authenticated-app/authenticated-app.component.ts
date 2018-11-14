@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { SessionQuery, SessionState, SessionService } from '../../features/auth/state';
+import { SessionQuery, SessionState, SessionService } from '@sonder/features/auth/state';
 
 @Component({
   selector: 'app-authenticated-app',
