@@ -36,28 +36,24 @@ export class PostsListPageComponent implements OnInit, OnDestroy {
     private myVotesQuery: MyVotesQuery,
     private tagsQuery: TagsQuery,
     private tagsService: TagsService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.loading$ = combineLatest(
       this.postsQuery.selectLoading(),
       this.paginatorRef.isLoading$
-    ).pipe(
-      map(([storeLoading, pageLoading]) => storeLoading && pageLoading)
-    );
+    ).pipe(map(([storeLoading, pageLoading]) => storeLoading && pageLoading));
     this.postVotes$ = this.myVotesQuery.myPostVotes$;
     this.postFilterTags$ = this.tagsQuery.getPostFilterTags();
     this.pagination$ = combineLatest(
       this.paginatorRef.pageChanges,
-      this.postFilterTags$.pipe(
-        tap(_ => this.paginatorRef.clearCache())
-      )
+      this.postFilterTags$.pipe(tap(_ => this.paginatorRef.clearCache()))
     ).pipe(
-      switchMap(([page, tags]) => (
-        this.paginatorRef.getPage(() => (
+      switchMap(([page, tags]) =>
+        this.paginatorRef.getPage(() =>
           this.postsService.getPostsPage({ page, perPage: this.perPage }, tags)
-        ))
-      ))
+        )
+      )
     );
     this.subscriptions.push(this.myVotesService.getMyPostVotes().subscribe());
   }
@@ -71,11 +67,15 @@ export class PostsListPageComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event: PageEvent) {
-    event.pageIndex - event.previousPageIndex > 0 ? this.paginatorRef.nextPage() : this.paginatorRef.prevPage();
+    event.pageIndex - event.previousPageIndex > 0
+      ? this.paginatorRef.nextPage()
+      : this.paginatorRef.prevPage();
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription: Subscription) =>
+      subscription.unsubscribe()
+    );
     this.paginatorRef.destroy();
   }
 }

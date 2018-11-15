@@ -10,8 +10,7 @@ export class PostsApiService {
   constructor(private backend: BackendService) {}
 
   getPosts(params: any = {}): Observable<any> {
-    return this.backend
-      .get('/posts', ...params);
+    return this.backend.get('/posts', ...params);
   }
 
   getPost(postId: ID): Observable<Post> {

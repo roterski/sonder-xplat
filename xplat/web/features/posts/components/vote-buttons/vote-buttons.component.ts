@@ -11,9 +11,7 @@ export class VoteButtonsComponent implements OnInit {
   @Output() upvoted = new EventEmitter();
   @Output() downvoted = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

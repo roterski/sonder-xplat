@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig, getInitialActiveState, ID } from '@datorama/akita';
+import {
+  EntityState,
+  EntityStore,
+  StoreConfig,
+  getInitialActiveState,
+  ID
+} from '@datorama/akita';
 import { Tag } from '../models/tag.model';
 
 export interface TagsState extends EntityState<Tag> {
@@ -18,7 +24,6 @@ const initialState = {
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'tags' })
 export class TagsStore extends EntityStore<TagsState, Tag> {
-
   constructor() {
     super(initialState);
   }
@@ -34,7 +39,7 @@ export class TagsStore extends EntityStore<TagsState, Tag> {
 
   removeNewPostTag(tag: Tag) {
     this.setState((state: TagsState) => {
-      const leftTags = state.newPostTags.filter((t) => t !== tag);
+      const leftTags = state.newPostTags.filter(t => t !== tag);
 
       return {
         ...state,
@@ -56,7 +61,7 @@ export class TagsStore extends EntityStore<TagsState, Tag> {
 
   removePostFilterTag(tag: Tag) {
     this.setState((state: TagsState) => {
-      const leftTags = state.postFilterTags.filter((tagId) => tagId !== tag.id);
+      const leftTags = state.postFilterTags.filter(tagId => tagId !== tag.id);
 
       return {
         ...state,
@@ -74,4 +79,3 @@ export class TagsStore extends EntityStore<TagsState, Tag> {
     });
   }
 }
-

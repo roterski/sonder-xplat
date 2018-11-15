@@ -9,9 +9,7 @@ export class TopNavBarComponent implements OnInit {
   @Input() loggedIn: boolean;
   @Output() logOut = new EventEmitter<void>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

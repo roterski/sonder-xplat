@@ -9,26 +9,28 @@ import { PaginatorPlugin, PaginationResponse } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {
-
   constructor(
     private sessionStore: SessionStore,
     private authService: AuthService,
-    private backendService: BackendService,
-    // @Inject(POSTS_PAGINATOR) private paginatorRef: PaginatorPlugin<Post>,
-    // private clearStoresService: ClearStoresService
-  ) {
-  }
+    private backendService: BackendService
+  ) // @Inject(POSTS_PAGINATOR) private paginatorRef: PaginatorPlugin<Post>,
+  // private clearStoresService: ClearStoresService
+  {}
 
   logIn(): Observable<boolean> {
     return this.authService.facebookLogIn().pipe(
-      tap((facebookToken: string) => this.sessionStore.authenticateFacebook(facebookToken)),
+      tap((facebookToken: string) =>
+        this.sessionStore.authenticateFacebook(facebookToken)
+      ),
       exhaustMap((facebookToken: string) => {
         return this.backendService.authenticate(facebookToken).pipe(
-          tap((backendToken: string) => this.sessionStore.authenticateBackend(backendToken)),
+          tap((backendToken: string) =>
+            this.sessionStore.authenticateBackend(backendToken)
+          ),
           map(() => true)
         );
       }),
-      catchError((error) => of(false))
+      catchError(error => of(false))
     );
   }
 
@@ -37,5 +39,4 @@ export class SessionService {
     this.sessionStore.logOut();
     // this.clearStoresService.clearStores();
   }
-
 }

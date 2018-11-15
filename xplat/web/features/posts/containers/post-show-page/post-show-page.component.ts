@@ -7,7 +7,8 @@ import {
   PostsService,
   PostCommentsQuery,
   PostCommentsService,
-  MyVotesService } from '@sonder/features/posts/state';
+  MyVotesService
+} from '@sonder/features/posts/state';
 import { Post, PostComment } from '@sonder/features/posts/models';
 import { NewCommentFormComponent } from '../../containers/new-comment-form/new-comment-form.component';
 import { MatBottomSheet } from '@angular/material';
@@ -33,36 +34,41 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
     private postCommentsService: PostCommentsService,
     private postsService: PostsService,
     private newCommentBottomSheet: MatBottomSheet,
-    private myVotesService: MyVotesService) {
-  }
+    private myVotesService: MyVotesService
+  ) {}
 
   ngOnInit() {
     const postId$ = this.route.params.pipe(
       map((params: { postId: string }) => parseInt(params.postId, 10))
     );
 
-    this.subscriptions.push(postId$.subscribe((postId: number) => {
-      this.postId = postId;
-      this.post$ = this.postsService.getPost(postId);
-      this.comments$ = this.postCommentsService.getPostComments(postId);
-      this.subscriptions.push(this.comments$.subscribe());
-      this.commentsLoaded$ = this.postCommentsQuery.selectPostCommentsLoaded(postId);
-      this.commentEntities$ = this.postCommentsQuery.postCommentEntities$;
-      this.commentVotes$ = this.myVotesService.getMyCommentVotes(postId);
-    }));
+    this.subscriptions.push(
+      postId$.subscribe((postId: number) => {
+        this.postId = postId;
+        this.post$ = this.postsService.getPost(postId);
+        this.comments$ = this.postCommentsService.getPostComments(postId);
+        this.subscriptions.push(this.comments$.subscribe());
+        this.commentsLoaded$ = this.postCommentsQuery.selectPostCommentsLoaded(
+          postId
+        );
+        this.commentEntities$ = this.postCommentsQuery.postCommentEntities$;
+        this.commentVotes$ = this.myVotesService.getMyCommentVotes(postId);
+      })
+    );
   }
 
   openNewCommentBottomSheet() {
-    this.newCommentBottomSheet.open(NewCommentFormComponent,
-      {
-        data: {
-          postId: this.postId,
-          parentIds: []
-        }
-      });
+    this.newCommentBottomSheet.open(NewCommentFormComponent, {
+      data: {
+        postId: this.postId,
+        parentIds: []
+      }
+    });
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription: Subscription) =>
+      subscription.unsubscribe()
+    );
   }
 }

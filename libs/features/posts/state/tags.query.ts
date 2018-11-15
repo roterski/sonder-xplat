@@ -16,7 +16,7 @@ export class TagsQuery extends QueryEntity<TagsState, Tag> {
 
   getPostFilterTags(): Observable<Tag[]> {
     return this.select((state: TagsState) => {
-      return state.postFilterTags.map((tagId) => state.entities[tagId]);
+      return state.postFilterTags.map(tagId => state.entities[tagId]);
     });
   }
 }

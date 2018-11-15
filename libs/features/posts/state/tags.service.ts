@@ -11,21 +11,18 @@ import { TagsApiService } from '../services';
 
 @Injectable({ providedIn: 'root' })
 export class TagsService {
-
   constructor(
     private tagsStore: TagsStore,
     private tagsApi: TagsApiService,
     private tagsQuery: TagsQuery,
-    private route: ActivatedRoute) {
-  }
+    private route: ActivatedRoute
+  ) {}
 
   getTags(): Observable<Tag[]> {
-    const request = this.tagsApi
-      .getTags()
-      .pipe(
-        map(response => response.data),
-        tap((tags: Tag[]) => this.tagsStore.set(tags))
-      );
+    const request = this.tagsApi.getTags().pipe(
+      map(response => response.data),
+      tap((tags: Tag[]) => this.tagsStore.set(tags))
+    );
 
     return this.tagsQuery.loaded$.pipe(
       switchMap((loaded: boolean) => {

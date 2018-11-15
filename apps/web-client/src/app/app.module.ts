@@ -20,14 +20,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     AppRoutingModule,
     environment.production
-      ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
+      ? []
+      : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
     AuthModule,
     PostsModule,
     BrowserAnimationsModule
   ],
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

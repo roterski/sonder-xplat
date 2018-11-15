@@ -11,7 +11,7 @@ import { switchMap, tap, filter, take, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class PostVotesLoadedGuard implements CanActivate {
-  constructor() { }
+  constructor() {}
 
   canActivate(
     next: ActivatedRouteSnapshot,

@@ -11,5 +11,4 @@ export class PostsQuery extends QueryEntity<PostsState, Post> {
   constructor(protected store: PostsStore) {
     super(store);
   }
-
 }

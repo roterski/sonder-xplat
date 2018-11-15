@@ -3,9 +3,19 @@ import { Router } from '@angular/router';
 import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { PersistNgFormPlugin } from '@datorama/akita';
-import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 
-import { PostsQuery, PostsService, TagsQuery, TagsService } from '@sonder/features/posts/state';
+import {
+  PostsQuery,
+  PostsService,
+  TagsQuery,
+  TagsService
+} from '@sonder/features/posts/state';
 import { Post, createPost, Tag } from '@sonder/features/posts/models';
 
 @Component({
@@ -27,7 +37,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
     private postsService: PostsService,
     private tagsQuery: TagsQuery,
     private tagsService: TagsService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.createForm();
@@ -40,24 +50,26 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
       title: ['', Validators.required],
       body: ['']
     });
-    this.persistForm = new PersistNgFormPlugin(
-        this.postsQuery,
-        createPost,
-        { formKey: 'newPostForm' }
-      ).setForm(this.postForm);
+    this.persistForm = new PersistNgFormPlugin(this.postsQuery, createPost, {
+      formKey: 'newPostForm'
+    }).setForm(this.postForm);
   }
 
   addPost() {
-    this.tagsQuery.newPostTags$.pipe(
-      switchMap((tags: Tag[]) => this.postsService.addPost(this.postForm.value, tags)),
-      take(1)
-    ).subscribe((added) => {
-      if (added) {
-        this.router.navigate(['/']);
-        this.persistForm.reset();
-        this.tagsService.clearNewPostTags();
-      }
-    });
+    this.tagsQuery.newPostTags$
+      .pipe(
+        switchMap((tags: Tag[]) =>
+          this.postsService.addPost(this.postForm.value, tags)
+        ),
+        take(1)
+      )
+      .subscribe(added => {
+        if (added) {
+          this.router.navigate(['/']);
+          this.persistForm.reset();
+          this.tagsService.clearNewPostTags();
+        }
+      });
   }
 
   tagAdded(tag: Tag) {
@@ -69,6 +81,8 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.persistForm) { this.persistForm.destroy(); }
+    if (this.persistForm) {
+      this.persistForm.destroy();
+    }
   }
 }

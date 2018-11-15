@@ -11,7 +11,8 @@ import { environment } from '@sonder/core/environments/environment';
 export class AuthService {
   constructor(
     private http: HttpClient,
-    private facebookService: FacebookService) {
+    private facebookService: FacebookService
+  ) {
     const params: InitParams = {
       version: 'v2.10',
       appId: environment.facebookAppId
@@ -21,7 +22,12 @@ export class AuthService {
 
   facebookLogIn(): Observable<any> {
     return from(this.facebookService.getLoginStatus()).pipe(
-      exhaustMap(data => data.status === 'connected' ? of(data) : from(this.facebookService.login())),
+      exhaustMap(
+        data =>
+          data.status === 'connected'
+            ? of(data)
+            : from(this.facebookService.login())
+      ),
       map(data => data.authResponse.accessToken)
     );
   }

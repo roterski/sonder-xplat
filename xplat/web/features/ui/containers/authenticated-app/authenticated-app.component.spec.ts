@@ -8,9 +8,8 @@ describe('AuthenticatedAppComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthenticatedAppComponent ]
-    })
-    .compileComponents();
+      declarations: [AuthenticatedAppComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

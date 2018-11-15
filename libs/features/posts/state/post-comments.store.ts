@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig, getInitialActiveState, ID } from '@datorama/akita';
+import {
+  EntityState,
+  EntityStore,
+  StoreConfig,
+  getInitialActiveState,
+  ID
+} from '@datorama/akita';
 import { PostComment } from '../models/post-comment.model';
 
 export interface CommentIds {
@@ -18,8 +24,10 @@ const initialState = {
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'postComments' })
-export class PostCommentsStore extends EntityStore<PostCommentsState, PostComment> {
-
+export class PostCommentsStore extends EntityStore<
+  PostCommentsState,
+  PostComment
+> {
   constructor() {
     super(initialState);
   }
@@ -42,10 +50,7 @@ export class PostCommentsStore extends EntityStore<PostCommentsState, PostCommen
           ...state.commentsByPost,
           [comment.postId]: {
             ...state.commentsByPost[comment.postId],
-            ids: [
-              ...state.commentsByPost[comment.postId].ids,
-              comment.id
-            ]
+            ids: [...state.commentsByPost[comment.postId].ids, comment.id]
           }
         }
       };
@@ -56,7 +61,10 @@ export class PostCommentsStore extends EntityStore<PostCommentsState, PostCommen
             ...newState.entities,
             [parentId]: {
               ...newState.entities[parentId],
-              childrenIds: [...newState.entities[parentId].childrenIds, comment.id]
+              childrenIds: [
+                ...newState.entities[parentId].childrenIds,
+                comment.id
+              ]
             }
           }
         };
@@ -69,7 +77,7 @@ export class PostCommentsStore extends EntityStore<PostCommentsState, PostCommen
     const ids = comments.map((comment: PostComment) => comment.id);
 
     this.add(comments);
-    const entities = this.appendChildrenIds({ ...this.entities});
+    const entities = this.appendChildrenIds({ ...this.entities });
     this.set(entities);
     this.setState((state: PostCommentsState) => {
       return {
@@ -87,14 +95,20 @@ export class PostCommentsStore extends EntityStore<PostCommentsState, PostCommen
 
   appendChildrenIds(entities) {
     const entitiesWithChildren = {};
-    Object.keys(entities).forEach((id) => {
+    Object.keys(entities).forEach(id => {
       const entity = entities[id];
-      entitiesWithChildren[id] = {...entities[id]};
-      entitiesWithChildren[id].childrenIds = entitiesWithChildren[id].childrenIds || [];
+      entitiesWithChildren[id] = { ...entities[id] };
+      entitiesWithChildren[id].childrenIds =
+        entitiesWithChildren[id].childrenIds || [];
       const parentId = entities[id].parentIds.slice(-1)[0];
       if (parentId) {
-        const childrenIds = [parseInt(id, 10), ...entitiesWithChildren[parentId].childrenIds];
-        entitiesWithChildren[parentId].childrenIds = Array.from(new Set(childrenIds)); // unique values
+        const childrenIds = [
+          parseInt(id, 10),
+          ...entitiesWithChildren[parentId].childrenIds
+        ];
+        entitiesWithChildren[parentId].childrenIds = Array.from(
+          new Set(childrenIds)
+        ); // unique values
       }
     });
     return entitiesWithChildren;

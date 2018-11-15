@@ -5,10 +5,9 @@ import { BackendService } from '@sonder/features/auth/services/backend.service';
 
 @Injectable()
 export class TagsApiService {
-  constructor(private backend: BackendService) { }
+  constructor(private backend: BackendService) {}
 
   getTags(params: any = {}): Observable<any> {
-    return this.backend
-      .get('/tags', ...params);
+    return this.backend.get('/tags', ...params);
   }
 }

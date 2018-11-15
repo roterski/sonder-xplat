@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { SessionQuery, SessionState, SessionService } from '@sonder/features/auth/state';
+import {
+  SessionQuery,
+  SessionState,
+  SessionService
+} from '@sonder/features/auth/state';
 
 @Component({
   selector: 'sonder-authenticated-app',
@@ -14,7 +18,8 @@ export class AuthenticatedAppComponent implements OnInit {
   constructor(
     private sessionQuery: SessionQuery,
     private sessionService: SessionService,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loggedIn$ = this.sessionQuery.isLoggedIn$;

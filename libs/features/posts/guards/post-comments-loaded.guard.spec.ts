@@ -9,7 +9,10 @@ describe('PostCommentsLoadedGuard', () => {
     });
   });
 
-  it('should ...', inject([PostCommentsLoadedGuard], (guard: PostCommentsLoadedGuard) => {
-    expect(guard).toBeTruthy();
-  }));
+  it('should ...', inject(
+    [PostCommentsLoadedGuard],
+    (guard: PostCommentsLoadedGuard) => {
+      expect(guard).toBeTruthy();
+    }
+  ));
 });

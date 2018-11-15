@@ -8,9 +8,8 @@ describe('NewCommentFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewCommentFormComponent ]
-    })
-    .compileComponents();
+      declarations: [NewCommentFormComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

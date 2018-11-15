@@ -19,34 +19,44 @@ export class CommentItemComponent implements OnInit {
   constructor(
     private myVotesService: MyVotesService,
     private newCommentBottomSheet: MatBottomSheet
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   upvote() {
     if (this.voted > 0) {
-      this.myVotesService.revokeCommentVote(this.comment.id).pipe(take(1)).subscribe();
+      this.myVotesService
+        .revokeCommentVote(this.comment.id)
+        .pipe(take(1))
+        .subscribe();
     } else {
-      this.myVotesService.upvoteComment(this.comment.id).pipe(take(1)).subscribe();
+      this.myVotesService
+        .upvoteComment(this.comment.id)
+        .pipe(take(1))
+        .subscribe();
     }
   }
 
   downvote() {
     if (this.voted < 0) {
-      this.myVotesService.revokeCommentVote(this.comment.id).pipe(take(1)).subscribe();
+      this.myVotesService
+        .revokeCommentVote(this.comment.id)
+        .pipe(take(1))
+        .subscribe();
     } else {
-      this.myVotesService.downvoteComment(this.comment.id).pipe(take(1)).subscribe();
+      this.myVotesService
+        .downvoteComment(this.comment.id)
+        .pipe(take(1))
+        .subscribe();
     }
   }
 
   openNewCommentBottomSheet() {
-    this.newCommentBottomSheet.open(NewCommentFormComponent,
-      {
-        data: {
-          postId: this.comment.postId,
-          parentIds: [...this.comment.parentIds, this.comment.id]
-        }
+    this.newCommentBottomSheet.open(NewCommentFormComponent, {
+      data: {
+        postId: this.comment.postId,
+        parentIds: [...this.comment.parentIds, this.comment.id]
+      }
     });
   }
 }

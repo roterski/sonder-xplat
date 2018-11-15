@@ -9,7 +9,7 @@ import { BackendService } from '@sonder/features/auth/services/backend.service';
   providedIn: 'root'
 })
 export class VotesApiService {
-  constructor(private backend: BackendService) { }
+  constructor(private backend: BackendService) {}
 
   getPostVotes(): Observable<Vote[]> {
     return this.backend

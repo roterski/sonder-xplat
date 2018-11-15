@@ -8,10 +8,10 @@ describe('PostsListPageComponent', () => {
   let fixture: ComponentFixture<PostsListPageComponent>;
   let store: Store<any>;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [ StoreModule.forRoot({}) ],
-      declarations: [ PostsListPageComponent ]
+      imports: [StoreModule.forRoot({})],
+      declarations: [PostsListPageComponent]
     });
 
     await TestBed.compileComponents();

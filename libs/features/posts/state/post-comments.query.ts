@@ -6,9 +6,16 @@ import { Observable, of, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class PostCommentsQuery extends QueryEntity<PostCommentsState, PostComment> {
-  postCommentEntities$ = this.select((state: PostCommentsState) => state.entities);
-  postCommentsError$ = this.select((state: PostCommentsState) => state.postCommentError);
+export class PostCommentsQuery extends QueryEntity<
+  PostCommentsState,
+  PostComment
+> {
+  postCommentEntities$ = this.select(
+    (state: PostCommentsState) => state.entities
+  );
+  postCommentsError$ = this.select(
+    (state: PostCommentsState) => state.postCommentError
+  );
 
   constructor(protected store: PostCommentsStore) {
     super(store);
@@ -16,13 +23,21 @@ export class PostCommentsQuery extends QueryEntity<PostCommentsState, PostCommen
 
   selectPostCommentsLoaded(postId: ID): Observable<boolean> {
     return this.select((state: PostCommentsState) => {
-      return state.commentsByPost && state.commentsByPost[postId] && state.commentsByPost[postId].loaded;
+      return (
+        state.commentsByPost &&
+        state.commentsByPost[postId] &&
+        state.commentsByPost[postId].loaded
+      );
     });
   }
 
   selectPostCommentsIds(postId: ID) {
     return this.select((state: PostCommentsState) => {
-      return state.commentsByPost && state.commentsByPost[postId] && state.commentsByPost[postId].ids;
+      return (
+        state.commentsByPost &&
+        state.commentsByPost[postId] &&
+        state.commentsByPost[postId].ids
+      );
     });
   }
 
@@ -31,8 +46,13 @@ export class PostCommentsQuery extends QueryEntity<PostCommentsState, PostCommen
       this.selectPostCommentsIds(postId),
       this.postCommentEntities$
     ).pipe(
-      map(([ids, entities], index) => (ids || []) && ids.map((id: ID) => entities[id])),
-      map(comments => comments.filter(comment => comment && comment.parentIds.length === 0))
+      map(
+        ([ids, entities], index) =>
+          (ids || []) && ids.map((id: ID) => entities[id])
+      ),
+      map(comments =>
+        comments.filter(comment => comment && comment.parentIds.length === 0)
+      )
     );
   }
 }

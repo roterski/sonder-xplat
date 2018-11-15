@@ -8,9 +8,8 @@ describe('TagChipsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TagChipsComponent ]
-    })
-    .compileComponents();
+      declarations: [TagChipsComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

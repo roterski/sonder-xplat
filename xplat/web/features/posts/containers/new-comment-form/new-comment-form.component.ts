@@ -1,11 +1,20 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PersistNgFormPlugin, ID } from '@datorama/akita';
-import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 
 import { PostComment, createComment } from '@sonder/features/posts/models';
-import { PostCommentsQuery, PostCommentsService, PostCommentsStore } from '@sonder/features/posts/state';
+import {
+  PostCommentsQuery,
+  PostCommentsService,
+  PostCommentsStore
+} from '@sonder/features/posts/state';
 
 @Component({
   selector: 'sonder-new-comment-form',
@@ -23,8 +32,9 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
     private postCommentsService: PostCommentsService,
     private postCommentsStore: PostCommentsStore,
     private bottomSheetRef: MatBottomSheetRef<NewCommentFormComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { postId: ID, parentIds: number[] }
-  ) { }
+    @Inject(MAT_BOTTOM_SHEET_DATA)
+    public data: { postId: ID; parentIds: number[] }
+  ) {}
 
   ngOnInit() {
     this.createForm();
@@ -44,17 +54,22 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
 
   addComment() {
     this.postCommentsService
-      .addPostComment(this.data.postId, { ...this.commentForm.value, parent_ids: this.data.parentIds })
-        .subscribe((added) => {
-          if (added) {
-            this.bottomSheetRef.dismiss();
-            this.postCommentsStore.setPostCommentError();
-            this.persistForm.reset();
-          }
-        });
+      .addPostComment(this.data.postId, {
+        ...this.commentForm.value,
+        parent_ids: this.data.parentIds
+      })
+      .subscribe(added => {
+        if (added) {
+          this.bottomSheetRef.dismiss();
+          this.postCommentsStore.setPostCommentError();
+          this.persistForm.reset();
+        }
+      });
   }
 
   ngOnDestroy() {
-    if (this.persistForm) { this.persistForm.destroy(); }
+    if (this.persistForm) {
+      this.persistForm.destroy();
+    }
   }
 }

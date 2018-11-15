@@ -6,10 +6,10 @@ describe('NewPostPageComponent', () => {
   let component: NewPostPageComponent;
   let fixture: ComponentFixture<NewPostPageComponent>;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [],
-      declarations: [ NewPostPageComponent ]
+      declarations: [NewPostPageComponent]
     });
 
     await TestBed.compileComponents();

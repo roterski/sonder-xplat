@@ -12,26 +12,35 @@ export class PostItemComponent implements OnInit {
   @Input() post: Post;
   @Input() voted: number;
 
-  constructor(
-    private myVotesService: MyVotesService
-  ) { }
+  constructor(private myVotesService: MyVotesService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   upvote() {
     if (this.voted > 0) {
-      this.myVotesService.revokePostVote(this.post.id).pipe(take(1)).subscribe();
+      this.myVotesService
+        .revokePostVote(this.post.id)
+        .pipe(take(1))
+        .subscribe();
     } else {
-      this.myVotesService.upvotePost(this.post.id).pipe(take(1)).subscribe();
+      this.myVotesService
+        .upvotePost(this.post.id)
+        .pipe(take(1))
+        .subscribe();
     }
   }
 
   downvote() {
     if (this.voted < 0) {
-      this.myVotesService.revokePostVote(this.post.id).pipe(take(1)).subscribe();
+      this.myVotesService
+        .revokePostVote(this.post.id)
+        .pipe(take(1))
+        .subscribe();
     } else {
-      this.myVotesService.downvotePost(this.post.id).pipe(take(1)).subscribe();
+      this.myVotesService
+        .downvotePost(this.post.id)
+        .pipe(take(1))
+        .subscribe();
     }
   }
 }

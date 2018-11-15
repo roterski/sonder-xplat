@@ -21,7 +21,7 @@ import {
   MatAutocompleteModule
 } from '@angular/material';
 import { UI_COMPONENTS } from './components';
-import { UI_CONTAINERS} from './containers';
+import { UI_CONTAINERS } from './containers';
 
 const MODULES = [
   CommonModule,

@@ -16,25 +16,27 @@ export function createInitialState(): SessionState {
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'session' })
 export class SessionStore extends Store<SessionState> {
-
   constructor() {
     super(createInitialState());
   }
 
   authenticateFacebook(facebookAccessToken: string) {
-    applyAction(() => this.update({ facebookAccessToken }),
-      { type: 'Facebook Authenticated' });
+    applyAction(() => this.update({ facebookAccessToken }), {
+      type: 'Facebook Authenticated'
+    });
   }
 
   authenticateBackend(backendAuthToken: string) {
-    applyAction(() => this.update({ backendAuthToken }),
-      { type: 'Logged In'});
+    applyAction(() => this.update({ backendAuthToken }), { type: 'Logged In' });
   }
 
   logOut() {
-    applyAction(() => this.setState((state) => {
-      return createInitialState();
-    }),
-      { type: 'Logged Out' });
+    applyAction(
+      () =>
+        this.setState(state => {
+          return createInitialState();
+        }),
+      { type: 'Logged Out' }
+    );
   }
 }

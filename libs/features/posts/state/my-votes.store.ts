@@ -13,7 +13,7 @@ export interface PostVotes {
 }
 
 export interface CommentVotes {
-  votes: { [commentId: number]: -1 | 0 | 1};
+  votes: { [commentId: number]: -1 | 0 | 1 };
   loaded: boolean;
 }
 export function createInitialState(): MyVotesState {
@@ -22,15 +22,13 @@ export function createInitialState(): MyVotesState {
       votes: {},
       loaded: false
     },
-    commentVotes: {
-    }
+    commentVotes: {}
   };
 }
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'myVotes' })
 export class MyVotesStore extends Store<MyVotesState> {
-
   constructor() {
     super(createInitialState());
   }
@@ -76,7 +74,8 @@ export class MyVotesStore extends Store<MyVotesState> {
           [vote.postId]: {
             ...state.commentVotes[vote.postId],
             votes: {
-              ...(state.commentVotes[vote.postId] && state.commentVotes[vote.postId].votes),
+              ...(state.commentVotes[vote.postId] &&
+                state.commentVotes[vote.postId].votes),
               [vote.commentId]: vote.points
             }
           }
@@ -105,4 +104,3 @@ export class MyVotesStore extends Store<MyVotesState> {
     });
   }
 }
-

@@ -7,10 +7,10 @@ describe('PostShowPageComponent', () => {
   let fixture: ComponentFixture<PostShowPageComponent>;
   // let store: Store<any>;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [ StoreModule.forRoot({}) ],
-      declarations: [ PostShowPageComponent ]
+      imports: [StoreModule.forRoot({})],
+      declarations: [PostShowPageComponent]
     });
 
     await TestBed.compileComponents();
