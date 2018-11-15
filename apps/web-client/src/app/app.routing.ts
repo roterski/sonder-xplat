@@ -39,8 +39,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    // loadChildren: './features/auth/auth.module#AuthModule',
-    children: authRoutes
+    loadChildren: './features/auth/auth.module#AuthModule'
   }
 ];
 
