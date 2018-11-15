@@ -10,9 +10,6 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './features/shared/shared.module';
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
-import { AuthenticatedAppComponent } from './containers';
-import { TopNavBarComponent, BottomButtonsComponent } from './components';
-import { MatToolbarModule, MatButtonModule } from '@angular/material';
 import { AuthModule } from './features/auth/auth.module';
 import { PostsModule } from './features/posts/posts.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,19 +20,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     AppRoutingModule,
     environment.production
-      ? []
-      : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
-    MatToolbarModule,
-    MatButtonModule,
+      ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
     AuthModule,
     PostsModule,
     BrowserAnimationsModule
   ],
   declarations: [
-    AppComponent,
-    TopNavBarComponent,
-    AuthenticatedAppComponent,
-    BottomButtonsComponent
+    AppComponent
   ],
   bootstrap: [AppComponent]
 })

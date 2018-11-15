@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PostsListPageComponent, PostShowPageComponent, NewPostPageComponent } from './containers';
-import { PostsLoadedGuard, PostLoadedGuard, PostCommentsLoadedGuard } from './guards';
+import { PostsListPageComponent, PostShowPageComponent, NewPostPageComponent } from '@sonder/web/features/posts/containers';
+import { PostsLoadedGuard, PostLoadedGuard, PostCommentsLoadedGuard } from '@sonder/features/posts/guards';
 
 export const postsRoutes: Routes = [
   {

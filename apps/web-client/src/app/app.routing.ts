@@ -5,8 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 // app
 import { SharedModule } from './features/shared/shared.module';
 
-import { AuthenticatedAppComponent } from './containers';
-import { AuthenticatedGuard } from './features/auth/guards';
+import { AuthenticatedAppComponent } from '@sonder/web/features/ui/containers';
+import { AuthenticatedGuard } from '@sonder/features/auth/guards';
 import { authRoutes } from './features/auth/auth-routing.module';
 import { postsRoutes } from './features/posts/posts-routing.module';
 
@@ -23,8 +23,7 @@ export const routes: Routes = [
       },
       {
         path: 'posts',
-        // loadChildren: './features/posts/posts.module#PostsModule',
-        children: postsRoutes
+        loadChildren: './features/posts/posts.module#PostsModule'
       },
       {
         path: 'profiles',
@@ -39,8 +38,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    // loadChildren: './features/auth/auth.module#AuthModule',
-    children: authRoutes
+    loadChildren: './features/auth/auth.module#AuthModule'
   }
 ];
 

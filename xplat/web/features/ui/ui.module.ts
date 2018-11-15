@@ -17,9 +17,11 @@ import {
   MatPaginatorModule,
   MatBottomSheetModule,
   MatChipsModule,
+  MatToolbarModule,
   MatAutocompleteModule
 } from '@angular/material';
-import { LoadingSplashComponent } from './components';
+import { UI_COMPONENTS } from './components';
+import { UI_CONTAINERS} from './containers';
 
 const MODULES = [
   CommonModule,
@@ -37,12 +39,13 @@ const MODULES = [
   MatPaginatorModule,
   MatBottomSheetModule,
   MatChipsModule,
+  MatToolbarModule,
   MatAutocompleteModule
 ];
 
 @NgModule({
   imports: [...MODULES],
-  exports: [...MODULES, LoadingSplashComponent],
-  declarations: [LoadingSplashComponent]
+  exports: [...MODULES, ...UI_COMPONENTS, ...UI_CONTAINERS],
+  declarations: [...UI_COMPONENTS, ...UI_CONTAINERS]
 })
 export class UIModule {}

@@ -2,45 +2,28 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-
-import { PostsApiService, VotesApiService, TagsApiService } from './services';
-import {
-  PostShowPageComponent,
-  NewPostPageComponent,
-  PostsListPageComponent } from './containers';
-import {
-  CommentTreeComponent,
-  PostItemComponent,
-  VoteButtonsComponent } from './components';
 import { SharedModule } from '../shared/shared.module';
-import { postsPaginatorProvider } from './state';
-import { CommentItemComponent } from './components/comment-item/comment-item.component';
-import { NewCommentFormComponent } from './containers/new-comment-form/new-comment-form.component';
-import { TagChipsComponent } from './components/tag-chips/tag-chips.component';
+
+import { PostsApiService, VotesApiService, TagsApiService } from '@sonder/features/posts/services';
+import { postsPaginatorProvider } from '@sonder/features/posts/state';
+import {
+  POSTS_COMPONENTS,
+  POSTS_CONTAINERS,
+  CommentItemComponent,
+  NewCommentFormComponent
+} from '@sonder/web/features/posts';
+
+import { PostsRoutingModule } from './posts-routing.module';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, SharedModule, RouterModule, ReactiveFormsModule, PostsRoutingModule],
   declarations: [
-    PostsListPageComponent,
-    PostShowPageComponent,
-    NewPostPageComponent,
-    CommentTreeComponent,
-    PostItemComponent,
-    VoteButtonsComponent,
-    CommentItemComponent,
-    NewCommentFormComponent,
-    TagChipsComponent
+    ...POSTS_COMPONENTS,
+    ...POSTS_CONTAINERS
   ],
   exports: [
-    PostsListPageComponent,
-    PostShowPageComponent,
-    NewPostPageComponent,
-    CommentTreeComponent,
-    PostItemComponent,
-    VoteButtonsComponent,
-    CommentItemComponent,
-    NewCommentFormComponent,
-    TagChipsComponent
+    ...POSTS_COMPONENTS,
+    ...POSTS_CONTAINERS
   ],
   entryComponents: [CommentItemComponent, NewCommentFormComponent],
   providers: [
