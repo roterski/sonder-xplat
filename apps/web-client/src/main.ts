@@ -1,6 +1,7 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { enableAkitaProdMode, persistState } from '@datorama/akita';
+import 'hammerjs';
 
 // libs
 import { environment } from '@sonder/core';

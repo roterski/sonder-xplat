@@ -68,6 +68,7 @@
     "@sonder/scss": "file:libs/scss",
     "@sonder/web": "file:xplat/web",
     "core-js": "^2.5.4",
+    "hammerjs": "^2.0.8",
     "ngx-facebook": "^2.4.0",
     "reflect-metadata": "^0.1.12",
     "rxjs": "~6.3.3",
