@@ -4,8 +4,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable, Subscription } from 'rxjs';
 import { map, combineLatest } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
-import { TagsService } from '../../state';
-import { Tag } from '../../models';
+import { TagsService } from '@sonder/features/posts/state';
+import { Tag } from '@sonder/features/posts/models';
 
 @Component({
   selector: 'app-tag-chips',

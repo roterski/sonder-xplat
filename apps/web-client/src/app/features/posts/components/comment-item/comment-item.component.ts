@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { PostComment } from '../../models';
-import { MyVotesService } from '../../state';
+import { PostComment } from '@sonder/features/posts/models';
+import { MyVotesService } from '@sonder/features/posts/state';
 import { take } from 'rxjs/operators';
 import { NewCommentFormComponent } from '../../containers';
 import { MatBottomSheet } from '@angular/material';

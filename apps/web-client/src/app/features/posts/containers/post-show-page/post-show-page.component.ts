@@ -7,8 +7,8 @@ import {
   PostsService,
   PostCommentsQuery,
   PostCommentsService,
-  MyVotesService } from '../../state';
-import { Post, PostComment } from '../../models';
+  MyVotesService } from '@sonder/features/posts/state';
+import { Post, PostComment } from '@sonder/features/posts/models';
 import { NewCommentFormComponent } from '../../containers/new-comment-form/new-comment-form.component';
 import { MatBottomSheet } from '@angular/material';
 

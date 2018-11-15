@@ -4,8 +4,8 @@ import { PersistNgFormPlugin, ID } from '@datorama/akita';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 
-import { PostComment, createComment } from '../../models';
-import { PostCommentsQuery, PostCommentsService, PostCommentsStore } from '../../state';
+import { PostComment, createComment } from '@sonder/features/posts/models';
+import { PostCommentsQuery, PostCommentsService, PostCommentsStore } from '@sonder/features/posts/state';
 
 @Component({
   selector: 'app-new-comment-form',

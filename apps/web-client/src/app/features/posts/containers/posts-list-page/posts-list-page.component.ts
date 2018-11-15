@@ -3,7 +3,7 @@ import { PageEvent } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { PaginatorPlugin, PaginationResponse } from '@datorama/akita';
 import { switchMap, map, combineLatest, tap } from 'rxjs/operators';
-import { Post, Tag } from '../../models';
+import { Post, Tag } from '@sonder/features/posts/models';
 import {
   PostsQuery,
   PostsService,
@@ -11,7 +11,8 @@ import {
   MyVotesService,
   MyVotesQuery,
   TagsQuery,
-  TagsService } from '../../state';
+  TagsService
+} from '@sonder/features/posts/state';
 
 @Component({
   selector: 'app-posts-list-page',

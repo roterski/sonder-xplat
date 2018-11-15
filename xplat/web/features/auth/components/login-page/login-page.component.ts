@@ -10,9 +10,7 @@ import { LoginPageBaseComponent } from '@sonder/features';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent extends LoginPageBaseComponent {
-  constructor(
-    private sessionService: SessionService,
-    private router: Router) {
+  constructor(private sessionService: SessionService, private router: Router) {
     super();
   }
 

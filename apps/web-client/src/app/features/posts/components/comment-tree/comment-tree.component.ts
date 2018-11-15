@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { HashMap } from '@datorama/akita';
-import { Post, PostComment } from '../../models';
+import { Post, PostComment } from '@sonder/features/posts/models';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

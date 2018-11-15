@@ -23,8 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     AppRoutingModule,
     environment.production
-      ? []
-      : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
+      ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
     MatToolbarModule,
     MatButtonModule,
     AuthModule,

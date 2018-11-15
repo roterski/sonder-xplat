@@ -5,8 +5,8 @@ import { of, Observable } from 'rxjs';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { PostsQuery, PostsService, TagsQuery, TagsService } from '../../state';
-import { Post, createPost, Tag } from '../../models';
+import { PostsQuery, PostsService, TagsQuery, TagsService } from '@sonder/features/posts/state';
+import { Post, createPost, Tag } from '@sonder/features/posts/models';
 
 @Component({
   selector: 'app-new-post-page',
