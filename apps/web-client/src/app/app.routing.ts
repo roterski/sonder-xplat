@@ -24,11 +24,6 @@ export const routes: Routes = [
       {
         path: 'posts',
         loadChildren: './features/posts/posts.module#PostsModule'
-      },
-      {
-        path: 'profiles',
-        loadChildren:
-          './features/profile-pages/profile-pages.module#ProfilePagesModule'
       }
     ]
   },
