@@ -13,8 +13,9 @@
       <mat-error *ngIf="(errors$ | async) && (errors$ | async).body">{{(errors$ | async).body}}</mat-error>
     </mat-card-content>
     <sonder-tag-chips [selectedTags]="newPostTags$"
-                   (added)="tagAdded($event)"
-                   (removed)="tagRemoved($event)"></sonder-tag-chips>
+                      [tags]="tags$"
+                      (added)="tagAdded($event)"
+                      (removed)="tagRemoved($event)"></sonder-tag-chips>
     <mat-card-actions>
       <button mat-raised-button (click)="addPost()">Create</button>
       <mat-error *ngIf="(errors$ | async)">Something went wrong. 😓</mat-error>

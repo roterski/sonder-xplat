@@ -1,8 +1,9 @@
 <sonder-loading-splash *ngIf="loading$ | async"></sonder-loading-splash>
 <sonder-tag-chips [selectedTags]="postFilterTags$"
-               [allowNew]="false"
-               (added)="tagAdded($event)"
-               (removed)="tagRemoved($event)">
+                  [tags]="tags$"
+                  [allowNew]="false"
+                  (added)="tagAdded($event)"
+                  (removed)="tagRemoved($event)">
 </sonder-tag-chips>
 <section *ngIf="(pagination$ | async) as pagination">
   <mat-nav-list role="list" *ngFor="let post of pagination.data">

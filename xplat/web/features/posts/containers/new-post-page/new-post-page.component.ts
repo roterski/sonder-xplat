@@ -29,6 +29,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
   post$: Observable<Post>;
   persistForm: PersistNgFormPlugin<Post>;
   newPostTags$: Observable<Tag[]>;
+  tags$: Observable<Tag[]>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,6 +44,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
     this.createForm();
     this.newPostTags$ = this.tagsQuery.newPostTags$;
     this.errors$ = this.postsQuery.selectError();
+    this.tags$ = this.tagsService.getTags();
   }
 
   createForm() {

@@ -25,6 +25,7 @@ import { Tag } from '@sonder/features/posts/models';
 })
 export class TagChipsComponent implements OnInit {
   @Input() selectedTags: Observable<Tag[]>;
+  @Input() tags: Observable<Tag[]>;
   @Input() allowNew = true;
 
   @Output() added = new EventEmitter<Tag>();
@@ -35,11 +36,11 @@ export class TagChipsComponent implements OnInit {
   public suggestedTags$: Observable<Tag[]>;
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
-  constructor(private tagsService: TagsService) {}
+  constructor() {}
 
   ngOnInit() {
     const notSelectedTags$ = combineLatest(
-      this.tagsService.getTags(),
+      this.tags,
       this.selectedTags
     ).pipe(
       map(([all, selected]) =>

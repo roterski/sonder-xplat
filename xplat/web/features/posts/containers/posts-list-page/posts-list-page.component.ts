@@ -24,6 +24,7 @@ export class PostsListPageComponent implements OnInit, OnDestroy {
   public postVotes$: Observable<any>;
   public pagination$: Observable<PaginationResponse<Post>>;
   public postFilterTags$: Observable<Tag[]>;
+  public tags$: Observable<Tag[]>;
 
   private perPage = 100;
   private subscriptions: Subscription[] = [];
@@ -45,6 +46,7 @@ export class PostsListPageComponent implements OnInit, OnDestroy {
     ).pipe(map(([storeLoading, pageLoading]) => storeLoading && pageLoading));
     this.postVotes$ = this.myVotesQuery.myPostVotes$;
     this.postFilterTags$ = this.tagsQuery.getPostFilterTags();
+    this.tags$ = this.tagsService.getTags();
     this.pagination$ = combineLatest(
       this.paginatorRef.pageChanges,
       this.postFilterTags$.pipe(tap(_ => this.paginatorRef.clearCache()))
