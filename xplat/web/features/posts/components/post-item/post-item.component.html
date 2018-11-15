@@ -3,11 +3,11 @@
     {{post.title}}
   </mat-card-title>
   <mat-card-actions>
-    <app-vote-buttons
+    <sonder-vote-buttons
       [points]="post.points"
       [voted]="voted"
       (upvoted)="upvote()"
       (downvoted)="downvote()">
-    </app-vote-buttons>
+    </sonder-vote-buttons>
   </mat-card-actions>
 </mat-card>

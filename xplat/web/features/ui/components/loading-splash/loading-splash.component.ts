@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-loading-splash',
+  selector: 'sonder-loading-splash',
   templateUrl: './loading-splash.component.html',
   styleUrls: ['./loading-splash.component.scss']
 })

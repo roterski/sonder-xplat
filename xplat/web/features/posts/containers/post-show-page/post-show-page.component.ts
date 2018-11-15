@@ -13,7 +13,7 @@ import { NewCommentFormComponent } from '../../containers/new-comment-form/new-c
 import { MatBottomSheet } from '@angular/material';
 
 @Component({
-  selector: 'app-post-show-page',
+  selector: 'sonder-post-show-page',
   templateUrl: './post-show-page.component.html',
   styleUrls: ['./post-show-page.component.css']
 })

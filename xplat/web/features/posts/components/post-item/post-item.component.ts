@@ -4,7 +4,7 @@ import { Post } from '@sonder/features/posts/models';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-post-item',
+  selector: 'sonder-post-item',
   templateUrl: './post-item.component.html',
   styleUrls: ['./post-item.component.scss']
 })

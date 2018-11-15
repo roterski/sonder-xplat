@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-bottom-buttons',
+  selector: 'sonder-bottom-buttons',
   templateUrl: './bottom-buttons.component.html',
   styleUrls: ['./bottom-buttons.component.scss']
 })

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { QueryEntity, ID } from '@datorama/akita';
 import { PostCommentsStore, PostCommentsState } from './post-comments.store';
 import { PostComment } from '../models/post-comment.model';
-import { Observable, of } from 'rxjs';
-import { map, switchMap, combineLatest } from 'rxjs/operators';
+import { Observable, of, combineLatest } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class PostCommentsQuery extends QueryEntity<PostCommentsState, PostComment> {
@@ -27,8 +27,10 @@ export class PostCommentsQuery extends QueryEntity<PostCommentsState, PostCommen
   }
 
   selectPostParentComments(postId: ID) {
-    return this.selectPostCommentsIds(postId).pipe(
-      combineLatest(this.postCommentEntities$),
+    return combineLatest(
+      this.selectPostCommentsIds(postId),
+      this.postCommentEntities$
+    ).pipe(
       map(([ids, entities], index) => (ids || []) && ids.map((id: ID) => entities[id])),
       map(comments => comments.filter(comment => comment && comment.parentIds.length === 0))
     );

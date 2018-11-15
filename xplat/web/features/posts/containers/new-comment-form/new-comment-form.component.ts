@@ -8,7 +8,7 @@ import { PostComment, createComment } from '@sonder/features/posts/models';
 import { PostCommentsQuery, PostCommentsService, PostCommentsStore } from '@sonder/features/posts/state';
 
 @Component({
-  selector: 'app-new-comment-form',
+  selector: 'sonder-new-comment-form',
   templateUrl: './new-comment-form.component.html',
   styleUrls: ['./new-comment-form.component.scss']
 })

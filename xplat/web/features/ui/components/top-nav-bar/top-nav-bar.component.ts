@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-top-nav-bar',
+  selector: 'sonder-top-nav-bar',
   templateUrl: './top-nav-bar.component.html',
   styleUrls: ['./top-nav-bar.component.scss']
 })

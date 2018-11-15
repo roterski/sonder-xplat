@@ -6,7 +6,7 @@ import { NewCommentFormComponent } from '../../containers';
 import { MatBottomSheet } from '@angular/material';
 
 @Component({
-  selector: 'app-comment-item',
+  selector: 'sonder-comment-item',
   templateUrl: './comment-item.component.html',
   styleUrls: ['./comment-item.component.scss']
 })

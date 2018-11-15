@@ -21,7 +21,7 @@ export class CommentFlatNode {
 }
 
 @Component({
-  selector: 'app-comment-tree',
+  selector: 'sonder-comment-tree',
   templateUrl: './comment-tree.component.html',
   styleUrls: ['./comment-tree.component.scss']
 })

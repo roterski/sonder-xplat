@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { PageEvent } from '@angular/material';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { PaginatorPlugin, PaginationResponse } from '@datorama/akita';
-import { switchMap, map, combineLatest, tap } from 'rxjs/operators';
+import { switchMap, map, tap } from 'rxjs/operators';
 import { Post, Tag } from '@sonder/features/posts/models';
 import {
   PostsQuery,
@@ -15,7 +15,7 @@ import {
 } from '@sonder/features/posts/state';
 
 @Component({
-  selector: 'app-posts-list-page',
+  selector: 'sonder-posts-list-page',
   templateUrl: './posts-list-page.component.html',
   styleUrls: ['./posts-list-page.component.css']
 })
@@ -39,23 +39,25 @@ export class PostsListPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.loading$ = this.postsQuery.selectLoading().pipe(
-      combineLatest(this.paginatorRef.isLoading$),
+    this.loading$ = combineLatest(
+      this.postsQuery.selectLoading(),
+      this.paginatorRef.isLoading$
+    ).pipe(
       map(([storeLoading, pageLoading]) => storeLoading && pageLoading)
     );
     this.postVotes$ = this.myVotesQuery.myPostVotes$;
     this.postFilterTags$ = this.tagsQuery.getPostFilterTags();
-    this.pagination$ = this.paginatorRef.pageChanges.pipe(
-      combineLatest(
-        this.postFilterTags$.pipe(
-          tap(_ => this.paginatorRef.clearCache())
-        )
-      ),
-      switchMap(([page, tags]) => {
-        return this.paginatorRef.getPage(() => {
-          return this.postsService.getPostsPage({ page, perPage: this.perPage }, tags);
-        });
-      })
+    this.pagination$ = combineLatest(
+      this.paginatorRef.pageChanges,
+      this.postFilterTags$.pipe(
+        tap(_ => this.paginatorRef.clearCache())
+      )
+    ).pipe(
+      switchMap(([page, tags]) => (
+        this.paginatorRef.getPage(() => (
+          this.postsService.getPostsPage({ page, perPage: this.perPage }, tags)
+        ))
+      ))
     );
     this.subscriptions.push(this.myVotesService.getMyPostVotes().subscribe());
   }

@@ -9,7 +9,7 @@ import { PostsQuery, PostsService, TagsQuery, TagsService } from '@sonder/featur
 import { Post, createPost, Tag } from '@sonder/features/posts/models';
 
 @Component({
-  selector: 'app-new-post-page',
+  selector: 'sonder-new-post-page',
   templateUrl: './new-post-page.component.html',
   styleUrls: ['./new-post-page.component.css']
 })

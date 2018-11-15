@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { SessionQuery, SessionState, SessionService } from '@sonder/features/auth/state';
 
 @Component({
-  selector: 'app-authenticated-app',
+  selector: 'sonder-authenticated-app',
   templateUrl: './authenticated-app.component.html',
   styleUrls: ['./authenticated-app.component.scss']
 })

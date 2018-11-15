@@ -1,14 +1,14 @@
 import { Component, OnInit, Input, Output, ElementRef, ViewChild, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Observable, Subscription } from 'rxjs';
-import { map, combineLatest } from 'rxjs/operators';
+import { Observable, Subscription, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { TagsService } from '@sonder/features/posts/state';
 import { Tag } from '@sonder/features/posts/models';
 
 @Component({
-  selector: 'app-tag-chips',
+  selector: 'sonder-tag-chips',
   templateUrl: './tag-chips.component.html',
   styleUrls: ['./tag-chips.component.scss']
 })
@@ -28,12 +28,16 @@ export class TagChipsComponent implements OnInit {
   }
 
   ngOnInit() {
-    const notSelectedTags$ = this.tagsService.getTags().pipe(
-      combineLatest(this.selectedTags),
+    const notSelectedTags$ = combineLatest(
+      this.tagsService.getTags(),
+      this.selectedTags
+    ).pipe(
       map(([all, selected]) => all.filter(tag => !selected.map((t) => t.name).includes(tag.name)))
     );
-    this.suggestedTags$ = this.tagCtrl.valueChanges.pipe(
-      combineLatest(notSelectedTags$),
+    this.suggestedTags$ = combineLatest(
+      this.tagCtrl.valueChanges,
+      notSelectedTags$
+    ).pipe(
       map(([input, tags]) =>
         input ? tags.filter(tag => tag.name.toLowerCase().startsWith(input.toLowerCase())) : tags
       )

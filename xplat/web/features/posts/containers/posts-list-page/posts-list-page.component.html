@@ -1,12 +1,12 @@
-<app-loading-splash *ngIf="loading$ | async"></app-loading-splash>
-<app-tag-chips [selectedTags]="postFilterTags$"
+<sonder-loading-splash *ngIf="loading$ | async"></sonder-loading-splash>
+<sonder-tag-chips [selectedTags]="postFilterTags$"
                [allowNew]="false"
                (added)="tagAdded($event)"
                (removed)="tagRemoved($event)">
-</app-tag-chips>
+</sonder-tag-chips>
 <section *ngIf="(pagination$ | async) as pagination">
   <mat-nav-list role="list" *ngFor="let post of pagination.data">
-    <app-post-item *ngIf="post" [post]="post" [voted]="(postVotes$ | async)[post.id]"></app-post-item>
+    <sonder-post-item *ngIf="post" [post]="post" [voted]="(postVotes$ | async)[post.id]"></sonder-post-item>
   </mat-nav-list>
   <mat-paginator [length]="pagination.total"
                 [pageSize]="pagination.perPage"
