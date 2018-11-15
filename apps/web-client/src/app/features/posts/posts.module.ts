@@ -13,8 +13,10 @@ import {
   NewCommentFormComponent
 } from '@sonder/web/features/posts';
 
+import { PostsRoutingModule } from './posts-routing.module';
+
 @NgModule({
-  imports: [CommonModule, SharedModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, SharedModule, RouterModule, ReactiveFormsModule, PostsRoutingModule],
   declarations: [
     ...POSTS_COMPONENTS,
     ...POSTS_CONTAINERS
