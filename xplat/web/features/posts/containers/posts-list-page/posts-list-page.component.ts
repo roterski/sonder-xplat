@@ -46,7 +46,7 @@ export class PostsListPageComponent implements OnInit, OnDestroy {
     ).pipe(map(([storeLoading, pageLoading]) => storeLoading && pageLoading));
     this.postVotes$ = this.myVotesQuery.myPostVotes$;
     this.postFilterTags$ = this.tagsQuery.getPostFilterTags();
-    this.tags$ = this.tagsService.getTags();
+    // this.tags$ = this.tagsService.getTags();
     this.pagination$ = combineLatest(
       this.paginatorRef.pageChanges,
       this.postFilterTags$.pipe(tap(_ => this.paginatorRef.clearCache()))
@@ -57,7 +57,7 @@ export class PostsListPageComponent implements OnInit, OnDestroy {
         )
       )
     );
-    this.subscriptions.push(this.myVotesService.getMyPostVotes().subscribe());
+    // this.subscriptions.push(this.myVotesService.getMyPostVotes().subscribe());
   }
 
   tagAdded(tag: Tag) {

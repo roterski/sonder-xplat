@@ -44,7 +44,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
     this.createForm();
     this.newPostTags$ = this.tagsQuery.newPostTags$;
     this.errors$ = this.postsQuery.selectError();
-    this.tags$ = this.tagsService.getTags();
+    // this.tags$ = this.tagsService.getTags();
   }
 
   createForm() {

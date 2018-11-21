@@ -75,20 +75,20 @@ export class PostCommentsStore extends EntityStore<
 
   addPostComments(comments: PostComment[], postId: ID) {
     const ids = comments.map((comment: PostComment) => comment.id);
-
+debugger
     this.add(comments);
     const entities = this.appendChildrenIds({ ...this.entities });
     this.set(entities);
     this.setState((state: PostCommentsState) => {
       return {
         ...state,
-        commentsByPost: {
-          ...state.commentsByPost,
-          [postId]: {
-            loaded: true,
-            ids: ids
-          }
-        }
+        // commentsByPost: {
+        //   ...state.commentsByPost,
+        //   [postId]: {
+        //     loaded: true,
+        //     ids: ids
+        //   }
+        // }
       };
     });
   }

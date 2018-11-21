@@ -97,7 +97,7 @@ export class BackendService {
     return {
       headers: {
         ...this.staticHeaders().headers,
-        Authorization: accessToken
+        Authorization: `Bearer ${accessToken}`
       }
     };
   }

@@ -52,7 +52,7 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
           postId
         );
         this.commentEntities$ = this.postCommentsQuery.postCommentEntities$;
-        this.commentVotes$ = this.myVotesService.getMyCommentVotes(postId);
+        // this.commentVotes$ = this.myVotesService.getMyCommentVotes(postId);
       })
     );
   }
