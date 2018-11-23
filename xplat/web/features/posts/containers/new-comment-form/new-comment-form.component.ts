@@ -56,7 +56,7 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
     this.postCommentsService
       .addPostComment(this.data.postId, {
         ...this.commentForm.value,
-        parent_ids: this.data.parentIds
+        parentIds: this.data.parentIds
       })
       .subscribe(added => {
         if (added) {
