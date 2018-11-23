@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import {
@@ -29,6 +29,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
   post$: Observable<Post>;
   persistForm: PersistNgFormPlugin<Post>;
   newPostTags$: Observable<Tag[]>;
+  newPostTags: Tag[];
   tags$: Observable<Tag[]>;
 
   constructor(
@@ -43,6 +44,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.newPostTags$ = this.tagsQuery.newPostTags$;
+    this.newPostTags$.subscribe((tags) => this.newPostTags = tags)
     this.errors$ = this.postsQuery.selectError();
     // this.tags$ = this.tagsService.getTags();
   }
@@ -58,13 +60,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
   }
 
   addPost() {
-    this.tagsQuery.newPostTags$
-      .pipe(
-        switchMap((tags: Tag[]) =>
-          this.postsService.addPost(this.postForm.value, tags)
-        ),
-        take(1)
-      )
+    this.postsService.addPost(this.postForm.value, this.newPostTags)
       .subscribe(added => {
         if (added) {
           this.router.navigate(['/']);
