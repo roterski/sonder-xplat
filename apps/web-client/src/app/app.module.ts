@@ -2,6 +2,11 @@ import { NgModule } from '@angular/core';
 
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+
+import { HttpClientModule } from '@angular/common/http';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 // libs
 import { environment } from '@sonder/core';
 
@@ -19,6 +24,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CoreModule,
     SharedModule,
     AppRoutingModule,
+    ApolloModule,
+    HttpClientModule,
     environment.production
       ? []
       : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
@@ -26,6 +33,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PostsModule,
     BrowserAnimationsModule
   ],
+  providers: [{
+    provide: APOLLO_OPTIONS,
+    useFactory(httpLink: HttpLink) {
+      return {
+        cache: new InMemoryCache(),
+        link: httpLink.create({
+          uri: `${environment.backendUrl}/graphql`
+        })
+      }
+    },
+    deps: [HttpLink]
+  }],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
