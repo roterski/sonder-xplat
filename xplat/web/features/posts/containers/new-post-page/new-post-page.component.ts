@@ -44,7 +44,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.newPostTags$ = this.tagsQuery.newPostTags$;
-    this.newPostTags$.subscribe((tags) => this.newPostTags = tags)
+    this.newPostTags$.subscribe(tags => (this.newPostTags = tags));
     this.errors$ = this.postsQuery.selectError();
     // this.tags$ = this.tagsService.getTags();
   }
@@ -60,7 +60,8 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
   }
 
   addPost() {
-    this.postsService.addPost(this.postForm.value, this.newPostTags)
+    this.postsService
+      .addPost(this.postForm.value, this.newPostTags)
       .subscribe(added => {
         if (added) {
           this.router.navigate(['/']);

@@ -39,10 +39,7 @@ export class TagChipsComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    const notSelectedTags$ = combineLatest(
-      this.tags,
-      this.selectedTags
-    ).pipe(
+    const notSelectedTags$ = combineLatest(this.tags, this.selectedTags).pipe(
       map(([all, selected]) =>
         all.filter(tag => !selected.map(t => t.name).includes(tag.name))
       )
