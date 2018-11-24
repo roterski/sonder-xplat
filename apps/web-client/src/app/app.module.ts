@@ -25,7 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     AppRoutingModule,
     ApolloModule,
-    HttpClientModule,
+    HttpLinkModule,
     environment.production
       ? []
       : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
