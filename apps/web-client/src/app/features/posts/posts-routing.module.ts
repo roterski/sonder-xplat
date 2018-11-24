@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
-  PostsListPageComponent,
+  PostsListPaginatedPageComponent,
   PostShowPageComponent,
   NewPostPageComponent
 } from '@sonder/web/features/posts/containers';
@@ -15,7 +15,7 @@ export const postsRoutes: Routes = [
   {
     path: '',
     canActivate: [PostsLoadedGuard],
-    component: PostsListPageComponent
+    component: PostsListPaginatedPageComponent
   },
   {
     path: 'new',

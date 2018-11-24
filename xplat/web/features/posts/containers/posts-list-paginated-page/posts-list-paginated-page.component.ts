@@ -16,10 +16,10 @@ import {
 
 @Component({
   selector: 'sonder-posts-list-page',
-  templateUrl: './posts-list-page.component.html',
-  styleUrls: ['./posts-list-page.component.css']
+  templateUrl: './posts-list-paginated-page.component.html',
+  styleUrls: ['./posts-list-paginated-page.component.css']
 })
-export class PostsListPageComponent implements OnInit, OnDestroy {
+export class PostsListPaginatedPageComponent implements OnInit, OnDestroy {
   public loading$: Observable<boolean>;
   public postVotes$: Observable<any>;
   public pagination$: Observable<PaginationResponse<Post>>;
