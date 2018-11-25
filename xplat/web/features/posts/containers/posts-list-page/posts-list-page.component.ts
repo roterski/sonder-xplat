@@ -10,6 +10,7 @@ import { PostsListPageBaseComponent, Post } from '@sonder/features';
 })
 export class PostsListPageComponent extends PostsListPageBaseComponent implements OnInit {
   posts: Post[];
+  loading = true;
 
   constructor(private apollo: Apollo) {
     super();
@@ -20,16 +21,16 @@ export class PostsListPageComponent extends PostsListPageBaseComponent implement
       .watchQuery({
         query: gql`
           query {
-            getPosts {
+            posts {
               id
               title
             }
           }
         `,
       })
-      .valueChanges().subscribe((result) => {
-        debugger
-        this.posts = result.data;
+      .valueChanges.subscribe((result) => {
+        this.posts = result.data.posts;
+        this.loading = result.loading;
       })
   }
 }

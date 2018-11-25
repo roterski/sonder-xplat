@@ -4,9 +4,11 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 
 import { HttpClientModule } from '@angular/common/http';
-import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { Apollo, ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { setContext } from 'apollo-link-context';
+
 // libs
 import { environment } from '@sonder/core';
 
@@ -35,12 +37,27 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   providers: [{
     provide: APOLLO_OPTIONS,
-    useFactory(httpLink: HttpLink) {
+    useFactory(httpLink: HttpLink, apollo: Apollo) {
+      const http = httpLink.create({
+        uri: `${environment.backendUrl}/graphql`
+      });
+
+      const auth = setContext((_, { headers }) => {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          return {};
+        } else {
+          return { headers: {
+              ...(headers || {}),
+              'Authorization': `Bearer ${token}`
+            }
+          };
+        }
+      });
+
       return {
         cache: new InMemoryCache(),
-        link: httpLink.create({
-          uri: `${environment.backendUrl}/graphql`
-        })
+        link: auth.concat(http)
       }
     },
     deps: [HttpLink]

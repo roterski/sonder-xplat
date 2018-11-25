@@ -8,7 +8,8 @@ import {
   concat,
   mergeMap,
   delay,
-  filter
+  filter,
+  tap
 } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
 import { SessionQuery } from '../state/session.query';
@@ -54,6 +55,7 @@ export class BackendService {
       )
       .pipe(
         map((response: any) => response.auth_token),
+        tap((token: string) => localStorage.setItem('authToken', token)),
         catchError(error => this.rethrow(error))
       );
   }
