@@ -9,6 +9,8 @@ import {
   PostCommentsService,
   MyVotesService
 } from '@sonder/features/posts/state';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 import { Post, PostComment } from '@sonder/features/posts/models';
 import { NewCommentFormComponent } from '../../containers/new-comment-form/new-comment-form.component';
 import { MatBottomSheet } from '@angular/material';
@@ -22,8 +24,10 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
   post$: Observable<Post>;
   postId: number;
   comments$: Observable<PostComment[]>;
+  comments: PostComment[];
+  commentsLoaded = false;
   commentsLoaded$: Observable<boolean>;
-  commentEntities$: Observable<HashMap<PostComment>>;
+  // commentEntities$: Observable<HashMap<PostComment>>;
   commentVotes$: Observable<any>;
 
   private subscriptions: Subscription[] = [];
@@ -34,7 +38,8 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
     private postCommentsService: PostCommentsService,
     private postsService: PostsService,
     private newCommentBottomSheet: MatBottomSheet,
-    private myVotesService: MyVotesService
+    private myVotesService: MyVotesService,
+    private apollo: Apollo
   ) {}
 
   ngOnInit() {
@@ -44,17 +49,51 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       postId$.subscribe((postId: number) => {
-        this.postId = postId;
-        this.post$ = this.postsService.getPost(postId);
-        this.comments$ = this.postCommentsService.getPostComments(postId);
-        this.subscriptions.push(this.comments$.subscribe());
-        this.commentsLoaded$ = this.postCommentsQuery.selectPostCommentsLoaded(
-          postId
-        );
-        this.commentEntities$ = this.postCommentsQuery.postCommentEntities$;
-        // this.commentVotes$ = this.myVotesService.getMyCommentVotes(postId);
+        this.apollo
+          .watchQuery({
+            query: gql`
+              query ($id: String) {
+                getPost(id: $id) {
+                  id
+                  title
+                  body
+                  points
+                  comments {
+                    id
+                    body
+                    postId
+                    parentIds
+                  }
+                }
+              }
+            `,
+            variables: {
+              id: `${postId}`
+            }
+          })
+          .valueChanges
+          .subscribe((result) => {
+            this.comments = result.data['getPost']['comments'];
+            this.commentsLoaded = !result.loading;
+          })
+
+
       })
-    );
+    )
+
+    // this.subscriptions.push(
+    //   postId$.subscribe((postId: number) => {
+    //     this.postId = postId;
+    //     this.post$ = this.postsService.getPost(postId);
+    //     this.comments$ = this.postCommentsService.getPostComments(postId);
+    //     this.subscriptions.push(this.comments$.subscribe());
+    //     this.commentsLoaded$ = this.postCommentsQuery.selectPostCommentsLoaded(
+    //       postId
+    //     );
+    //     this.commentEntities$ = this.postCommentsQuery.postCommentEntities$;
+    //     // this.commentVotes$ = this.myVotesService.getMyCommentVotes(postId);
+    //   })
+    // );
   }
 
   openNewCommentBottomSheet() {

@@ -21,7 +21,7 @@ export class PostsListPageComponent extends PostsListPageBaseComponent implement
       .watchQuery({
         query: gql`
           query {
-            posts {
+            getPosts {
               id
               title
             }
@@ -29,7 +29,7 @@ export class PostsListPageComponent extends PostsListPageBaseComponent implement
         `,
       })
       .valueChanges.subscribe((result) => {
-        this.posts = result.data.posts;
+        this.posts = result.data['getPosts'];
         this.loading = result.loading;
       })
   }
