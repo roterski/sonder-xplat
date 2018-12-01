@@ -5,7 +5,7 @@ import {
 } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { HashMap } from '@datorama/akita';
-import { Post, PostComment, appendChildrenIds } from '@sonder/features/posts/models';
+import { Post, PostComment } from '@sonder/features/posts/models';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 

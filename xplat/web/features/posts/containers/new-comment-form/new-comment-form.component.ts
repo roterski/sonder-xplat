@@ -16,6 +16,9 @@ import {
   PostCommentsStore
 } from '@sonder/features/posts/state';
 
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+
 @Component({
   selector: 'sonder-new-comment-form',
   templateUrl: './new-comment-form.component.html',
@@ -27,6 +30,7 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
   persistForm: PersistNgFormPlugin<PostComment>;
 
   constructor(
+    private apollo: Apollo,
     private formBuilder: FormBuilder,
     private postCommentQuery: PostCommentsQuery,
     private postCommentsService: PostCommentsService,
@@ -53,18 +57,34 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
   }
 
   addComment() {
-    this.postCommentsService
-      .addPostComment(this.data.postId, {
-        ...this.commentForm.value,
-        parentIds: this.data.parentIds
-      })
-      .subscribe(added => {
-        if (added) {
-          this.bottomSheetRef.dismiss();
-          this.postCommentsStore.setPostCommentError();
-          this.persistForm.reset();
+    this.apollo.mutate({
+      mutation: gql`
+        mutation createComment($body: String!, $parentIds: [Int], $postId: Int) {
+          createComment(createCommentInput: { body: $body, parentIds: $parentIds, postId: $postId }) {
+            body
+          }
         }
-      });
+      `,
+    variables: {
+      body: this.commentForm.value.body,
+      parentIds: this.data.parentIds,
+      postId: this.data.postId
+    }}).subscribe((data) => {
+      this.bottomSheetRef.dismiss();
+      this.persistForm.reset();
+    });
+    // this.postCommentsService
+    //   .addPostComment(this.data.postId, {
+    //     ...this.commentForm.value,
+    //     parentIds: this.data.parentIds
+    //   })
+    //   .subscribe(added => {
+    //     if (added) {
+    //       this.bottomSheetRef.dismiss();
+    //       this.postCommentsStore.setPostCommentError();
+    //       this.persistForm.reset();
+    //     }
+    //   });
   }
 
   ngOnDestroy() {
