@@ -65,11 +65,24 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
           }
         }
       `,
-    variables: {
-      body: this.commentForm.value.body,
-      parentIds: this.data.parentIds,
-      postId: this.data.postId
-    }}).subscribe((data) => {
+      variables: {
+        body: this.commentForm.value.body,
+        parentIds: this.data.parentIds,
+        postId: this.data.postId
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        createComment: {
+          __typename: 'Comment',
+          body: this.commentForm.value.body,
+          parentIds: this.data.parentIds,
+          postId: this.data.postId
+        }
+      },
+      // update: (proxy, { data: { createComment } }) => {
+      //   const data = proxy.readQuery({ query: })
+      // }
+  }).subscribe((data) => {
       this.bottomSheetRef.dismiss();
       this.persistForm.reset();
     });
