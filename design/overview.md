@@ -6,12 +6,12 @@ user {
     }
 
     [-] create post {
-      has {
+      [x] has {
         title
         body
       }
 
-      as {
+      [ ] as {
         profile
         anonymous
       }
@@ -25,7 +25,7 @@ user {
       }
       [x] other's {
         can {
-          [x] up/down vote
+          [ ] up/down vote
           [x] create comment
         }
       }
