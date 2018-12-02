@@ -3,7 +3,7 @@ import { Query } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Post, PostComment } from '../models';
 
-interface PostWithComments extends Post {
+export interface PostWithComments extends Post {
   comments: PostComment[];
 }
 

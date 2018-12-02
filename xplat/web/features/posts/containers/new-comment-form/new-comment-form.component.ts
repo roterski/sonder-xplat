@@ -64,14 +64,14 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
 
     this.createCommentGQL
       .mutate(commentData, {
-        optimisticResponse: {
-          __typename: 'Mutation',
-          createComment: {
-            __typename: 'Comment',
-            id: Math.round(Math.random() * -1000000),
-            ...commentData
-          }
-        },
+        // optimisticResponse: {
+        //   __typename: 'Mutation',
+        //   createComment: {
+        //     __typename: 'Comment',
+        //     id: Math.round(Math.random() * -1000000),
+        //     ...commentData
+        //   }
+        // },
         update: (store, { data: { createComment: createdComment } }) => {
           const query = this.getPostGQL.document;
           const variables = { postId: this.data.postId };
@@ -83,42 +83,6 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
       }).subscribe(() => {
         this.bottomSheetRef.dismiss();
       })
-  //   this.apollo.mutate({
-  //     mutation: gql`
-  //       mutation createComment($body: String!, $parentIds: [Int], $postId: Int!) {
-  //       # mutation createComment($createCommentInput: CreateCommentInput) {
-  //         createComment(body: $body, parentIds: $parentIds, postId: $postId) {
-  //         # createComment(createCommentInput: $createCommentInput) {
-  //           body
-  //         }
-  //       }
-  //     `,
-  //     variables: {
-  //       body: this.commentForm.value.body,
-  //       parentIds: this.data.parentIds,
-  //       postId: this.data.postId,
-  //       // createCommentInput: {
-  //       //   body: this.commentForm.value.body,
-  //       //   parentIds: this.data.parentIds,
-  //       //   postId: this.data.postId
-  //       // }
-  //     },
-  //     optimisticResponse: {
-  //       __typename: 'Mutation',
-  //       createComment: {
-  //         __typename: 'Comment',
-  //         body: this.commentForm.value.body,
-  //         parentIds: this.data.parentIds,
-  //         postId: this.data.postId
-  //       }
-  //     },
-  //     // update: (proxy, { data: { createComment } }) => {
-  //     //   const data = proxy.readQuery({ query: })
-  //     // }
-  // }).subscribe((data) => {
-  //     this.bottomSheetRef.dismiss();
-  //     this.persistForm.reset();
-  //   });
   }
 
   ngOnDestroy() {

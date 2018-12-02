@@ -15,7 +15,7 @@ import { NewCommentFormComponent } from '../../containers/new-comment-form/new-c
 import { MatBottomSheet } from '@angular/material';
 import { ApolloQueryResult } from 'apollo-client';
 
-import { GetPostGQL, GetPostGQLResponse } from '@sonder/features/posts'
+import { GetPostGQL, GetPostGQLResponse, PostWithComments } from '@sonder/features/posts'
 
 @Component({
   selector: 'sonder-post-show-page',
@@ -52,29 +52,23 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
       postId$.subscribe((postId: number) => {
         this.postId = postId;
 
-        this.getPostGQL
+        const query$ = this.getPostGQL
           .watch({ postId })
           .valueChanges
-          .subscribe((result: ApolloQueryResult<GetPostGQLResponse>) => {
-            this.comments = result.data.getPost.comments;
-            this.commentsLoaded = !result.loading;
-          })
+
+        this.post$ = query$.pipe(
+          map((result: ApolloQueryResult<GetPostGQLResponse>) => result.data.getPost)
+        );
+
+        this.commentsLoaded$ = query$.pipe(
+          map((result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading)
+        );
+
+        this.comments$ = this.post$.pipe(
+          map((post: PostWithComments) => post.comments)
+        )
       })
     )
-
-    // this.subscriptions.push(
-    //   postId$.subscribe((postId: number) => {
-    //     this.postId = postId;
-    //     this.post$ = this.postsService.getPost(postId);
-    //     this.comments$ = this.postCommentsService.getPostComments(postId);
-    //     this.subscriptions.push(this.comments$.subscribe());
-    //     this.commentsLoaded$ = this.postCommentsQuery.selectPostCommentsLoaded(
-    //       postId
-    //     );
-    //     this.commentEntities$ = this.postCommentsQuery.postCommentEntities$;
-    //     // this.commentVotes$ = this.myVotesService.getMyCommentVotes(postId);
-    //   })
-    // );
   }
 
   openNewCommentBottomSheet() {

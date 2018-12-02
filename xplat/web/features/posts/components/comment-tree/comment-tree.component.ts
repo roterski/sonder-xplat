@@ -6,8 +6,8 @@ import {
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { HashMap } from '@datorama/akita';
 import { Post, PostComment } from '@sonder/features/posts/models';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, zip } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 export class CommentNode {
   constructor(public comment: PostComment) {}
@@ -28,7 +28,7 @@ export class CommentFlatNode {
 })
 export class CommentTreeComponent implements OnInit {
   @Input() votes;
-  @Input() comments: PostComment[];
+  @Input() comments: Observable<PostComment[]>;
 
   dataSource: MatTreeFlatDataSource<CommentNode, CommentFlatNode>;
   treeFlattener: MatTreeFlattener<CommentNode, CommentFlatNode>;
@@ -42,42 +42,31 @@ export class CommentTreeComponent implements OnInit {
       this.isNodeExpendable
     );
 
-    let comments = this.comments;
-
-    // const commentEntities$ = of(this.comments).pipe(
-    //   map((comments) => comments.reduce((acc, comment) => {
-    //     acc[comment.id] = comment;
-    //     return acc;
-    //     }, {})
-    //   ),
-    //   map(entities => appendChildrenIds(entities))
-    // )
-
-    const commentEntities = this.appendChildrenIds(comments);
-
-    comments = comments.map((comment) => commentEntities[comment.id]);
+    const commentEntities$ = this.comments.pipe(
+      map(comments => this.appendChildrenIds(comments))
+    );
 
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getNodeLevel,
       this.isNodeExpendable,
-      this.getChildren(commentEntities)
+      this.getChildren(commentEntities$)
     );
     this.dataSource = new MatTreeFlatDataSource(
       this.treeControl,
       this.treeFlattener
     );
 
-    const nodes = this.comments.map(comment => new CommentNode(comment));
-    this.dataSource.data = nodes;
-    this.treeControl.expandAll();
-
-    // this.comments
-    //   .pipe(map(comments => comments.map(comment => new CommentNode(comment))))
-    //   .subscribe(nodes => {
-    //     this.dataSource.data = nodes;
-    //     this.treeControl.expandAll();
-    //   });
+    zip(
+      commentEntities$,
+      this.comments
+    ).pipe(
+      map(([entities, comments]) => comments.map(({ id }) => entities[id])),
+      map((comments: PostComment[]) => comments.map(comment => new CommentNode(comment)))
+    ).subscribe((nodes) => {
+      this.dataSource.data = nodes;
+      this.treeControl.expandAll();
+    });
   }
 
   private transformer(node: CommentNode, level: number) {
@@ -88,20 +77,12 @@ export class CommentTreeComponent implements OnInit {
     );
   }
 
-  // private getChildren(entities$) {
-  //   return (node: CommentNode) => {
-  //     return entities$.pipe(
-  //       map(entities =>
-  //         node.comment.childrenIds.map(id => new CommentNode(entities[id]))
-  //       )
-  //     );
-  //   };
-  // }
-
-  private getChildren(entities) {
-    return (node: CommentNode) => (
-      node.comment.childrenIds.map(id => new CommentNode(entities[id]))
-    );
+  private getChildren(entities$) {
+    return (node: CommentNode) => {
+      return entities$.pipe(
+        map(entities => node.comment.childrenIds.map(id => new CommentNode(entities[id])))
+      );
+    };
   }
 
   private getNodeLevel(node: CommentFlatNode) {
@@ -120,8 +101,8 @@ export class CommentTreeComponent implements OnInit {
       if (parentId) {
         acc[parentId].childrenIds = Array.from(
           new Set([
+            ...acc[parentId].childrenIds,
             comment.id,
-            ...acc[parentId].childrenIds
           ])
         );
       }

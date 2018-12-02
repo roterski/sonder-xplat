@@ -7,11 +7,12 @@ import gql from 'graphql-tag';
 })
 export class CreateCommentGQL extends Mutation {
   document = gql`
-    mutation createComment($title: String!, $parentIds: [Int]!, $postId: Int!) {
-      createComment(body: $body) {
+    mutation createComment($body: String!, $parentIds: [Int]!, $postId: Int!) {
+      createComment(body: $body, parentIds: $parentIds, postId: $postId) {
         id
-        title
         body
+        parentIds
+        postId
       }
     }
   `;
