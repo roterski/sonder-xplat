@@ -59,8 +59,10 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
   addComment() {
     this.apollo.mutate({
       mutation: gql`
-        mutation createComment($body: String!, $parentIds: [Int], $postId: Int) {
-          createComment(createCommentInput: { body: $body, parentIds: $parentIds, postId: $postId }) {
+        mutation createComment($body: String!, $parentIds: [Int], $postId: Int!) {
+        # mutation createComment($createCommentInput: CreateCommentInput) {
+          createComment(body: $body, parentIds: $parentIds, postId: $postId) {
+          # createComment(createCommentInput: $createCommentInput) {
             body
           }
         }
@@ -68,7 +70,12 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
       variables: {
         body: this.commentForm.value.body,
         parentIds: this.data.parentIds,
-        postId: this.data.postId
+        postId: this.data.postId,
+        // createCommentInput: {
+        //   body: this.commentForm.value.body,
+        //   parentIds: this.data.parentIds,
+        //   postId: this.data.postId
+        // }
       },
       optimisticResponse: {
         __typename: 'Mutation',

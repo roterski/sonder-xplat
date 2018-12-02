@@ -5,6 +5,9 @@ import gql from 'graphql-tag';
 import { PostsListPageBaseComponent, Post, AllPostsGQL, AllPostsGQLResponse } from '@sonder/features';
 import { ApolloQueryResult } from 'apollo-client';
 
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
 @Component({
   selector: 'sonder-posts-list-page',
   templateUrl: 'posts-list-page.component.html'
@@ -12,6 +15,7 @@ import { ApolloQueryResult } from 'apollo-client';
 export class PostsListPageComponent extends PostsListPageBaseComponent implements OnInit {
   posts: Post[];
   loading = true;
+  posts$: Observable<Post[]>;
 
   constructor(private apollo: Apollo, private allPostsGQL: AllPostsGQL) {
     super();

@@ -46,9 +46,10 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
     const postId$ = this.route.params.pipe(
       map((params: { postId: string }) => parseInt(params.postId, 10))
     );
-
     this.subscriptions.push(
       postId$.subscribe((postId: number) => {
+        this.postId = postId;
+
         this.apollo
           .watchQuery({
             query: gql`
@@ -76,8 +77,6 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
             this.comments = result.data['getPost']['comments'];
             this.commentsLoaded = !result.loading;
           })
-
-
       })
     )
 
