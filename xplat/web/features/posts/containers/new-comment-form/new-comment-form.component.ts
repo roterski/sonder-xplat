@@ -16,8 +16,7 @@ import {
   PostCommentsStore
 } from '@sonder/features/posts/state';
 
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
+import { CreateCommentGQL, GetPostGQL, GetPostGQLResponse } from '@sonder/features/posts';
 
 @Component({
   selector: 'sonder-new-comment-form',
@@ -30,7 +29,8 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
   persistForm: PersistNgFormPlugin<PostComment>;
 
   constructor(
-    private apollo: Apollo,
+    private createCommentGQL: CreateCommentGQL,
+    private getPostGQL: GetPostGQL,
     private formBuilder: FormBuilder,
     private postCommentQuery: PostCommentsQuery,
     private postCommentsService: PostCommentsService,
@@ -57,54 +57,68 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
   }
 
   addComment() {
-    this.apollo.mutate({
-      mutation: gql`
-        mutation createComment($body: String!, $parentIds: [Int], $postId: Int!) {
-        # mutation createComment($createCommentInput: CreateCommentInput) {
-          createComment(body: $body, parentIds: $parentIds, postId: $postId) {
-          # createComment(createCommentInput: $createCommentInput) {
-            body
+    const commentData = {
+      ...this.commentForm.value,
+      ...this.data
+    };
+
+    this.createCommentGQL
+      .mutate(commentData, {
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createComment: {
+            __typename: 'Comment',
+            id: Math.round(Math.random() * -1000000),
+            ...commentData
           }
+        },
+        update: (store, { data: { createComment: createdComment } }) => {
+          const query = this.getPostGQL.document;
+          const variables = { postId: this.data.postId };
+          const data: GetPostGQLResponse = store.readQuery({ query, variables });
+
+          data.getPost.comments.push(createdComment);
+          store.writeQuery({ query, data });
         }
-      `,
-      variables: {
-        body: this.commentForm.value.body,
-        parentIds: this.data.parentIds,
-        postId: this.data.postId,
-        // createCommentInput: {
-        //   body: this.commentForm.value.body,
-        //   parentIds: this.data.parentIds,
-        //   postId: this.data.postId
-        // }
-      },
-      optimisticResponse: {
-        __typename: 'Mutation',
-        createComment: {
-          __typename: 'Comment',
-          body: this.commentForm.value.body,
-          parentIds: this.data.parentIds,
-          postId: this.data.postId
-        }
-      },
-      // update: (proxy, { data: { createComment } }) => {
-      //   const data = proxy.readQuery({ query: })
-      // }
-  }).subscribe((data) => {
-      this.bottomSheetRef.dismiss();
-      this.persistForm.reset();
-    });
-    // this.postCommentsService
-    //   .addPostComment(this.data.postId, {
-    //     ...this.commentForm.value,
-    //     parentIds: this.data.parentIds
-    //   })
-    //   .subscribe(added => {
-    //     if (added) {
-    //       this.bottomSheetRef.dismiss();
-    //       this.postCommentsStore.setPostCommentError();
-    //       this.persistForm.reset();
-    //     }
-    //   });
+      }).subscribe(() => {
+        this.bottomSheetRef.dismiss();
+      })
+  //   this.apollo.mutate({
+  //     mutation: gql`
+  //       mutation createComment($body: String!, $parentIds: [Int], $postId: Int!) {
+  //       # mutation createComment($createCommentInput: CreateCommentInput) {
+  //         createComment(body: $body, parentIds: $parentIds, postId: $postId) {
+  //         # createComment(createCommentInput: $createCommentInput) {
+  //           body
+  //         }
+  //       }
+  //     `,
+  //     variables: {
+  //       body: this.commentForm.value.body,
+  //       parentIds: this.data.parentIds,
+  //       postId: this.data.postId,
+  //       // createCommentInput: {
+  //       //   body: this.commentForm.value.body,
+  //       //   parentIds: this.data.parentIds,
+  //       //   postId: this.data.postId
+  //       // }
+  //     },
+  //     optimisticResponse: {
+  //       __typename: 'Mutation',
+  //       createComment: {
+  //         __typename: 'Comment',
+  //         body: this.commentForm.value.body,
+  //         parentIds: this.data.parentIds,
+  //         postId: this.data.postId
+  //       }
+  //     },
+  //     // update: (proxy, { data: { createComment } }) => {
+  //     //   const data = proxy.readQuery({ query: })
+  //     // }
+  // }).subscribe((data) => {
+  //     this.bottomSheetRef.dismiss();
+  //     this.persistForm.reset();
+  //   });
   }
 
   ngOnDestroy() {

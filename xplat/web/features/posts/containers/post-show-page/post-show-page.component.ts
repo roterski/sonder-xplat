@@ -9,11 +9,13 @@ import {
   PostCommentsService,
   MyVotesService
 } from '@sonder/features/posts/state';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
+
 import { Post, PostComment } from '@sonder/features/posts/models';
 import { NewCommentFormComponent } from '../../containers/new-comment-form/new-comment-form.component';
 import { MatBottomSheet } from '@angular/material';
+import { ApolloQueryResult } from 'apollo-client';
+
+import { GetPostGQL, GetPostGQLResponse } from '@sonder/features/posts'
 
 @Component({
   selector: 'sonder-post-show-page',
@@ -39,7 +41,7 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
     private postsService: PostsService,
     private newCommentBottomSheet: MatBottomSheet,
     private myVotesService: MyVotesService,
-    private apollo: Apollo
+    private getPostGQL: GetPostGQL,
   ) {}
 
   ngOnInit() {
@@ -50,31 +52,11 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
       postId$.subscribe((postId: number) => {
         this.postId = postId;
 
-        this.apollo
-          .watchQuery({
-            query: gql`
-              query ($id: String) {
-                getPost(id: $id) {
-                  id
-                  title
-                  body
-                  points
-                  comments {
-                    id
-                    body
-                    postId
-                    parentIds
-                  }
-                }
-              }
-            `,
-            variables: {
-              id: `${postId}`
-            }
-          })
+        this.getPostGQL
+          .watch({ postId })
           .valueChanges
-          .subscribe((result) => {
-            this.comments = result.data['getPost']['comments'];
+          .subscribe((result: ApolloQueryResult<GetPostGQLResponse>) => {
+            this.comments = result.data.getPost.comments;
             this.commentsLoaded = !result.loading;
           })
       })

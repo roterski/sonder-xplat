@@ -3,7 +3,7 @@ import { Query } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Post } from '../models';
 
-export interface AllPostsGQLResponse {
+export interface GetPostsGQLResponse {
   getPosts: Post[];
 }
 
@@ -11,9 +11,9 @@ export interface AllPostsGQLResponse {
   providedIn: 'root',
 })
 
-export class AllPostsGQL extends Query<AllPostsGQLResponse> {
+export class GetPostsGQL extends Query<GetPostsGQLResponse> {
   document = gql`
-    query allPosts {
+    query getPosts {
       getPosts {
         id
         title

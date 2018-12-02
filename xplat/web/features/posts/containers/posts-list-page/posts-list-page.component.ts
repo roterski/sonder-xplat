@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { PostsListPageBaseComponent, Post, AllPostsGQL, AllPostsGQLResponse } from '@sonder/features';
+import { PostsListPageBaseComponent, Post, GetPostsGQL, GetPostsGQLResponse } from '@sonder/features';
 import { ApolloQueryResult } from 'apollo-client';
 
 import { Observable } from 'rxjs';
@@ -17,14 +17,14 @@ export class PostsListPageComponent extends PostsListPageBaseComponent implement
   loading = true;
   posts$: Observable<Post[]>;
 
-  constructor(private apollo: Apollo, private allPostsGQL: AllPostsGQL) {
+  constructor(private apollo: Apollo, private getPostsGQL: GetPostsGQL) {
     super();
   }
 
   ngOnInit() {
-    this.allPostsGQL.watch()
+    this.getPostsGQL.watch()
       .valueChanges
-      .subscribe((result: ApolloQueryResult<AllPostsGQLResponse>) => {
+      .subscribe((result: ApolloQueryResult<GetPostsGQLResponse>) => {
         this.posts = result.data.getPosts;
         this.loading = result.loading;
       })
