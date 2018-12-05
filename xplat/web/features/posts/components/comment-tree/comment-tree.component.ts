@@ -63,8 +63,8 @@ export class CommentTreeComponent implements OnInit {
     ).pipe(
       map(([entities, comments]) => comments.map(({ id }) => entities[id])),
       map((comments: PostComment[]) => comments.map(comment => new CommentNode(comment)))
-    ).subscribe((nodes) => {
-      this.dataSource.data = nodes;
+    ).subscribe((nodes: CommentNode[]) => {
+      this.dataSource.data = nodes//.filter(node => node.comment.parentIds.length === 0);
       this.treeControl.expandAll();
     });
   }
