@@ -31,6 +31,12 @@
       ],
       "@sonder/web/*": [
         "xplat/web/*"
+      ],
+      "@sonder/nativescript": [
+        "xplat/nativescript/index.ts"
+      ],
+      "@sonder/nativescript/*": [
+        "xplat/nativescript/*"
       ]
     }
   },

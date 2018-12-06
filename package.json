@@ -35,7 +35,10 @@
     "open.ionic.client.android": "cd apps/ionic-client && npm run cap.android",
     "sync.ionic.client": "cd apps/ionic-client && npm run cap.copy",
     "start.ionic.client": "cd apps/ionic-client && npm start",
-    "clean.ionic.client": "cd apps/ionic-client && npx rimraf -- hooks node_modules platforms www plugins ios android package-lock.json && npm i && rimraf -- package-lock.json"
+    "clean.ionic.client": "cd apps/ionic-client && npx rimraf -- hooks node_modules platforms www plugins ios android package-lock.json && npm i && rimraf -- package-lock.json",
+    "start.nativescript.client.ios": "cd apps/nativescript-client && tns run ios --emulator --bundle --env.aot",
+    "start.nativescript.client.android": "cd apps/nativescript-client && tns run android --emulator --bundle --env.aot",
+    "clean.nativescript.client": "cd apps/nativescript-client && npx rimraf -- hooks node_modules platforms package-lock.json && npm i && npx rimraf -- package-lock.json"
   },
   "private": true,
   "dependencies": {
@@ -81,7 +84,12 @@
     "ngx-facebook": "^2.4.0",
     "reflect-metadata": "^0.1.12",
     "rxjs": "~6.3.3",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "nativescript-angular": "~6.1.0",
+    "nativescript-ngx-fonticon": "^4.2.0",
+    "nativescript-theme-core": "^1.0.4",
+    "rxjs-compat": "^6.2.2",
+    "tns-core-modules": "~4.2.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",
@@ -106,11 +114,12 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.1.3",
+    "typescript": "<=2.10.0",
     "cypress": "^3.1.0",
     "@types/jquery": "3.3.6",
     "@nrwl/builders": "7.0.2",
-    "jest": "^23.0.0"
+    "jest": "^23.0.0",
+    "tns-platform-declarations": "~4.2.0"
   },
   "xplat": {
     "prefix": "sonder"
