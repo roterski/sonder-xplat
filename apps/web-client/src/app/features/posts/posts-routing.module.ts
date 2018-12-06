@@ -15,7 +15,6 @@ import {
 export const postsRoutes: Routes = [
   {
     path: '',
-    canActivate: [PostsLoadedGuard],
     component: PostsListPageComponent
   },
   {
@@ -24,7 +23,6 @@ export const postsRoutes: Routes = [
   },
   {
     path: ':postId',
-    canActivate: [PostLoadedGuard, PostCommentsLoadedGuard],
     component: PostShowPageComponent
   }
 ];

@@ -5,25 +5,24 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { SessionQuery } from '../state/session.query';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UnauthenticatedGuard implements CanActivate {
-  constructor(private router: Router, private sessionQuery: SessionQuery) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.sessionQuery.isLoggedIn()) {
-      this.router.navigate(['/']);
-      return false;
-    }
-    return true;
+    return this.authService.isLoggedIn().pipe(
+      switchMap((loggedIn) => loggedIn ? of(false) : of(true)),
+      tap((loggedOut) => loggedOut ? null : this.router.navigate(['/'])),
+    );
   }
 }

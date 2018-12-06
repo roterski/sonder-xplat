@@ -38,10 +38,20 @@ export class StateManagementModule {
 
     const cache = new InMemoryCache();
 
-    const errorLink = onError(({ graphQLErrors, networkError }) => {
-      apollo.getClient().resetStore();
-      localStorage.clear();
-      router.navigate(['/login']);
+    const isUnauthorized = (response) => (
+      response &&
+      response.errors &&
+      response.errors[0] &&
+      response.errors[0].message &&
+      response.errors[0].message.statusCode === 401
+    )
+
+    const errorLink = onError(({ graphQLErrors, response, networkError }) => {
+      if (isUnauthorized(response)) {
+        apollo.getClient().resetStore();
+        localStorage.clear();
+        router.navigate(['/login']);
+      }
     });
 
     const auth = setContext((_, { headers }) => {
