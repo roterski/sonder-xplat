@@ -29,8 +29,7 @@ export class SessionService {
           ),
           map(() => true)
         );
-      }),
-      catchError(error => of(false))
+      })
     );
   }
 
