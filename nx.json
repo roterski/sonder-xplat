@@ -30,7 +30,12 @@
       ]
     },
     "nativescript-client": {
-      "tags": []
+      "tags": [
+        "nativescript",
+        "client",
+        "android",
+        "ios"
+      ]
     }
   }
 }
