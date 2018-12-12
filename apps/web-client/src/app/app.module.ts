@@ -16,7 +16,6 @@ import { PostsModule } from './features/posts/posts.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpErrorInterceptor } from '@sonder/features/auth';
 
-
 @NgModule({
   imports: [
     CoreModule,

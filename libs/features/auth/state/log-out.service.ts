@@ -8,9 +8,8 @@ import { PaginatorPlugin } from '@datorama/akita';
 @Injectable({ providedIn: 'root' })
 export class LogOutService {
   constructor(
-    private sessionStore: SessionStore
-  ) // @Inject(POSTS_PAGINATOR) private paginatorRef: PaginatorPlugin<Post>,
-  // private clearStoresService: ClearStoresService
+    private sessionStore: SessionStore // @Inject(POSTS_PAGINATOR) private paginatorRef: PaginatorPlugin<Post>,
+  ) // private clearStoresService: ClearStoresService
   {}
 
   logOut() {
