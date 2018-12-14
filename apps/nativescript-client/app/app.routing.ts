@@ -11,7 +11,7 @@ import { SharedModule } from './features/shared/shared.module';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
   {
@@ -19,7 +19,7 @@ const routes: Routes = [
     loadChildren: '~/features/home/home.module#HomeModule'
   },
   {
-    path: 'auth',
+    path: 'login',
     loadChildren: '~/features/auth/auth.module#AuthModule'
   }
 ];
