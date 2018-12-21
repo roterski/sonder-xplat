@@ -46,25 +46,25 @@ export class CommentTreeComponent implements OnInit {
       map(comments => this.appendChildrenIds(comments))
     );
 
-    this.treeFlattener = new MatTreeFlattener(
-      this.transformer,
-      this.getNodeLevel,
-      this.isNodeExpendable,
-      this.getChildren(commentEntities$)
-    );
-    this.dataSource = new MatTreeFlatDataSource(
-      this.treeControl,
-      this.treeFlattener
-    );
-
     zip(
+      this.comments,
       commentEntities$,
-      this.comments
-    ).pipe(
-      map(([entities, comments]) => comments.map(({ id }) => entities[id])),
-      map((comments: PostComment[]) => comments.map(comment => new CommentNode(comment)))
-    ).subscribe((nodes: CommentNode[]) => {
-      this.dataSource.data = nodes//.filter(node => node.comment.parentIds.length === 0);
+    ).subscribe(([comments, entities]: [PostComment[], {number: PostComment}]) => {
+
+      this.treeFlattener = new MatTreeFlattener(
+        this.transformer,
+        this.getNodeLevel,
+        this.isNodeExpendable,
+        this.getChildren(entities)
+      );
+      this.dataSource = new MatTreeFlatDataSource(
+        this.treeControl,
+        this.treeFlattener
+      );
+
+      this.dataSource.data = comments.map(({ id }) => entities[id])
+              .filter((comment: PostComment) => comment.parentIds.length == 0)
+              .map((comment: PostComment) => new CommentNode(comment));
       this.treeControl.expandAll();
     });
   }
@@ -77,12 +77,10 @@ export class CommentTreeComponent implements OnInit {
     );
   }
 
-  private getChildren(entities$) {
+  private getChildren(entities) {
     return (node: CommentNode) => {
-      return entities$.pipe(
-        map(entities => node.comment.childrenIds.map(id => new CommentNode(entities[id])))
-      );
-    };
+      return node.comment.childrenIds.map((id: number) => new CommentNode(entities[id]));
+    }
   }
 
   private getNodeLevel(node: CommentFlatNode) {
