@@ -64,14 +64,14 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
 
     this.createCommentGQL
       .mutate(commentData, {
-        // optimisticResponse: {
-        //   __typename: 'Mutation',
-        //   createComment: {
-        //     __typename: 'Comment',
-        //     id: Math.round(Math.random() * -1000000),
-        //     ...commentData
-        //   }
-        // },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createComment: {
+            __typename: 'Comment',
+            id: Math.round(Math.random() * -1000000),
+            ...commentData
+          }
+        },
         update: (store, { data: { createComment: createdComment } }) => {
           const query = this.getPostGQL.document;
           const variables = { postId: this.data.postId };
@@ -81,6 +81,7 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
           store.writeQuery({ query, data });
         }
       }).subscribe(() => {
+        this.commentForm.reset();
         this.bottomSheetRef.dismiss();
       })
   }
