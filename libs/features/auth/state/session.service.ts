@@ -6,13 +6,15 @@ import { Observable, of } from 'rxjs';
 // import { ClearStoresService, POSTS_PAGINATOR } from '../../posts/state';
 // import { Post } from '../../posts/models';
 import { PaginatorPlugin, PaginationResponse } from '@datorama/akita';
+import { Apollo } from 'apollo-angular';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {
   constructor(
     private sessionStore: SessionStore,
     private authService: AuthService,
-    private backendService: BackendService // @Inject(POSTS_PAGINATOR) private paginatorRef: PaginatorPlugin<Post>,
+    private backendService: BackendService,
+    private apollo: Apollo // @Inject(POSTS_PAGINATOR) private paginatorRef: PaginatorPlugin<Post>,
   ) // private clearStoresService: ClearStoresService
   {}
 
@@ -34,6 +36,7 @@ export class SessionService {
 
   logOut() {
     // this.paginatorRef.clearCache();
+    this.apollo.getClient().resetStore();
     this.sessionStore.logOut();
     // this.clearStoresService.clearStores();
   }

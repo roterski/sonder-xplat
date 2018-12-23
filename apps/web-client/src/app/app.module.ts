@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+
 // libs
 import { environment } from '@sonder/core';
+import { StateManagementModule } from '@sonder/features/state-management';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // app
@@ -21,6 +23,7 @@ import { HttpErrorInterceptor } from '@sonder/features/auth';
     CoreModule,
     SharedModule,
     AppRoutingModule,
+    StateManagementModule,
     environment.production
       ? []
       : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],

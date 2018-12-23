@@ -8,8 +8,6 @@
     <button mat-mini-fab (click)="openNewCommentBottomSheet()">+</button>
   </mat-card-actions>
   <mat-card-content>
-    <sonder-comment-tree [comments]="comments$"
-                      [commentEntities]="commentEntities$"
-                      [votes]="commentVotes$ | async"></sonder-comment-tree>
+    <sonder-comment-tree [comments]="comments$"></sonder-comment-tree>
   </mat-card-content>
 </mat-card>

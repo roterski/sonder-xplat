@@ -16,6 +16,12 @@ import {
   PostCommentsStore
 } from '@sonder/features/posts/state';
 
+import {
+  CreateCommentGQL,
+  GetPostGQL,
+  GetPostGQLResponse
+} from '@sonder/features/posts';
+
 @Component({
   selector: 'sonder-new-comment-form',
   templateUrl: './new-comment-form.component.html',
@@ -27,6 +33,8 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
   persistForm: PersistNgFormPlugin<PostComment>;
 
   constructor(
+    private createCommentGQL: CreateCommentGQL,
+    private getPostGQL: GetPostGQL,
     private formBuilder: FormBuilder,
     private postCommentQuery: PostCommentsQuery,
     private postCommentsService: PostCommentsService,
@@ -53,17 +61,36 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
   }
 
   addComment() {
-    this.postCommentsService
-      .addPostComment(this.data.postId, {
-        ...this.commentForm.value,
-        parentIds: this.data.parentIds
-      })
-      .subscribe(added => {
-        if (added) {
-          this.bottomSheetRef.dismiss();
-          this.postCommentsStore.setPostCommentError();
-          this.persistForm.reset();
+    const commentData = {
+      ...this.commentForm.value,
+      ...this.data
+    };
+
+    this.createCommentGQL
+      .mutate(commentData, {
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createComment: {
+            __typename: 'Comment',
+            id: Math.round(Math.random() * -1000000),
+            ...commentData
+          }
+        },
+        update: (store, { data: { createComment: createdComment } }) => {
+          const query = this.getPostGQL.document;
+          const variables = { postId: this.data.postId };
+          const data: GetPostGQLResponse = store.readQuery({
+            query,
+            variables
+          });
+
+          data.getPost.comments.push(createdComment);
+          store.writeQuery({ query, data });
         }
+      })
+      .subscribe(() => {
+        this.commentForm.reset();
+        this.bottomSheetRef.dismiss();
       });
   }
 

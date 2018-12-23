@@ -16,6 +16,11 @@ import {
   TagsQuery,
   TagsService
 } from '@sonder/features/posts/state';
+import {
+  CreatePostGQL,
+  GetPostsGQL,
+  GetPostsGQLResponse
+} from '@sonder/features/posts';
 import { Post, createPost, Tag } from '@sonder/features/posts/models';
 
 @Component({
@@ -38,14 +43,16 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
     private postsQuery: PostsQuery,
     private postsService: PostsService,
     private tagsQuery: TagsQuery,
-    private tagsService: TagsService
+    private tagsService: TagsService,
+    private createPostGQL: CreatePostGQL,
+    private getPostsGQL: GetPostsGQL
   ) {}
 
   ngOnInit() {
     this.createForm();
-    this.newPostTags$ = this.tagsQuery.newPostTags$;
-    this.newPostTags$.subscribe(tags => (this.newPostTags = tags));
-    this.errors$ = this.postsQuery.selectError();
+    // this.newPostTags$ = this.tagsQuery.newPostTags$;
+    // this.newPostTags$.subscribe(tags => (this.newPostTags = tags));
+    // this.errors$ = this.postsQuery.selectError();
     // this.tags$ = this.tagsService.getTags();
   }
 
@@ -54,34 +61,55 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
       title: ['', Validators.required],
       body: ['']
     });
-    this.persistForm = new PersistNgFormPlugin(this.postsQuery, createPost, {
-      formKey: 'newPostForm'
-    }).setForm(this.postForm);
+    // this.persistForm = new PersistNgFormPlugin(this.postsQuery, createPost, {
+    //   formKey: 'newPostForm'
+    // }).setForm(this.postForm);
   }
 
   addPost() {
-    this.postsService
-      .addPost(this.postForm.value, this.newPostTags)
-      .subscribe(added => {
-        if (added) {
-          this.router.navigate(['/']);
-          this.persistForm.reset();
-          this.tagsService.clearNewPostTags();
+    this.createPostGQL
+      .mutate(this.postForm.value, {
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createPost: {
+            __typename: 'Post',
+            id: Math.round(Math.random() * -1000000),
+            ...this.postForm.value
+          }
+        },
+        update: (store, { data: { createPost: createdPost } }) => {
+          const query = this.getPostsGQL.document;
+          const data: GetPostsGQLResponse = store.readQuery({ query });
+
+          data.getPosts.push(createdPost);
+          store.writeQuery({ query, data });
         }
+      })
+      .subscribe(() => {
+        this.router.navigate(['/']);
       });
+    // this.postsService
+    //   .addPost(this.postForm.value, this.newPostTags)
+    //   .subscribe(added => {
+    //     if (added) {
+    //       this.router.navigate(['/']);
+    //       this.persistForm.reset();
+    //       this.tagsService.clearNewPostTags();
+    //     }
+    //   });
   }
 
   tagAdded(tag: Tag) {
-    this.tagsService.addNewPostTag(tag);
+    // this.tagsService.addNewPostTag(tag);
   }
 
   tagRemoved(tag: Tag) {
-    this.tagsService.removeNewPostTag(tag);
+    // this.tagsService.removeNewPostTag(tag);
   }
 
   ngOnDestroy() {
-    if (this.persistForm) {
-      this.persistForm.destroy();
-    }
+    // if (this.persistForm) {
+    //   this.persistForm.destroy();
+    // }
   }
 }

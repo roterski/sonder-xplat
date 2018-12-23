@@ -1,0 +1,7 @@
+<sonder-loading-splash *ngIf="loading"></sonder-loading-splash>
+<!-- <sonder-tag-chips [selectedTags]="postFilterTags$" [tags]="tags$" [allowNew]="false" (added)="tagAdded($event)" (removed)="tagRemoved($event)">
+</sonder-tag-chips> -->
+
+<mat-nav-list role="list" *ngFor="let post of posts">
+  <sonder-post-item *ngIf="post" [post]="post"></sonder-post-item>
+</mat-nav-list>
