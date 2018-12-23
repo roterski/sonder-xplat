@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
 import {
-  PostsListPageBaseComponent,
+  PostsBaseComponent,
   Post,
   GetPostsGQL,
   GetPostsGQLResponse
@@ -11,14 +11,13 @@ import {
 import { ApolloQueryResult } from 'apollo-client';
 
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'sonder-posts-list-page',
   templateUrl: 'posts-list-page.component.html'
 })
-export class PostsListPageComponent extends PostsListPageBaseComponent
-  implements OnInit {
+export class PostsListPageComponent extends PostsBaseComponent implements OnInit {
   posts: Post[];
   loading = true;
   posts$: Observable<Post[]>;
@@ -30,7 +29,10 @@ export class PostsListPageComponent extends PostsListPageBaseComponent
   ngOnInit() {
     this.getPostsGQL
       .watch()
-      .valueChanges.subscribe(
+      .valueChanges
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(
         (result: ApolloQueryResult<GetPostsGQLResponse>) => {
           this.posts = result.data.getPosts;
           this.loading = result.loading;

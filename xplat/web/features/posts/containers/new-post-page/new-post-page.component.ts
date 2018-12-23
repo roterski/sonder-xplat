@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import {
   FormControl,
@@ -9,7 +9,7 @@ import {
   Validators
 } from '@angular/forms';
 
-import { CreatePostGQL, GetPostsGQL, GetPostsGQLResponse } from '@sonder/features/posts';
+import { CreatePostGQL, GetPostsGQL, GetPostsGQLResponse, PostsBaseComponent } from '@sonder/features/posts';
 import { Post, createPost, Tag } from '@sonder/features/posts/models';
 
 @Component({
@@ -17,7 +17,7 @@ import { Post, createPost, Tag } from '@sonder/features/posts/models';
   templateUrl: './new-post-page.component.html',
   styleUrls: ['./new-post-page.component.css']
 })
-export class NewPostPageComponent implements OnInit, OnDestroy {
+export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   postForm: FormGroup;
   errors$: Observable<object>;
   post$: Observable<Post>;
@@ -30,7 +30,9 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private createPostGQL: CreatePostGQL,
     private getPostsGQL: GetPostsGQL
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.createForm();
@@ -62,7 +64,9 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
           store.writeQuery({ query, data });
         }
       })
-      .subscribe(() => {
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(() => {
         this.router.navigate(['/']);
       });
   }

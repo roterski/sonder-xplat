@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import {
   FormControl,
   FormBuilder,
@@ -9,14 +10,14 @@ import {
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 
 import { PostComment, createComment } from '@sonder/features/posts/models';
-import { CreateCommentGQL, GetPostGQL, GetPostGQLResponse } from '@sonder/features/posts';
+import { CreateCommentGQL, GetPostGQL, GetPostGQLResponse, PostsBaseComponent } from '@sonder/features/posts';
 
 @Component({
   selector: 'sonder-new-comment-form',
   templateUrl: './new-comment-form.component.html',
   styleUrls: ['./new-comment-form.component.scss']
 })
-export class NewCommentFormComponent implements OnInit, OnDestroy {
+export class NewCommentFormComponent extends PostsBaseComponent implements OnInit {
   commentForm: FormGroup;
   errors$: Observable<object>;
 
@@ -27,7 +28,9 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
     private bottomSheetRef: MatBottomSheetRef<NewCommentFormComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA)
     public data: { postId: number | string; parentIds: number[] }
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.createForm();
@@ -67,12 +70,11 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
           store.writeQuery({ query, data });
         }
       })
-      .subscribe(() => {
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(() => {
         this.commentForm.reset();
         this.bottomSheetRef.dismiss();
       });
-  }
-
-  ngOnDestroy() {
   }
 }

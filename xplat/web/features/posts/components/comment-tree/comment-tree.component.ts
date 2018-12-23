@@ -4,9 +4,9 @@ import {
   MatTreeFlattener
 } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Post, PostComment } from '@sonder/features/posts/models';
+import { Post, PostComment, PostsBaseComponent } from '@sonder/features/posts';
 import { Observable, of, zip } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 
 export class CommentNode {
   constructor(public comment: PostComment) {}
@@ -25,7 +25,7 @@ export class CommentFlatNode {
   templateUrl: './comment-tree.component.html',
   styleUrls: ['./comment-tree.component.scss']
 })
-export class CommentTreeComponent implements OnInit {
+export class CommentTreeComponent extends PostsBaseComponent implements OnInit {
   @Input() votes;
   @Input() comments: Observable<PostComment[]>;
 
@@ -33,7 +33,9 @@ export class CommentTreeComponent implements OnInit {
   treeFlattener: MatTreeFlattener<CommentNode, CommentFlatNode>;
   treeControl: FlatTreeControl<CommentFlatNode>;
 
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   ngOnInit() {
     this.treeControl = new FlatTreeControl<CommentFlatNode>(
@@ -45,7 +47,9 @@ export class CommentTreeComponent implements OnInit {
       map(comments => this.appendChildrenIds(comments))
     );
 
-    zip(this.comments, commentEntities$).subscribe(
+    zip(this.comments, commentEntities$)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
       ([comments, entities]: [PostComment[], { number: PostComment }]) => {
         this.treeFlattener = new MatTreeFlattener(
           this.transformer,

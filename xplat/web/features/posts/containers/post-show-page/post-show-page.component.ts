@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
 
-import { Post, PostComment } from '@sonder/features/posts/models';
+import { Post, PostComment, PostsBaseComponent } from '@sonder/features/posts';
 import { NewCommentFormComponent } from '../../containers/new-comment-form/new-comment-form.component';
 import { MatBottomSheet } from '@angular/material';
 import { ApolloQueryResult } from 'apollo-client';
@@ -19,7 +19,7 @@ import {
   templateUrl: './post-show-page.component.html',
   styleUrls: ['./post-show-page.component.css']
 })
-export class PostShowPageComponent implements OnInit, OnDestroy {
+export class PostShowPageComponent extends PostsBaseComponent implements OnInit {
   post$: Observable<Post>;
   postId: number;
   comments$: Observable<PostComment[]>;
@@ -28,42 +28,42 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
   commentsLoaded$: Observable<boolean>;
   commentVotes$: Observable<any>;
 
-  private subscriptions: Subscription[] = [];
-
   constructor(
     private route: ActivatedRoute,
     private newCommentBottomSheet: MatBottomSheet,
     private getPostGQL: GetPostGQL,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     const postId$ = this.route.params.pipe(
-      map((params: { postId: string }) => parseInt(params.postId, 10))
+      map((params: { postId: string }) => parseInt(params.postId, 10)),
+      takeUntil(this.destroy$)
     );
-    this.subscriptions.push(
-      postId$.subscribe((postId: number) => {
-        this.postId = postId;
 
-        const query$ = this.getPostGQL.watch({ postId }).valueChanges;
+    postId$.subscribe((postId: number) => {
+      this.postId = postId;
 
-        this.post$ = query$.pipe(
-          map(
-            (result: ApolloQueryResult<GetPostGQLResponse>) =>
-              result.data.getPost
-          )
-        );
+      const query$ = this.getPostGQL.watch({ postId }).valueChanges;
 
-        this.commentsLoaded$ = query$.pipe(
-          map(
-            (result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading
-          )
-        );
+      this.post$ = query$.pipe(
+        map(
+          (result: ApolloQueryResult<GetPostGQLResponse>) =>
+            result.data.getPost
+        )
+      );
 
-        this.comments$ = this.post$.pipe(
-          map((post: PostWithComments) => post.comments)
-        );
-      })
-    );
+      this.commentsLoaded$ = query$.pipe(
+        map(
+          (result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading
+        )
+      );
+
+      this.comments$ = this.post$.pipe(
+        map((post: PostWithComments) => post.comments)
+      );
+    })
   }
 
   openNewCommentBottomSheet() {
@@ -73,11 +73,5 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
         parentIds: []
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((subscription: Subscription) =>
-      subscription.unsubscribe()
-    );
   }
 }
