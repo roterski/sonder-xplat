@@ -1,6 +1,4 @@
-import { ID } from '@datorama/akita';
-
 export interface Tag {
-  id: ID | null;
+  id: number | string | null;
   name: string;
 }

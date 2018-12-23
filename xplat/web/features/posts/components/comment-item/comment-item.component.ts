@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { PostComment } from '@sonder/features/posts/models';
-import { MyVotesService } from '@sonder/features/posts/state';
 import { take } from 'rxjs/operators';
 import { NewCommentFormComponent } from '../../containers';
 import { MatBottomSheet } from '@angular/material';
@@ -17,38 +16,37 @@ export class CommentItemComponent implements OnInit {
   @Input() voted: number;
 
   constructor(
-    private myVotesService: MyVotesService,
     private newCommentBottomSheet: MatBottomSheet
   ) {}
 
   ngOnInit() {}
 
   upvote() {
-    if (this.voted > 0) {
-      this.myVotesService
-        .revokeCommentVote(this.comment.id)
-        .pipe(take(1))
-        .subscribe();
-    } else {
-      this.myVotesService
-        .upvoteComment(this.comment.id)
-        .pipe(take(1))
-        .subscribe();
-    }
+    // if (this.voted > 0) {
+    //   this.myVotesService
+    //     .revokeCommentVote(this.comment.id)
+    //     .pipe(take(1))
+    //     .subscribe();
+    // } else {
+    //   this.myVotesService
+    //     .upvoteComment(this.comment.id)
+    //     .pipe(take(1))
+    //     .subscribe();
+    // }
   }
 
   downvote() {
-    if (this.voted < 0) {
-      this.myVotesService
-        .revokeCommentVote(this.comment.id)
-        .pipe(take(1))
-        .subscribe();
-    } else {
-      this.myVotesService
-        .downvoteComment(this.comment.id)
-        .pipe(take(1))
-        .subscribe();
-    }
+    // if (this.voted < 0) {
+    //   this.myVotesService
+    //     .revokeCommentVote(this.comment.id)
+    //     .pipe(take(1))
+    //     .subscribe();
+    // } else {
+    //   this.myVotesService
+    //     .downvoteComment(this.comment.id)
+    //     .pipe(take(1))
+    //     .subscribe();
+    // }
   }
 
   openNewCommentBottomSheet() {

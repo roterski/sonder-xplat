@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Vote } from '../models';
@@ -17,25 +16,25 @@ export class VotesApiService {
       .pipe(map(response => response.data));
   }
 
-  getCommentVotes(postId: ID): Observable<Vote[]> {
+  getCommentVotes(postId: number | string): Observable<Vote[]> {
     return this.backend
       .get(`/votes/posts/${postId}/comments`)
       .pipe(map(response => response.data));
   }
 
-  upvote(targetClass: 'posts' | 'comments', targetId: ID): Observable<any> {
+  upvote(targetClass: 'posts' | 'comments', targetId: number | string): Observable<any> {
     return this.backend
       .post(`/${targetClass}/${targetId}/upvote`)
       .pipe(map(response => response.data));
   }
 
-  downvote(targetClass: 'posts' | 'comments', targetId: ID): Observable<any> {
+  downvote(targetClass: 'posts' | 'comments', targetId: number | string): Observable<any> {
     return this.backend
       .post(`/${targetClass}/${targetId}/downvote`)
       .pipe(map(response => response.data));
   }
 
-  revokeVote(targetClass: 'posts' | 'comments', targetId: ID): Observable<any> {
+  revokeVote(targetClass: 'posts' | 'comments', targetId: number | string): Observable<any> {
     return this.backend
       .post(`/${targetClass}/${targetId}/revoke_vote`)
       .pipe(map(response => response.data));

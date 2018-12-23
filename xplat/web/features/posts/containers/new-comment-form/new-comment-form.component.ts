@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PersistNgFormPlugin, ID } from '@datorama/akita';
 import {
   FormControl,
   FormBuilder,
@@ -10,12 +9,6 @@ import {
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 
 import { PostComment, createComment } from '@sonder/features/posts/models';
-import {
-  PostCommentsQuery,
-  PostCommentsService,
-  PostCommentsStore
-} from '@sonder/features/posts/state';
-
 import { CreateCommentGQL, GetPostGQL, GetPostGQLResponse } from '@sonder/features/posts';
 
 @Component({
@@ -26,34 +19,24 @@ import { CreateCommentGQL, GetPostGQL, GetPostGQLResponse } from '@sonder/featur
 export class NewCommentFormComponent implements OnInit, OnDestroy {
   commentForm: FormGroup;
   errors$: Observable<object>;
-  persistForm: PersistNgFormPlugin<PostComment>;
 
   constructor(
     private createCommentGQL: CreateCommentGQL,
     private getPostGQL: GetPostGQL,
     private formBuilder: FormBuilder,
-    private postCommentQuery: PostCommentsQuery,
-    private postCommentsService: PostCommentsService,
-    private postCommentsStore: PostCommentsStore,
     private bottomSheetRef: MatBottomSheetRef<NewCommentFormComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA)
-    public data: { postId: ID; parentIds: number[] }
+    public data: { postId: number | string; parentIds: number[] }
   ) {}
 
   ngOnInit() {
     this.createForm();
-    this.errors$ = this.postCommentQuery.postCommentsError$;
   }
 
   createForm() {
     this.commentForm = this.formBuilder.group({
       body: ['', Validators.required]
     });
-    this.persistForm = new PersistNgFormPlugin(
-      this.postCommentQuery,
-      createComment,
-      { formKey: 'newCommentForm' }
-    ).setForm(this.commentForm);
   }
 
   addComment() {
@@ -87,8 +70,5 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.persistForm) {
-      this.persistForm.destroy();
-    }
   }
 }

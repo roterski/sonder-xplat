@@ -1,15 +1,14 @@
-import { ID } from '@datorama/akita';
 import { Author } from './author.model';
 
 export interface PostComment {
-  id: ID;
-  postId: ID;
+  id: number | string;
+  postId: number | string;
   body: string;
   author: Author;
-  parentIds: Array<ID>;
+  parentIds: Array<number | string>;
   points: number;
   voted: number;
-  childrenIds: Array<ID>;
+  childrenIds: Array<number | string>;
 }
 
 export function createComment(params: Partial<PostComment>) {

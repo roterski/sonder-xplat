@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
-import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
-
 // libs
 import { environment } from '@sonder/core';
 import { StateManagementModule } from '@sonder/features/state-management';
@@ -22,9 +19,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     AppRoutingModule,
     StateManagementModule,
-    environment.production
-      ? []
-      : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
     AuthModule,
     PostsModule,
     BrowserAnimationsModule
