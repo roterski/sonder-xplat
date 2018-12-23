@@ -1,2 +1,1 @@
-export const defaults = {
-};
+export const defaults = {};

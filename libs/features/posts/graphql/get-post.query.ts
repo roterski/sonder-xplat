@@ -12,12 +12,11 @@ export interface GetPostGQLResponse {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-
 export class GetPostGQL extends Query<GetPostGQLResponse> {
   document = gql`
-    query ($postId: Int) {
+    query($postId: Int) {
       getPost(id: $postId) {
         id
         title

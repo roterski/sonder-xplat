@@ -8,7 +8,11 @@ import { NewCommentFormComponent } from '../../containers/new-comment-form/new-c
 import { MatBottomSheet } from '@angular/material';
 import { ApolloQueryResult } from 'apollo-client';
 
-import { GetPostGQL, GetPostGQLResponse, PostWithComments } from '@sonder/features/posts'
+import {
+  GetPostGQL,
+  GetPostGQLResponse,
+  PostWithComments
+} from '@sonder/features/posts';
 
 @Component({
   selector: 'sonder-post-show-page',
@@ -40,23 +44,26 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
       postId$.subscribe((postId: number) => {
         this.postId = postId;
 
-        const query$ = this.getPostGQL
-          .watch({ postId })
-          .valueChanges
+        const query$ = this.getPostGQL.watch({ postId }).valueChanges;
 
         this.post$ = query$.pipe(
-          map((result: ApolloQueryResult<GetPostGQLResponse>) => result.data.getPost)
+          map(
+            (result: ApolloQueryResult<GetPostGQLResponse>) =>
+              result.data.getPost
+          )
         );
 
         this.commentsLoaded$ = query$.pipe(
-          map((result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading)
+          map(
+            (result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading
+          )
         );
 
         this.comments$ = this.post$.pipe(
           map((post: PostWithComments) => post.comments)
-        )
+        );
       })
-    )
+    );
   }
 
   openNewCommentBottomSheet() {

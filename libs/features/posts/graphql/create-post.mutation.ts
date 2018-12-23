@@ -3,7 +3,7 @@ import { Mutation } from 'apollo-angular';
 import gql from 'graphql-tag';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CreatePostGQL extends Mutation {
   document = gql`

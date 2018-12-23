@@ -29,7 +29,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     private createPostGQL: CreatePostGQL,
-    private getPostsGQL: GetPostsGQL,
+    private getPostsGQL: GetPostsGQL
   ) {}
 
   ngOnInit() {
@@ -54,7 +54,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
             ...this.postForm.value
           }
         },
-        update: (store, { data: { createPost: createdPost} }) => {
+        update: (store, { data: { createPost: createdPost } }) => {
           const query = this.getPostsGQL.document;
           const data: GetPostsGQLResponse = store.readQuery({ query });
 
