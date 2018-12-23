@@ -12,8 +12,7 @@ import {
   tap
 } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
-import { SessionQuery } from '../state/session.query';
-import { LogOutService } from '../state/log-out.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +20,7 @@ import { LogOutService } from '../state/log-out.service';
 export class BackendService {
   constructor(
     private http: HttpClient,
-    private sessionQuery: SessionQuery,
-    private logOutService: LogOutService
+    private authService: AuthService
   ) {}
 
   get(path: string, params: any = {}): Observable<any> {
@@ -46,28 +44,14 @@ export class BackendService {
     });
   }
 
-  authenticate(accessToken: string): Observable<any> {
-    return this.http
-      .post(
-        this.url('/authenticate'),
-        { access_token: accessToken },
-        this.staticHeaders()
-      )
-      .pipe(
-        map((response: any) => response.auth_token),
-        tap((token: string) => localStorage.setItem('authToken', token)),
-        catchError(error => this.rethrow(error))
-      );
-  }
-
   private performAuthenticatedRequest(requestMethod): Observable<any> {
-    return this.sessionQuery.backendToken$.pipe(
+    return of(localStorage.getItem('authToken')).pipe(
       filter((token: string) => !!token),
       // delay(environment.production ? 0 : 1000), // DEVELOPMENT_ONLY
       switchMap((token: string) => requestMethod(this.headers(token))),
       catchError(error => {
         if (error.status === 401) {
-          this.logOutService.logOut();
+          this.authService.logOut();
         }
         return error;
       })

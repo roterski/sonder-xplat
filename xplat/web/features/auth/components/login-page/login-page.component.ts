@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { SessionService } from '@sonder/features/auth';
+import { AuthService } from '@sonder/features/auth';
 import { LoginPageBaseComponent } from '@sonder/features';
 
 @Component({
@@ -10,11 +10,11 @@ import { LoginPageBaseComponent } from '@sonder/features';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent extends LoginPageBaseComponent {
-  constructor(private sessionService: SessionService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router) {
     super();
   }
 
   logIn() {
-    this.sessionService.logIn().subscribe(() => this.router.navigate(['/']));
+    this.authService.logIn().subscribe(() => this.router.navigate(['/']));
   }
 }

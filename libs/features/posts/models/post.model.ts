@@ -1,9 +1,8 @@
-import { ID } from '@datorama/akita';
 import { Author } from './author.model';
 import { Tag } from './tag.model';
 
 export interface Post {
-  id: ID;
+  id: number | string;
   title: string;
   body: string;
   author: Author;

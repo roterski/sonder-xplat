@@ -15,7 +15,6 @@ import {
   MatAutocompleteSelectedEvent,
   MatChipInputEvent
 } from '@angular/material';
-import { TagsService } from '@sonder/features/posts/state';
 import { Tag } from '@sonder/features/posts/models';
 
 @Component({

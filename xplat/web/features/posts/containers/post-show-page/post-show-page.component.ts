@@ -1,14 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HashMap } from '@datorama/akita';
 import { map } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
-import {
-  PostsService,
-  PostCommentsQuery,
-  PostCommentsService,
-  MyVotesService
-} from '@sonder/features/posts/state';
 
 import { Post, PostComment } from '@sonder/features/posts/models';
 import { NewCommentFormComponent } from '../../containers/new-comment-form/new-comment-form.component';
@@ -33,19 +26,14 @@ export class PostShowPageComponent implements OnInit, OnDestroy {
   comments: PostComment[];
   commentsLoaded = false;
   commentsLoaded$: Observable<boolean>;
-  // commentEntities$: Observable<HashMap<PostComment>>;
   commentVotes$: Observable<any>;
 
   private subscriptions: Subscription[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private postCommentsQuery: PostCommentsQuery,
-    private postCommentsService: PostCommentsService,
-    private postsService: PostsService,
     private newCommentBottomSheet: MatBottomSheet,
-    private myVotesService: MyVotesService,
-    private getPostGQL: GetPostGQL
+    private getPostGQL: GetPostGQL,
   ) {}
 
   ngOnInit() {

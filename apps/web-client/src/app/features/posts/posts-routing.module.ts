@@ -1,21 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
-  // PostsListPaginatedPageComponent,
   PostsListPageComponent,
   PostShowPageComponent,
   NewPostPageComponent
 } from '@sonder/web/features/posts/containers';
-import {
-  PostsLoadedGuard,
-  PostLoadedGuard,
-  PostCommentsLoadedGuard
-} from '@sonder/features/posts/guards';
 
 export const postsRoutes: Routes = [
   {
     path: '',
-    canActivate: [PostsLoadedGuard],
     component: PostsListPageComponent
   },
   {
@@ -24,7 +17,6 @@ export const postsRoutes: Routes = [
   },
   {
     path: ':postId',
-    canActivate: [PostLoadedGuard, PostCommentsLoadedGuard],
     component: PostShowPageComponent
   }
 ];

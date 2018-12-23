@@ -9,6 +9,10 @@ Platform {
     server side validation
     form warnings
   }
+
+  unify subscription destruction {
+    use base component
+  }
 }
 
 Features {

@@ -1,7 +1,5 @@
-import { ID } from '@datorama/akita';
-
 export interface Vote {
-  id: ID;
+  id: number | string;
   voterId: number;
   postId: number;
   commentId: number;

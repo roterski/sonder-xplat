@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { ID } from '@datorama/akita';
 import { Post, PostComment, Tag } from '../models';
 import { BackendService } from '@sonder/features/auth/services/backend.service';
 
@@ -13,7 +12,7 @@ export class PostsApiService {
     return this.backend.get('/posts', ...params);
   }
 
-  getPost(postId: ID): Observable<Post> {
+  getPost(postId: number | string): Observable<Post> {
     return this.backend
       .get(`/posts/${postId}`)
       .pipe(map(response => response.data));
@@ -25,13 +24,13 @@ export class PostsApiService {
       .pipe(map(response => response.data));
   }
 
-  getPostComments(postId: ID): Observable<any> {
+  getPostComments(postId: number | string): Observable<any> {
     return this.backend
       .get(`/posts/${postId}/comments`)
       .pipe(map(response => response.data));
   }
 
-  createComment(postId: ID, comment: PostComment): Observable<PostComment> {
+  createComment(postId: number | string, comment: PostComment): Observable<PostComment> {
     return this.backend
       .post(`/posts/${postId}/comments`, { comment })
       .pipe(map(response => response.data));

@@ -9,7 +9,6 @@ import {
   VotesApiService,
   TagsApiService
 } from '@sonder/features/posts/services';
-import { postsPaginatorProvider } from '@sonder/features/posts/state';
 import {
   POSTS_COMPONENTS,
   POSTS_CONTAINERS,
@@ -34,7 +33,6 @@ import { PostsRoutingModule } from './posts-routing.module';
     PostsApiService,
     VotesApiService,
     TagsApiService,
-    postsPaginatorProvider
   ]
 })
 export class PostsModule {}
