@@ -14,9 +14,8 @@ export class SessionService {
     private sessionStore: SessionStore,
     private authService: AuthService,
     private backendService: BackendService,
-    private apollo: Apollo,
-  ) // @Inject(POSTS_PAGINATOR) private paginatorRef: PaginatorPlugin<Post>,
-  // private clearStoresService: ClearStoresService
+    private apollo: Apollo // @Inject(POSTS_PAGINATOR) private paginatorRef: PaginatorPlugin<Post>,
+  ) // private clearStoresService: ClearStoresService
   {}
 
   logIn(): Observable<boolean> {

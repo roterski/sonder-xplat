@@ -16,7 +16,11 @@ import {
   TagsQuery,
   TagsService
 } from '@sonder/features/posts/state';
-import { CreatePostGQL, GetPostsGQL, GetPostsGQLResponse } from '@sonder/features/posts';
+import {
+  CreatePostGQL,
+  GetPostsGQL,
+  GetPostsGQLResponse
+} from '@sonder/features/posts';
 import { Post, createPost, Tag } from '@sonder/features/posts/models';
 
 @Component({
@@ -41,7 +45,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
     private tagsQuery: TagsQuery,
     private tagsService: TagsService,
     private createPostGQL: CreatePostGQL,
-    private getPostsGQL: GetPostsGQL,
+    private getPostsGQL: GetPostsGQL
   ) {}
 
   ngOnInit() {
@@ -73,7 +77,7 @@ export class NewPostPageComponent implements OnInit, OnDestroy {
             ...this.postForm.value
           }
         },
-        update: (store, { data: { createPost: createdPost} }) => {
+        update: (store, { data: { createPost: createdPost } }) => {
           const query = this.getPostsGQL.document;
           const data: GetPostsGQLResponse = store.readQuery({ query });
 

@@ -15,23 +15,12 @@ import { environment } from '@sonder/core';
 import { resolvers, defaults, typeDefs } from './schema';
 
 @NgModule({
-  imports: [
-    ApolloModule,
-    HttpLinkModule,
-  ],
-  exports: [
-    ApolloModule,
-    HttpLinkModule
-  ],
+  imports: [ApolloModule, HttpLinkModule],
+  exports: [ApolloModule, HttpLinkModule],
   schemas: [NO_ERRORS_SCHEMA]
 })
-
 export class StateManagementModule {
-  constructor(
-    apollo: Apollo,
-    httpLink: HttpLink,
-    router: Router
-  ) {
+  constructor(apollo: Apollo, httpLink: HttpLink, router: Router) {
     const http = httpLink.create({
       uri: `${environment.backendUrl}/graphql`
     });
@@ -52,7 +41,7 @@ export class StateManagementModule {
         return {
           headers: {
             ...(headers || {}),
-            'Authorization': `Bearer ${token}`
+            Authorization: `Bearer ${token}`
           }
         };
       }
@@ -67,12 +56,7 @@ export class StateManagementModule {
 
     apollo.create({
       cache,
-      link: ApolloLink.from([
-        local,
-        auth,
-        errorLink,
-        http,
-      ])
-    })
+      link: ApolloLink.from([local, auth, errorLink, http])
+    });
   }
 }

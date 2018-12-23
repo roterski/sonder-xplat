@@ -16,7 +16,11 @@ import {
   PostCommentsStore
 } from '@sonder/features/posts/state';
 
-import { CreateCommentGQL, GetPostGQL, GetPostGQLResponse } from '@sonder/features/posts';
+import {
+  CreateCommentGQL,
+  GetPostGQL,
+  GetPostGQLResponse
+} from '@sonder/features/posts';
 
 @Component({
   selector: 'sonder-new-comment-form',
@@ -75,15 +79,19 @@ export class NewCommentFormComponent implements OnInit, OnDestroy {
         update: (store, { data: { createComment: createdComment } }) => {
           const query = this.getPostGQL.document;
           const variables = { postId: this.data.postId };
-          const data: GetPostGQLResponse = store.readQuery({ query, variables });
+          const data: GetPostGQLResponse = store.readQuery({
+            query,
+            variables
+          });
 
           data.getPost.comments.push(createdComment);
           store.writeQuery({ query, data });
         }
-      }).subscribe(() => {
+      })
+      .subscribe(() => {
         this.commentForm.reset();
         this.bottomSheetRef.dismiss();
-      })
+      });
   }
 
   ngOnDestroy() {

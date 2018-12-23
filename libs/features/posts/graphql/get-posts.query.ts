@@ -8,9 +8,8 @@ export interface GetPostsGQLResponse {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-
 export class GetPostsGQL extends Query<GetPostsGQLResponse> {
   document = gql`
     query getPosts {

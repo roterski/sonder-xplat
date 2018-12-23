@@ -3,9 +3,6 @@ import { StateManagementModule as SharedStateManagementModule } from '@sonder/fe
 import { UIModule } from '../ui/ui.module';
 
 @NgModule({
-  imports: [
-    SharedStateManagementModule,UIModule
-  ],
+  imports: [SharedStateManagementModule, UIModule]
 })
 export class StateManagementModule {}
-

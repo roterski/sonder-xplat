@@ -8,9 +8,8 @@ export interface GetCommentGQLResponse {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-
 export class GetCommentGQL extends Query<GetCommentGQLResponse> {
   document = gql`
     query @client ($commentId: Int) {
