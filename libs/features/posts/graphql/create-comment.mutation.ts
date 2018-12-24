@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 export class CreateCommentGQL extends Mutation {
   document = gql`
     mutation createComment($body: String!, $parentIds: [Int]!, $postId: Int!) {
-      createComment(body: $body, parentIds: $parentIds, postId: $postId) {
+      createComment(createCommentInput: { body: $body, parentIds: $parentIds, postId: $postId }) {
         id
         body
         parentIds
