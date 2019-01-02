@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '@sonder/features/auth';
+
 @Component({
   selector: 'sonder-authenticated-app',
   templateUrl: './authenticated-app.component.html',
@@ -20,7 +21,6 @@ export class AuthenticatedAppComponent implements OnInit {
   }
 
   logOut() {
-    this.authService.logOut();
-    this.router.navigate(['/login']);
+    this.authService.logOut().subscribe(() => this.router.navigate(['/login']));
   }
 }
