@@ -11,6 +11,8 @@ import {
 
 import { CreatePostGQL, GetPostsGQL, GetPostsGQLResponse, PostsBaseComponent } from '@sonder/features/posts';
 import { Post, createPost, Tag } from '@sonder/features/posts/models';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sonder-new-post-page',
@@ -19,7 +21,7 @@ import { Post, createPost, Tag } from '@sonder/features/posts/models';
 })
 export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   postForm: FormGroup;
-  errors$: Observable<object>;
+  errors: any;
   post$: Observable<Post>;
   newPostTags$: Observable<Tag[]>;
   newPostTags: Tag[];
@@ -65,9 +67,17 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
         }
       })
       .pipe(
-        takeUntil(this.destroy$)
-      ).subscribe(() => {
-        this.router.navigate(['/']);
+        takeUntil(this.destroy$),
+      ).subscribe(
+        (result) => this.router.navigate(['/']),
+        (error) => {
+          const errors = _.get(error, 'graphQLErrors[0].message.message');
+          if (errors) {
+            this.errors = errors.reduce((acc, err) => {
+              acc[err.property] = Object.values(err.constraints).join(', ');
+              return acc;
+            }, {})
+          }
       });
   }
 

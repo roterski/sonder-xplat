@@ -1,5 +1,7 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
+import { from } from 'rxjs';
+import { tap, take } from 'rxjs/operators';
 
 import { HttpClientModule } from '@angular/common/http';
 import { Apollo, ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
@@ -9,6 +11,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { ApolloLink } from 'apollo-link';
 import { onError } from 'apollo-link-error';
+import * as _ from 'lodash';
 
 import { environment } from '@sonder/core';
 
@@ -27,19 +30,15 @@ export class StateManagementModule {
 
     const cache = new InMemoryCache();
 
-    const isUnauthorized = (response) => (
-      response &&
-      response.errors &&
-      response.errors[0] &&
-      response.errors[0].message &&
-      response.errors[0].message.statusCode === 401
-    )
-
     const errorLink = onError(({ graphQLErrors, response, networkError }) => {
-      if (isUnauthorized(response)) {
-        apollo.getClient().resetStore();
-        localStorage.clear();
-        router.navigate(['/login']);
+      const statusCode = _.get(response, 'errors[0].message.statusCode');
+      if (statusCode === 401) {
+        from(apollo.getClient().resetStore()).pipe(
+          take(1),
+          tap(() => localStorage.clear())
+        ).subscribe(() => {
+          router.navigate(['/login'])
+        });
       }
     });
 
