@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable , of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { switchMap } from 'rxjs/operators';
 import {
   map,
   catchError,
-  concat,
-  mergeMap,
-  delay,
-  filter,
-  tap
+  switchMap,
 } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
 import { AuthService } from './auth.service';
@@ -23,39 +18,38 @@ export class BackendService {
     private authService: AuthService
   ) {}
 
-  get(path: string, params: any = {}): Observable<any> {
-    return this.performAuthenticatedRequest(headers => {
-      return this.http.get(this.url(path), {
-        ...headers,
-        params
-      });
-    });
+  get(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
+    return this.performRequest(this.http.get, path, params, authenticated)
   }
 
-  post(path: string, data: any = {}): Observable<any> {
-    return this.performAuthenticatedRequest(headers => {
-      return this.http.post(this.url(path), data, headers);
-    });
+  post(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
+    return this.performRequest(this.http.post, path, params, authenticated)
   }
 
-  put(path: string, data: any = {}): Observable<any> {
-    return this.performAuthenticatedRequest(headers => {
-      return this.http.put(this.url(path), data, headers);
-    });
+  put(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
+    return this.performRequest(this.http.put, path, params, authenticated)
   }
 
-  private performAuthenticatedRequest(requestMethod): Observable<any> {
-    return of(localStorage.getItem('authToken')).pipe(
-      filter((token: string) => !!token),
-      // delay(environment.production ? 0 : 1000), // DEVELOPMENT_ONLY
-      switchMap((token: string) => requestMethod(this.headers(token))),
+  delete(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
+    return this.performRequest(this.http.delete, path, params, authenticated)
+  }
+
+  performRequest(method, path: string, params: any, authenticated: boolean): Observable<any> {
+    return of(this.requestHeaders(authenticated)).pipe(
+      map((headers) => ({ ...headers, params })),
+      switchMap((options) => method(this.url(path), options)),
       catchError(error => {
         if (error.status === 401) {
           this.authService.logOut();
         }
         return error;
       })
-    );
+    )
+  }
+
+  requestHeaders(authenticated: boolean = true): { headers: any } {
+    const token = localStorage.getItem('authToken');
+    return authenticated && token ? this.headers(token) : this.staticHeaders();
   }
 
   private url(path) {
@@ -66,7 +60,7 @@ export class BackendService {
     return `${environment.backendUrl}/api`;
   }
 
-  private staticHeaders() {
+  private staticHeaders(): { headers: any } {
     return {
       headers: {
         'Content-Type': 'application/json',
@@ -75,11 +69,7 @@ export class BackendService {
     };
   }
 
-  private rethrow(error) {
-    return throwError('json' in error ? error.json() : error);
-  }
-
-  private headers(accessToken: string) {
+  private headers(accessToken: string): { headers: any } {
     return {
       headers: {
         ...this.staticHeaders().headers,
