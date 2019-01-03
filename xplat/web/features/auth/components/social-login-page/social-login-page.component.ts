@@ -6,18 +6,18 @@ import { AuthService } from '@sonder/features/auth';
 import { AuthBaseComponent } from '@sonder/features';
 
 @Component({
-  selector: 'sonder-login-page',
-  templateUrl: 'login-page.component.html',
-  styleUrls: ['./login-page.component.css']
+  selector: 'sonder-social-login-page',
+  templateUrl: 'social-login-page.component.html',
+  styleUrls: ['./social-login-page.component.css']
 })
-export class LoginPageComponent extends AuthBaseComponent {
+export class SocialLoginPageComponent extends AuthBaseComponent {
   constructor(private authService: AuthService, private router: Router) {
     super();
   }
 
   logIn() {
     this.authService
-      .logIn()
+      .facebookLogIn()
       .pipe(
         takeUntil(this.destroy$)
       ).subscribe(() => this.router.navigate(['/']));
