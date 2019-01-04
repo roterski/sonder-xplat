@@ -3,11 +3,12 @@ import { Observable , of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   map,
+  tap,
   catchError,
   switchMap,
 } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
-import { AuthService } from './auth.service';
+import { LogOutService } from './log-out.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,32 +16,39 @@ import { AuthService } from './auth.service';
 export class BackendService {
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private logOutService: LogOutService
   ) {}
 
   get(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest(this.http.get, path, params, authenticated)
+    return this.performRequest((path, headers) => (
+      this.http.get(path, { ...headers, params })
+    ), path, authenticated)
   }
 
-  post(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest(this.http.post, path, params, authenticated)
+  post(path: string, data: any = {}, authenticated: boolean = true): Observable<any> {
+    return this.performRequest((path, headers) => (
+      this.http.post(path, data, headers)
+    ), path, authenticated)
   }
 
-  put(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest(this.http.put, path, params, authenticated)
+  put(path: string, data: any = {}, authenticated: boolean = true): Observable<any> {
+    return this.performRequest((path, headers) => (
+      this.http.put(path, data, headers)
+    ), path, authenticated)
   }
 
   delete(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest(this.http.delete, path, params, authenticated)
+    return this.performRequest((path, headers) => (
+      this.http.get(path, { ...headers, params })
+    ), path, authenticated)
   }
 
-  performRequest(method, path: string, params: any, authenticated: boolean): Observable<any> {
+  performRequest(method, path: string, authenticated: boolean): Observable<any> {
     return of(this.requestHeaders(authenticated)).pipe(
-      map((headers) => ({ ...headers, params })),
-      switchMap((options) => method(this.url(path), options)),
+      switchMap((headers) => method(this.url(path), headers)),
       catchError(error => {
         if (error.status === 401) {
-          this.authService.logOut();
+          this.logOutService.logOut();
         }
         return error;
       })
@@ -53,7 +61,7 @@ export class BackendService {
   }
 
   private url(path) {
-    return `${this.apiRoot()}${path}`;
+    return `${this.apiRoot()}/${path}`;
   }
 
   private apiRoot(): string {

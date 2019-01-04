@@ -5,6 +5,8 @@ import { Observable, from, of } from 'rxjs';
 import { map, catchError, exhaustMap, tap, switchMap } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
 import { Apollo } from 'apollo-angular';
+import { LogOutService } from './log-out.service';
+import { BackendService } from './backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,9 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private facebookService: FacebookService,
-    private apollo: Apollo
+    private apollo: Apollo,
+    private logOutService: LogOutService,
+    private backendService: BackendService
   ) {
     const params: InitParams = {
       version: 'v2.10',
@@ -33,18 +37,29 @@ export class AuthService {
   }
 
   signUp(credentials: { email: string, password: string }): Observable<boolean> {
-    return of(true);
+    return this.backendService
+      .post('sign-up', { ...credentials }, false)
+      .pipe(
+        map((response: any) => response.auth_token),
+        tap((backendToken: string) => localStorage.setItem('authToken', backendToken)),
+        map(() => true),
+        catchError(() => this.logOut())
+      )
   }
 
   signIn(credentials: { email: string, password: string }): Observable<boolean> {
-    return of(true);
+    return this.backendService
+      .post('sign-in', { ...credentials }, false)
+      .pipe(
+        map((response: any) => response.auth_token),
+        tap((backendToken: string) => localStorage.setItem('authToken', backendToken)),
+        map(() => true),
+        catchError(() => this.logOut())
+      )
   }
 
   logOut(): Observable<boolean> {
-    return from(this.apollo.getClient().resetStore()).pipe(
-      tap(() => localStorage.clear()),
-      switchMap(() => of(true))
-    );
+    return this.logOutService.logOut();
   }
 
   isLoggedIn(): Observable<boolean> {
@@ -54,13 +69,8 @@ export class AuthService {
   }
 
   private authenticateBackend(access_token: string): Observable<string> {
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    };
-
-    return this.http
-      .post(`${environment.backendUrl}/api/authenticate`, { access_token }, { headers })
+    return this.backendService
+      .post('authenticate/facebook', { access_token }, false)
       .pipe(
         map((response: any) => response.auth_token)
       );

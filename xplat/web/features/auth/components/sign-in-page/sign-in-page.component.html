@@ -12,7 +12,7 @@
       </mat-card-content>
       <mat-card-content>
       <mat-form-field class="form-group">
-        <input matInput placeholder="Your password..." class="form-control" formControlName="password" required>
+        <input type="password" matInput placeholder="Your password..." class="form-control" formControlName="password" required>
       </mat-form-field>
       <mat-error *ngIf="errors && errors.password">{{ errors.password }}</mat-error>
     </mat-card-content>
