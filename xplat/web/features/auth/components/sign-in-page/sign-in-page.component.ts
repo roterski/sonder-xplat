@@ -10,6 +10,7 @@ import {
 
 import { AuthService } from '@sonder/features/auth';
 import { AuthBaseComponent } from '@sonder/features';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sonder-sign-in-page',
@@ -43,6 +44,14 @@ export class SignInPageComponent extends AuthBaseComponent implements OnInit {
       .signIn(this.signInForm.value)
       .pipe(
         takeUntil(this.destroy$)
-      ).subscribe(() => this.router.navigate(['/']));
+    ).subscribe(() => {
+      this.router.navigate(['/'])
+    }, (error) => {
+      if (error.status === 409) {
+        this.errors = { email: _.get(error, 'error.message') }
+      } else {
+        this.errors = true
+      }
+    });
   }
 }

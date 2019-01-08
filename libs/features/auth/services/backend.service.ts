@@ -5,7 +5,7 @@ import {
   map,
   tap,
   catchError,
-  switchMap,
+  switchMap
 } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
 import { LogOutService } from './log-out.service';
@@ -20,26 +20,26 @@ export class BackendService {
   ) {}
 
   get(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest((path, headers) => (
-      this.http.get(path, { ...headers, params })
+    return this.performRequest((url: string, headers: { headers: any }) => (
+      this.http.get(url, { ...headers, params })
     ), path, authenticated)
   }
 
   post(path: string, data: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest((path, headers) => (
-      this.http.post(path, data, headers)
+    return this.performRequest((url: string, headers: { headers: any }) => (
+      this.http.post(url, data, headers)
     ), path, authenticated)
   }
 
   put(path: string, data: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest((path, headers) => (
-      this.http.put(path, data, headers)
+    return this.performRequest((url: string, headers: { headers: any }) => (
+      this.http.put(url, data, headers)
     ), path, authenticated)
   }
 
   delete(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest((path, headers) => (
-      this.http.get(path, { ...headers, params })
+    return this.performRequest((url: string, headers: { headers: any }) => (
+      this.http.get(url, { ...headers, params })
     ), path, authenticated)
   }
 
@@ -50,7 +50,7 @@ export class BackendService {
         if (error.status === 401) {
           this.logOutService.logOut();
         }
-        return error;
+        throw(error);
       })
     )
   }
