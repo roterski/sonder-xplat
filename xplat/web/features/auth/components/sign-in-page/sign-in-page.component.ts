@@ -15,7 +15,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'sonder-sign-in-page',
   templateUrl: 'sign-in-page.component.html',
-  styleUrls: ['../social-login-page/social-login-page.component.css']
+  styleUrls: ['../auth.component.css']
 })
 export class SignInPageComponent extends AuthBaseComponent implements OnInit {
   signInForm: FormGroup;
