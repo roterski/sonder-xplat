@@ -22,7 +22,7 @@ import { resolvers, defaults, typeDefs } from './schema';
   exports: [ApolloModule, HttpLinkModule],
   schemas: [NO_ERRORS_SCHEMA]
 })
-export class StateManagementModule {
+export class AppApolloModule {
   constructor(apollo: Apollo, httpLink: HttpLink, router: Router) {
     const http = httpLink.create({
       uri: `${environment.backendUrl}/graphql`

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 // libs
 import { environment } from '@sonder/core';
-import { StateManagementModule } from '@sonder/features/state-management';
+import { AppApolloModule } from '@sonder/features/app-apollo';
 
 // app
 import { CoreModule } from './core/core.module';
@@ -18,7 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CoreModule,
     SharedModule,
     AppRoutingModule,
-    StateManagementModule,
+    AppApolloModule,
     AuthModule,
     PostsModule,
     BrowserAnimationsModule
