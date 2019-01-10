@@ -6,11 +6,11 @@ import { AuthService } from '@sonder/features/auth';
 import { AuthBaseComponent } from '@sonder/features';
 
 @Component({
-  selector: 'sonder-social-login-page',
-  templateUrl: 'social-login-page.component.html',
-  styleUrls: ['./social-login-page.component.css']
+  selector: 'sonder-sign-in-with-facebook-page',
+  templateUrl: 'sign-in-with-facebook-page.component.html',
+  styleUrls: ['./sign-in-with-facebook-page.component.css']
 })
-export class SocialLoginPageComponent extends AuthBaseComponent {
+export class SignInWithFacebookPageComponent extends AuthBaseComponent {
   constructor(private authService: AuthService, private router: Router) {
     super();
   }
