@@ -6,18 +6,21 @@ import { AUTH_COMPONENTS } from '@sonder/web/features/auth/components';
 import { HttpClientModule } from '@angular/common/http';
 import {
   AuthenticatedGuard,
-  UnauthenticatedGuard
-} from '@sonder/features/auth/guards';
+  UnauthenticatedGuard,
+  AuthState
+} from '@sonder/features';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatCardModule,
   MatButtonModule,
   MatFormFieldModule,
   MatInputModule } from '@angular/material';
+import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
   imports: [
     CommonModule,
+    NgxsModule.forFeature([AuthState]),
     AuthRoutingModule,
     HttpClientModule,
     FormsModule,

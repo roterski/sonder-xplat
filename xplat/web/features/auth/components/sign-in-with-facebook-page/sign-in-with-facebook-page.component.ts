@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 
-import { AuthService } from '@sonder/features/auth';
+import { AuthService, SignInWithFacebook } from '@sonder/features/auth';
 import { AuthBaseComponent } from '@sonder/features';
+
+import { Actions, Store } from '@ngxs/store';
 
 @Component({
   selector: 'sonder-sign-in-with-facebook-page',
@@ -11,13 +13,16 @@ import { AuthBaseComponent } from '@sonder/features';
   styleUrls: ['../auth.component.css']
 })
 export class SignInWithFacebookPageComponent extends AuthBaseComponent {
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private store: Store,
+    private router: Router) {
     super();
   }
 
   logIn() {
-    this.authService
-      .facebookLogIn()
+    this.store
+      .dispatch(new SignInWithFacebook())
       .pipe(
         takeUntil(this.destroy$)
       ).subscribe(() => this.router.navigate(['/']));

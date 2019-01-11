@@ -8,7 +8,8 @@ import {
   Validators
 } from '@angular/forms';
 
-import { AuthService } from '@sonder/features/auth';
+import { Actions, Store } from '@ngxs/store';
+import { AuthService, SignUp } from '@sonder/features/auth';
 import { AuthBaseComponent } from '@sonder/features';
 import * as _ from 'lodash';
 
@@ -24,6 +25,7 @@ export class SignUpPageComponent extends AuthBaseComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private store: Store,
     private router: Router) {
     super();
   }
@@ -40,8 +42,8 @@ export class SignUpPageComponent extends AuthBaseComponent implements OnInit {
   }
 
   signUp() {
-    this.authService
-      .signUp(this.signUpForm.value)
+    this.store
+      .dispatch(new SignUp(this.signUpForm.value))
       .pipe(
         takeUntil(this.destroy$)
       ).subscribe(() => {

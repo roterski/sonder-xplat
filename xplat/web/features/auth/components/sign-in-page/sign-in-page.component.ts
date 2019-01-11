@@ -7,8 +7,8 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-
-import { AuthService } from '@sonder/features/auth';
+import { Actions, Store } from '@ngxs/store';
+import { AuthService, SignIn } from '@sonder/features/auth';
 import { AuthBaseComponent } from '@sonder/features';
 import * as _ from 'lodash';
 
@@ -24,6 +24,8 @@ export class SignInPageComponent extends AuthBaseComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private actions: Actions,
+    private store: Store,
     private router: Router) {
     super();
   }
@@ -40,18 +42,18 @@ export class SignInPageComponent extends AuthBaseComponent implements OnInit {
   }
 
   signIn() {
-    this.authService
-      .signIn(this.signInForm.value)
+    this.store
+      .dispatch(new SignIn(this.signInForm.value))
       .pipe(
         takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.router.navigate(['/'])
-    }, (error) => {
-      if (error.status === 409) {
-        this.errors = { email: _.get(error, 'error.message') }
-      } else {
-        this.errors = true
-      }
-    });
+      ).subscribe(() => {
+        this.router.navigate(['/'])
+      }, (error) => {
+        if (error.status === 409) {
+          this.errors = { email: _.get(error, 'error.message') }
+        } else {
+          this.errors = true
+        }
+      });
   }
 }

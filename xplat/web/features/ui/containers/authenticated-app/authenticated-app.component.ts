@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '@sonder/features/auth';
+import { AuthService, AuthStateModel, SignOut } from '@sonder/features/auth';
+import { Select, Store } from '@ngxs/store';
 
 @Component({
   selector: 'sonder-authenticated-app',
@@ -9,18 +10,20 @@ import { AuthService } from '@sonder/features/auth';
   styleUrls: ['./authenticated-app.component.scss']
 })
 export class AuthenticatedAppComponent implements OnInit {
-  public loggedIn$: Observable<boolean>;
+  @Select((state: AuthStateModel) => state.loggedIn) loggedIn$: Observable<boolean>;
 
   constructor(
     private authService: AuthService,
+    private store: Store,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.loggedIn$ = this.authService.isLoggedIn();
   }
 
   logOut() {
-    this.authService.logOut().subscribe(() => this.router.navigate(['/login']));
+    this.store
+      .dispatch(new SignOut())
+      .subscribe(() => this.router.navigate(['/login']))
   }
 }

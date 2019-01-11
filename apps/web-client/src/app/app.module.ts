@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 // libs
 import { environment } from '@sonder/core';
 import { AppApolloModule } from '@sonder/features/app-apollo';
@@ -18,6 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CoreModule,
     SharedModule,
     AppRoutingModule,
+    NgxsModule.forRoot([]),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
     AppApolloModule,
     AuthModule,
     PostsModule,

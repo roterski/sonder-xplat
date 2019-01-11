@@ -26,7 +26,7 @@ export class AuthService {
     facebookService.init(params);
   }
 
-  facebookLogIn(): Observable<boolean> {
+  signInWithFacebook(): Observable<string> {
     return this.authenticateFacebook().pipe(
       tap((facebookToken: string) => localStorage.setItem('facebookToken', facebookToken)),
       exhaustMap((facebookToken: string) => this.authenticateBackend(facebookToken)),
@@ -34,7 +34,7 @@ export class AuthService {
     )
   }
 
-  signUp(credentials: { email: string, password: string }): Observable<boolean> {
+  signUp(credentials: { email: string, password: string }): Observable<string> {
     return this.backendService
       .post('sign-up', { ...credentials }, false)
       .pipe(
@@ -42,7 +42,7 @@ export class AuthService {
       );
   }
 
-  signIn(credentials: { email: string, password: string }): Observable<boolean> {
+  signIn(credentials: { email: string, password: string }): Observable<string> {
     return this.backendService
       .post('sign-in', { ...credentials }, false)
       .pipe(
@@ -65,7 +65,6 @@ export class AuthService {
       source.pipe(
         map((response: any) => response.auth_token),
         tap((backendToken: string) => localStorage.setItem('authToken', backendToken)),
-        map(() => true),
         catchError((err) => {
           return this.logOut().pipe(
             first(),
