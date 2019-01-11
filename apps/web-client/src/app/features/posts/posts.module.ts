@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 
+import { NgxsModule } from '@ngxs/store';
 import {
   PostsApiService,
   VotesApiService,
-  TagsApiService
-} from '@sonder/features/posts/services';
+  TagsApiService,
+  PostsState
+} from '@sonder/features/posts';
 import {
   POSTS_COMPONENTS,
   POSTS_CONTAINERS,
@@ -21,6 +23,7 @@ import { PostsRoutingModule } from './posts-routing.module';
 @NgModule({
   imports: [
     CommonModule,
+    NgxsModule.forFeature([PostsState]),
     SharedModule,
     RouterModule,
     ReactiveFormsModule,
