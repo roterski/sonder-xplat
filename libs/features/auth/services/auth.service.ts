@@ -25,9 +25,16 @@ export class AuthService {
   }
 
   facebookLogIn(): Observable<boolean> {
+<<<<<<< HEAD
     return this.facebookService.authenticateFacebook().pipe(
       tap((facebookToken: string) => localStorage.setItem('facebookToken', facebookToken)),
       exhaustMap((facebookToken: string) => this.authenticateBackend(facebookToken)),
+=======
+    return this.authenticateFacebook().pipe(
+      exhaustMap((facebookToken: string) =>
+        this.authenticateBackend(facebookToken)
+      ),
+>>>>>>> Remove use of localStorage for authToken
       this.persistAuthToken()
     );
   }
@@ -62,9 +69,6 @@ export class AuthService {
     return (source: Observable<any>): Observable<any> =>
       source.pipe(
         map((response: any) => response.auth_token),
-        tap((backendToken: string) =>
-          localStorage.setItem('authToken', backendToken)
-        ),
         tap((backendToken: string) =>
           this.sessionStore.authenticateBackend(backendToken)
         ),
