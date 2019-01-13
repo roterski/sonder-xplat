@@ -58,7 +58,6 @@ export class BackendService {
   }
 
   requestHeaders(authenticated: boolean = true): { headers: any } {
-    // const token = localStorage.getItem('authToken');
     const token = this.sessionQuery.backendToken();
     return authenticated && token ? this.headers(token) : this.staticHeaders();
   }

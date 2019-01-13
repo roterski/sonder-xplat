@@ -16,7 +16,6 @@ export class LogOutService {
   logOut(): Observable<boolean> {
     return from(this.apollo.getClient().resetStore()).pipe(
       tap(() => resetStores()),
-      tap(() => localStorage.clear()),
       switchMap(() => of(true))
     );
   }
