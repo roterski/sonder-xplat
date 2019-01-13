@@ -38,6 +38,9 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forRoot(routes)]
+  imports: [
+    SharedModule,
+    RouterModule.forRoot(routes, { paramsInheritanceStrategy: 'always' })
+  ]
 })
 export class AppRoutingModule {}
