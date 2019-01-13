@@ -14,7 +14,7 @@ import { onError } from 'apollo-link-error';
 import * as _ from 'lodash';
 
 import { environment } from '@sonder/core';
-
+import { SessionQuery, LogOutService } from '@sonder/features/auth';
 import { resolvers, defaults, typeDefs } from './schema';
 
 @NgModule({
@@ -23,7 +23,12 @@ import { resolvers, defaults, typeDefs } from './schema';
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppApolloModule {
-  constructor(apollo: Apollo, httpLink: HttpLink, router: Router) {
+  constructor(
+    apollo: Apollo,
+    httpLink: HttpLink,
+    router: Router,
+    sessionQuery: SessionQuery,
+    logOutService: LogOutService) {
     const http = httpLink.create({
       uri: `${environment.backendUrl}/graphql`
     });
@@ -32,17 +37,15 @@ export class AppApolloModule {
     const errorLink = onError(({ graphQLErrors, response, networkError }) => {
       const statusCode = _.get(response, 'errors[0].message.statusCode');
       if (statusCode === 401) {
-        from(apollo.getClient().resetStore()).pipe(
-          take(1),
-          tap(() => localStorage.clear())
-        ).subscribe(() => {
-          router.navigate(['/login'])
-        });
+        logOutService
+          .logOut()
+          .subscribe(() => router.navigate(['/login']));
       }
     });
 
     const auth = setContext((_, { headers }) => {
-      const token = localStorage.getItem('authToken');
+      const token = sessionQuery.backendToken();
+
       if (!token) {
         return {};
       } else {
