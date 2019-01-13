@@ -12,11 +12,17 @@ import { AuthModule } from './features/auth/auth.module';
 import { PostsModule } from './features/posts/posts.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+
 @NgModule({
   imports: [
     CoreModule,
     SharedModule,
     AppRoutingModule,
+    environment.production
+      ? []
+      : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
     AppApolloModule,
     AuthModule,
     PostsModule,

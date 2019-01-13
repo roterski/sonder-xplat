@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, from } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
+import { resetStores } from '@datorama/akita';
 import { Apollo } from 'apollo-angular';
 
 @Injectable({
@@ -14,6 +15,7 @@ export class LogOutService {
 
   logOut(): Observable<boolean> {
     return from(this.apollo.getClient().resetStore()).pipe(
+      tap(() => resetStores()),
       tap(() => localStorage.clear()),
       switchMap(() => of(true))
     );

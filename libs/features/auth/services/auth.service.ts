@@ -7,6 +7,7 @@ import { Apollo } from 'apollo-angular';
 import { LogOutService } from './log-out.service';
 import { BackendService } from './backend.service';
 import { FacebookService } from './facebook.service';
+import { SessionStore, SessionQuery } from '../state';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,9 @@ export class AuthService {
     private facebookService: FacebookService,
     private apollo: Apollo,
     private logOutService: LogOutService,
-    private backendService: BackendService
+    private backendService: BackendService,
+    private sessionStore: SessionStore,
+    private sessionQuery: SessionQuery
   ) {
   }
 
@@ -26,23 +29,25 @@ export class AuthService {
       tap((facebookToken: string) => localStorage.setItem('facebookToken', facebookToken)),
       exhaustMap((facebookToken: string) => this.authenticateBackend(facebookToken)),
       this.persistAuthToken()
-    )
+    );
   }
 
-  signUp(credentials: { email: string, password: string }): Observable<boolean> {
+  signUp(credentials: {
+    email: string;
+    password: string;
+  }): Observable<boolean> {
     return this.backendService
       .post('sign-up', { ...credentials }, false)
-      .pipe(
-        this.persistAuthToken()
-      );
+      .pipe(this.persistAuthToken());
   }
 
-  signIn(credentials: { email: string, password: string }): Observable<boolean> {
+  signIn(credentials: {
+    email: string;
+    password: string;
+  }): Observable<boolean> {
     return this.backendService
       .post('sign-in', { ...credentials }, false)
-      .pipe(
-        this.persistAuthToken()
-      )
+      .pipe(this.persistAuthToken());
   }
 
   logOut(): Observable<boolean> {
@@ -50,29 +55,36 @@ export class AuthService {
   }
 
   isLoggedIn(): Observable<boolean> {
-    return of(localStorage.getItem('authToken')).pipe(
-      map((token: string) => !!(token && token.length > 0))
-    );
+    return this.sessionQuery.isLoggedIn$;
   }
 
   private persistAuthToken() {
-    return (source: Observable<any>): Observable<any> => (
+    return (source: Observable<any>): Observable<any> =>
       source.pipe(
         map((response: any) => response.auth_token),
-        tap((backendToken: string) => localStorage.setItem('authToken', backendToken)),
+        tap((backendToken: string) =>
+          localStorage.setItem('authToken', backendToken)
+        ),
+        tap((backendToken: string) =>
+          this.sessionStore.authenticateBackend(backendToken)
+        ),
         map(() => true),
-        catchError((err) => {
+        catchError(err => {
           return this.logOut().pipe(
             first(),
-            tap(() => { throw (err) })
+            tap(() => {
+              throw err;
+            })
           );
         })
-      )
-    )
+      );
   }
 
   private authenticateBackend(access_token: string): Observable<string> {
-    return this.backendService
-      .post('authenticate/facebook', { access_token }, false);
+    return this.backendService.post(
+      'authenticate/facebook',
+      { access_token },
+      false
+    );
   }
 }
