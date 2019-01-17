@@ -6,37 +6,43 @@ import {
   PostsBaseComponent,
   Post,
   GetPostsGQL,
-  GetPostsGQLResponse
+  GetPostsGQLResponse,
+  PostsStore,
+  PostsQuery
 } from '@sonder/features';
 import { ApolloQueryResult } from 'apollo-client';
 
-import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'sonder-posts-list-page',
   templateUrl: 'posts-list-page.component.html'
 })
-export class PostsListPageComponent extends PostsBaseComponent implements OnInit {
-  posts: Post[];
-  loading = true;
+export class PostsListPageComponent extends PostsBaseComponent
+  implements OnInit {
   posts$: Observable<Post[]>;
+  loading$ = of(true);
 
-  constructor(private apollo: Apollo, private getPostsGQL: GetPostsGQL) {
+  constructor(
+    private apollo: Apollo,
+    private getPostsGQL: GetPostsGQL,
+    private postsQuery: PostsQuery,
+    private postsStore: PostsStore) {
     super();
   }
 
   ngOnInit() {
+    this.posts$ = this.postsQuery.selectAll();
+    this.loading$ = this.postsQuery.selectLoading();
+
     this.getPostsGQL
       .watch()
-      .valueChanges
-      .pipe(
+      .valueChanges.pipe(
         takeUntil(this.destroy$)
-      ).subscribe(
-        (result: ApolloQueryResult<GetPostsGQLResponse>) => {
-          this.posts = result.data.getPosts;
-          this.loading = result.loading;
-        }
-      );
+      )
+      .subscribe((result: ApolloQueryResult<GetPostsGQLResponse>) => {
+        this.postsStore.set(result.data.getPosts);
+      });
   }
 }
