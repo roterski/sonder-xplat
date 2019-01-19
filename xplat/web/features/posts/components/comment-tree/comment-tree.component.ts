@@ -38,6 +38,7 @@ export class CommentTreeComponent extends PostsBaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    debugger
     this.treeControl = new FlatTreeControl<CommentFlatNode>(
       this.getNodeLevel,
       this.isNodeExpendable
@@ -51,6 +52,7 @@ export class CommentTreeComponent extends PostsBaseComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
       ([comments, entities]: [PostComment[], { number: PostComment }]) => {
+        debugger
         this.treeFlattener = new MatTreeFlattener(
           this.transformer,
           this.getNodeLevel,
@@ -97,8 +99,10 @@ export class CommentTreeComponent extends PostsBaseComponent implements OnInit {
 
   private appendChildrenIds(comments) {
     return comments.reduce((acc, comment) => {
-      acc[comment.id] = comment;
-      acc[comment.id].childrenIds = comment.childrenIds || [];
+      acc[comment.id] = {
+        childrenIds: [],
+        ...comment
+      };
       const parentId = comment.parentIds.slice(-1)[0];
       if (parentId) {
         acc[parentId].childrenIds = Array.from(
