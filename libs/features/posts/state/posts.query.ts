@@ -5,9 +5,6 @@ import { Post } from '../models/post.model';
 
 @Injectable({ providedIn: 'root' })
 export class PostsQuery extends QueryEntity<PostsState, Post> {
-  posts$ = this.select((state: PostsState) => state.entities);
-  loading$ = this.select((state: PostsState) => state.loading);
-
   constructor(protected store: PostsStore) {
     super(store);
   }
