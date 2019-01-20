@@ -11,8 +11,7 @@ import {
 
 import { CreatePostGQL, GetPostsGQL, GetPostsGQLResponse, PostsBaseComponent } from '@sonder/features/posts';
 import { Post, createPost, Tag } from '@sonder/features/posts/models';
-import { catchError } from 'rxjs/internal/operators/catchError';
-import * as _ from 'lodash';
+import { parseValidationErrors } from '@sonder/features/app-apollo';
 
 @Component({
   selector: 'sonder-new-post-page',
@@ -48,7 +47,15 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   }
 
   addPost() {
-    this.createPostGQL
+    this.createPost().pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(
+      (result) => this.router.navigate(['/']),
+      (error) => this.errors = parseValidationErrors(error));
+  }
+
+  private createPost(): Observable<any> {
+    return this.createPostGQL
       .mutate(this.postForm.value, {
         optimisticResponse: {
           __typename: 'Mutation',
@@ -65,19 +72,6 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
           data.getPosts.push(createdPost);
           store.writeQuery({ query, data });
         }
-      })
-      .pipe(
-        takeUntil(this.destroy$),
-      ).subscribe(
-        (result) => this.router.navigate(['/']),
-        (error) => {
-          const errors = _.get(error, 'graphQLErrors[0].message.message');
-          if (errors) {
-            this.errors = errors.reduce((acc, err) => {
-              acc[err.property] = Object.values(err.constraints).join(', ');
-              return acc;
-            }, {})
-          }
       });
   }
 
@@ -87,8 +81,5 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
 
   tagRemoved(tag: Tag) {
     // this.tagsService.removeNewPostTag(tag);
-  }
-
-  ngOnDestroy() {
   }
 }
