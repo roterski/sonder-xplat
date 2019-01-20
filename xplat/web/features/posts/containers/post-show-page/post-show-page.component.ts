@@ -58,25 +58,11 @@ export class PostShowPageComponent extends PostsBaseComponent
     postId$.subscribe((postId: number) => {
       this.postId = postId;
 
-      this.comments$ = this.commentsQuery.selectAll({
-        filterBy: (comment: PostComment) => {
-          return comment.postId === postId
-        }
-      });
+      this.comments$ = this.commentsQuery.selectPostComments(postId);
+      this.commentsLoaded$ = this.commentsQuery.selectPostCommentsLoaded(postId);
+      this.post$ = this.postsQuery.selectEntity(postId);
 
-      this.commentsLoaded$ = this.commentsQuery.selectLoading().pipe(
-        map((loading: boolean) => !loading)
-      );
-
-      combineLatest(this.commentsLoaded$, this.comments$)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(([loaded, comments]) => {
-          debugger
-        });
-
-      const query$ = this.getPostGQL.watch({ postId }).valueChanges;
-
-      this.post$ = query$.pipe(
+      const loadPostWithComments$ = this.getPostGQL.watch({ postId }).valueChanges.pipe(
         map(
 <<<<<<< HEAD
           (result: ApolloQueryResult<GetPostGQLResponse>) => result.data.getPost
@@ -97,52 +83,17 @@ export class PostShowPageComponent extends PostsBaseComponent
         ),
         tap((post: PostWithComments) => {
           this.postsStore.createOrReplace(post.id, post);
-          this.commentsStore.addPostComments(post.comments);
+          this.commentsStore.addPostComments(post.id, post.comments);
         })
       );
 
-      // this.commentsLoaded$ = query$.pipe(
-      //   map(
-      //     (result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading
-      //   )
-      // );
 
-      // this.comments$ = this.post$.pipe(
-      //   map((post: PostWithComments) => post.comments)
-      // );
+      zip(this.commentsLoaded$, this.comments$, loadPostWithComments$)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe();
     })
 >>>>>>> WIP add comments state
   }
-
-  // ngOnInit() {
-  //   const postId$ = this.route.params.pipe(
-  //     map((params: { postId: string }) => parseInt(params.postId, 10)),
-  //     takeUntil(this.destroy$)
-  //   );
-
-  //   postId$.subscribe((postId: number) => {
-  //     this.postId = postId;
-
-  //     const query$ = this.getPostGQL.watch({ postId }).valueChanges;
-
-  //     this.post$ = query$.pipe(
-  //       map(
-  //         (result: ApolloQueryResult<GetPostGQLResponse>) =>
-  //           result.data.getPost
-  //       )
-  //     );
-
-  //     this.commentsLoaded$ = query$.pipe(
-  //       map(
-  //         (result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading
-  //       )
-  //     );
-
-  //     this.comments$ = this.post$.pipe(
-  //       map((post: PostWithComments) => post.comments)
-  //     );
-  //   })
-  // }
 
   openNewCommentBottomSheet() {
     this.newCommentBottomSheet.open(NewCommentFormComponent, {

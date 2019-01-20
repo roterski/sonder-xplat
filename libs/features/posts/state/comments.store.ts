@@ -2,19 +2,27 @@ import { Injectable } from '@angular/core';
 import {
   EntityState,
   EntityStore,
+  ID,
   StoreConfig,
-  getInitialActiveState
+  getInitialActiveState,
+  transaction
 } from '@datorama/akita';
 import { PostComment } from '../models';
 import * as _ from 'lodash';
 
+export interface CommentIds {
+  postId: number;
+  ids: Array<ID>;
+  loaded: boolean;
+}
+
 export interface CommentsState extends EntityState<PostComment> {
-  postCommentsLoaded: Array<number>;
+  postCommentsLoaded: { [postId: number]: CommentIds };
 }
 
 const initialState = {
   ...getInitialActiveState(),
-  postCommentsLoaded: []
+  postCommentsLoaded: {}
 };
 
 @Injectable({ providedIn: 'root' })
@@ -24,18 +32,25 @@ export class CommentsStore extends EntityStore<CommentsState, PostComment> {
     super(initialState);
   }
 
-  addPostComments(postId: number, comments: PostComment[]) {
+  @transaction()
+  addPostComments(postId: ID, comments: PostComment[]) {
+    postId = Number(postId);
     const commentEntities = this.appendChildrenIds(comments);
     this.add(comments.map(({ id }) => commentEntities[id]));
-    this.update((state: CommentsState) => {
-      const postCommentsLoaded = _.uniq([...state.postCommentsLoaded, postId]);
-      return {
+    this.updateRoot((state: CommentsState) =>
+      ({
         ...state,
-        postCommentsLoaded
-      }
-  })
+        postCommentsLoaded: {
+          ...state.postCommentsLoaded,
+          [postId]: {
+            postId,
+            ids: comments.map(c => c.id),
+            loaded: true
+          }
+        }
+      })
+  )
 }
-
 
   private appendChildrenIds(comments) {
     return comments.reduce((acc, comment) => {
