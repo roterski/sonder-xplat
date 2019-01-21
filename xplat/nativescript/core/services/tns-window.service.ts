@@ -9,7 +9,7 @@ import * as timer from 'tns-core-modules/timer';
 import { isString } from '@sonder/utils';
 
 @Injectable()
-export class TNSWindowService {
+export class TNSWindowPlatformService {
   private _dialogOpened = false;
 
   public get navigator(): any {

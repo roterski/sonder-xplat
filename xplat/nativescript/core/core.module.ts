@@ -11,13 +11,13 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import {
   CoreModule,
   PlatformLanguageToken,
-  PlatformWindowToken
+  WindowPlatformService
 } from '@sonder/core';
 import { throwIfAlreadyLoaded } from '@sonder/utils';
 
 // app
 import { PROVIDERS } from './services';
-import { TNSWindowService } from './services/tns-window.service';
+import { TNSWindowPlatformService } from './services/tns-window.service';
 import { TNSTranslateLoader } from './services/tns-translate.loader';
 
 // factories
@@ -42,8 +42,8 @@ export function createTranslateLoader() {
         useFactory: platformLangFactory
       },
       {
-        provide: PlatformWindowToken,
-        useClass: TNSWindowService
+        provide: WindowPlatformService,
+        useClass: TNSWindowPlatformService
       }
     ]),
     TranslateModule.forRoot({
