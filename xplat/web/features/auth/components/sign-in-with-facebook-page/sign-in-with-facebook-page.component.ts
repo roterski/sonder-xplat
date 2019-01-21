@@ -18,8 +18,7 @@ export class SignInWithFacebookPageComponent extends AuthBaseComponent {
   logIn() {
     this.authService
       .facebookLogIn()
-      .pipe(
-        takeUntil(this.destroy$)
-      ).subscribe(() => this.router.navigate(['/']));
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.router.navigate(['/']));
   }
 }

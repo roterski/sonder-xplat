@@ -24,7 +24,8 @@ export class SignUpPageComponent extends AuthBaseComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router) {
+    private router: Router
+  ) {
     super();
   }
 
@@ -42,16 +43,18 @@ export class SignUpPageComponent extends AuthBaseComponent implements OnInit {
   signUp() {
     this.authService
       .signUp(this.signUpForm.value)
-      .pipe(
-        takeUntil(this.destroy$)
-      ).subscribe(() => {
-        this.router.navigate(['/'])
-      }, (error) => {
-        if (error.status === 409) {
-          this.errors = { email: _.get(error, 'error.message') }
-        } else {
-          this.errors = true
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => {
+          this.router.navigate(['/']);
+        },
+        error => {
+          if (error.status === 409) {
+            this.errors = { email: _.get(error, 'error.message') };
+          } else {
+            this.errors = true;
+          }
         }
-      });
+      );
   }
 }

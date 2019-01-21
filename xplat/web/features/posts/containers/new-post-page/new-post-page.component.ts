@@ -9,7 +9,12 @@ import {
   Validators
 } from '@angular/forms';
 
-import { CreatePostGQL, GetPostsGQL, GetPostsGQLResponse, PostsBaseComponent } from '@sonder/features/posts';
+import {
+  CreatePostGQL,
+  GetPostsGQL,
+  GetPostsGQLResponse,
+  PostsBaseComponent
+} from '@sonder/features/posts';
 import { Post, createPost, Tag } from '@sonder/features/posts/models';
 import { parseValidationErrors } from '@sonder/features/app-apollo';
 
@@ -47,32 +52,32 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   }
 
   addPost() {
-    this.createPost().pipe(
-      takeUntil(this.destroy$),
-    ).subscribe(
-      (result) => this.router.navigate(['/']),
-      (error) => this.errors = parseValidationErrors(error));
+    this.createPost()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        result => this.router.navigate(['/']),
+        error => (this.errors = parseValidationErrors(error))
+      );
   }
 
   private createPost(): Observable<any> {
-    return this.createPostGQL
-      .mutate(this.postForm.value, {
-        optimisticResponse: {
-          __typename: 'Mutation',
-          createPost: {
-            __typename: 'Post',
-            id: Math.round(Math.random() * -1000000),
-            ...this.postForm.value
-          }
-        },
-        update: (store, { data: { createPost: createdPost } }) => {
-          const query = this.getPostsGQL.document;
-          const data: GetPostsGQLResponse = store.readQuery({ query });
-
-          data.getPosts.push(createdPost);
-          store.writeQuery({ query, data });
+    return this.createPostGQL.mutate(this.postForm.value, {
+      optimisticResponse: {
+        __typename: 'Mutation',
+        createPost: {
+          __typename: 'Post',
+          id: Math.round(Math.random() * -1000000),
+          ...this.postForm.value
         }
-      });
+      },
+      update: (store, { data: { createPost: createdPost } }) => {
+        const query = this.getPostsGQL.document;
+        const data: GetPostsGQLResponse = store.readQuery({ query });
+
+        data.getPosts.push(createdPost);
+        store.writeQuery({ query, data });
+      }
+    });
   }
 
   tagAdded(tag: Tag) {

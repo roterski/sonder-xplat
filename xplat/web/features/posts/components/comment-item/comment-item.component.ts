@@ -15,9 +15,7 @@ export class CommentItemComponent implements OnInit {
   @Input() expandable: boolean;
   @Input() voted: number;
 
-  constructor(
-    private newCommentBottomSheet: MatBottomSheet
-  ) {}
+  constructor(private newCommentBottomSheet: MatBottomSheet) {}
 
   ngOnInit() {}
 

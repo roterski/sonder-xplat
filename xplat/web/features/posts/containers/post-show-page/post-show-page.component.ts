@@ -19,7 +19,8 @@ import {
   templateUrl: './post-show-page.component.html',
   styleUrls: ['./post-show-page.component.css']
 })
-export class PostShowPageComponent extends PostsBaseComponent implements OnInit {
+export class PostShowPageComponent extends PostsBaseComponent
+  implements OnInit {
   post$: Observable<Post>;
   postId: number;
   comments$: Observable<PostComment[]>;
@@ -31,7 +32,7 @@ export class PostShowPageComponent extends PostsBaseComponent implements OnInit 
   constructor(
     private route: ActivatedRoute,
     private newCommentBottomSheet: MatBottomSheet,
-    private getPostGQL: GetPostGQL,
+    private getPostGQL: GetPostGQL
   ) {
     super();
   }
@@ -49,21 +50,18 @@ export class PostShowPageComponent extends PostsBaseComponent implements OnInit 
 
       this.post$ = query$.pipe(
         map(
-          (result: ApolloQueryResult<GetPostGQLResponse>) =>
-            result.data.getPost
+          (result: ApolloQueryResult<GetPostGQLResponse>) => result.data.getPost
         )
       );
 
       this.commentsLoaded$ = query$.pipe(
-        map(
-          (result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading
-        )
+        map((result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading)
       );
 
       this.comments$ = this.post$.pipe(
         map((post: PostWithComments) => post.comments)
       );
-    })
+    });
   }
 
   openNewCommentBottomSheet() {

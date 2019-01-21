@@ -82,7 +82,10 @@
     "nativescript-angular": "~7.1.0",
     "@sonder/scss": "file:libs/scss",
     "@sonder/web": "file:xplat/web",
-    "tns-core-modules": "~5.1.0"
+    "tns-core-modules": "~5.1.0",
+    "nativescript-ngx-fonticon": "^4.2.0",
+    "nativescript-theme-core": "^1.0.4",
+    "rxjs-compat": "~6.3.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.12.1",
