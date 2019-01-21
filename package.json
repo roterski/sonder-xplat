@@ -59,11 +59,9 @@
     "@ngrx/effects": "6.1.0",
     "@ngrx/router-store": "6.1.0",
     "@ngrx/store": "6.1.0",
-    "@ngx-translate/core": "~10.0.1",
-    "@ngx-translate/http-loader": "~3.0.1",
+    "@ngx-translate/core": "~11.0.0",
+    "@ngx-translate/http-loader": "~4.0.0",
     "@nrwl/nx": "7.0.2",
-    "@sonder/scss": "file:libs/scss",
-    "@sonder/web": "file:xplat/web",
     "apollo-angular": "^1.5.0",
     "apollo-angular-link-http": "^1.4.0",
     "apollo-cache-inmemory": "^1.3.11",
@@ -80,7 +78,11 @@
     "ngx-facebook": "^2.4.0",
     "reflect-metadata": "^0.1.12",
     "rxjs": "~6.3.3",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "nativescript-angular": "~7.1.0",
+    "@sonder/scss": "file:libs/scss",
+    "@sonder/web": "file:xplat/web",
+    "tns-core-modules": "~5.1.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.12.1",
@@ -90,7 +92,7 @@
     "@ngrx/store-devtools": "6.1.0",
     "@nrwl/builders": "7.0.2",
     "@nrwl/schematics": "7.0.2",
-    "@nstudio/schematics": "^6.3.1",
+    "@nstudio/schematics": "^7.2.3",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "@types/jest": "^23.0.0",
@@ -113,7 +115,8 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.1.3"
+    "typescript": "~3.1.3",
+    "tns-platform-declarations": "~5.1.0"
   },
   "xplat": {
     "prefix": "sonder"
