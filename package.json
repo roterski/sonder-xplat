@@ -35,7 +35,10 @@
     "open.ionic.client.android": "cd apps/ionic-client && npm run cap.android",
     "sync.ionic.client": "cd apps/ionic-client && npm run cap.copy",
     "start.ionic.client": "cd apps/ionic-client && npm start",
-    "clean.ionic.client": "cd apps/ionic-client && npx rimraf -- hooks node_modules platforms www plugins ios android package-lock.json && npm i && rimraf -- package-lock.json"
+    "clean.ionic.client": "cd apps/ionic-client && npx rimraf -- hooks node_modules platforms www plugins ios android package-lock.json && npm i && rimraf -- package-lock.json",
+    "start.nativescript.client.ios": "cd apps/nativescript-client && tns run ios --emulator --bundle",
+    "start.nativescript.client.android": "cd apps/nativescript-client && tns run android --emulator --bundle",
+    "clean.nativescript.client": "cd apps/nativescript-client && npx rimraf -- hooks node_modules platforms package-lock.json && npm i && npx rimraf -- package-lock.json"
   },
   "private": true,
   "dependencies": {

@@ -28,6 +28,9 @@
         "ionic",
         "client"
       ]
+    },
+    "nativescript-client": {
+      "tags": []
     }
   }
 }
