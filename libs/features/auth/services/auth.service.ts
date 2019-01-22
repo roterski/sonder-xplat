@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FacebookService, InitParams, AuthResponse } from 'ngx-facebook';
 import { Observable, from, of } from 'rxjs';
 import { map, catchError, exhaustMap, tap, switchMap, first } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
 import { Apollo } from 'apollo-angular';
 import { LogOutService } from './log-out.service';
 import { BackendService } from './backend.service';
+import { FacebookService } from './facebook.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +19,10 @@ export class AuthService {
     private logOutService: LogOutService,
     private backendService: BackendService
   ) {
-    const params: InitParams = {
-      version: 'v2.10',
-      appId: environment.facebookAppId
-    };
-    facebookService.init(params);
   }
 
   facebookLogIn(): Observable<boolean> {
-    return this.authenticateFacebook().pipe(
+    return this.facebookService.authenticateFacebook().pipe(
       tap((facebookToken: string) => localStorage.setItem('facebookToken', facebookToken)),
       exhaustMap((facebookToken: string) => this.authenticateBackend(facebookToken)),
       this.persistAuthToken()
@@ -79,17 +74,5 @@ export class AuthService {
   private authenticateBackend(access_token: string): Observable<string> {
     return this.backendService
       .post('authenticate/facebook', { access_token }, false);
-  }
-
-  private authenticateFacebook(): Observable<string> {
-    return from(this.facebookService.getLoginStatus()).pipe(
-      exhaustMap(
-        data =>
-          data.status === 'connected'
-            ? of(data)
-            : from(this.facebookService.login())
-      ),
-      map(data => data.authResponse.accessToken)
-    );
   }
 }
