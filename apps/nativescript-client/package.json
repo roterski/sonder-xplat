@@ -29,11 +29,11 @@
     "@angular/platform-browser": "file:../../node_modules/@angular/platform-browser",
     "@angular/platform-browser-dynamic": "file:../../node_modules/@angular/platform-browser-dynamic",
     "@angular/router": "file:../../node_modules/@angular/router",
-    "@ngx-translate/core": "file:../../node_modules/@ngx-translate/core",
-    "@nrwl/nx": "file:../../node_modules/@nrwl/nx",
     "@ngrx/effects": "file:../../node_modules/@ngrx/effects",
     "@ngrx/router-store": "file:../../node_modules/@ngrx/router-store",
     "@ngrx/store": "file:../../node_modules/@ngrx/store",
+    "@ngx-translate/core": "file:../../node_modules/@ngx-translate/core",
+    "@nrwl/nx": "file:../../node_modules/@nrwl/nx",
     "@sonder/nativescript": "file:../../xplat/nativescript",
     "@sonder/scss": "file:../../libs/scss",
     "nativescript-angular": "file:../../node_modules/nativescript-angular",
@@ -42,7 +42,7 @@
     "reflect-metadata": "file:../../node_modules/reflect-metadata",
     "rxjs": "file:../../node_modules/rxjs",
     "rxjs-compat": "file:../../node_modules/rxjs-compat",
-    "tns-core-modules": "file:../../node_modules/tns-core-modules",
+    "tns-core-modules": "^5.1.2",
     "zone.js": "file:../../node_modules/zone.js"
   },
   "devDependencies": {
