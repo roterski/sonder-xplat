@@ -12,7 +12,8 @@ import { AuthenticatedGuard } from '@sonder/features/auth/guards';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    // redirectTo: '/home',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
   {
