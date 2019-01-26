@@ -8,7 +8,7 @@ import { FacebookService } from '@sonder/features/auth';
 @Injectable()
 export class FacebookTnsService extends FacebookService {
   public authenticateFacebook(): Observable<string> {
-    // debugger;
+    debugger;
     return of('bob');
   }
 }

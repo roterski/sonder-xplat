@@ -1,5 +1,6 @@
 // https://github.com/NativeScript/nativescript-dev-webpack/issues/660#issuecomment-422711983
 import 'reflect-metadata';
+import 'nativescript-localstorage';
 import { platformNativeScriptDynamic } from 'nativescript-angular/platform';
 import { AppOptions } from 'nativescript-angular/platform-common';
 import { enableProdMode } from '@angular/core';
