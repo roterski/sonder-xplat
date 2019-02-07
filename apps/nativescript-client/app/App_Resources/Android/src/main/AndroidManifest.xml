@@ -24,7 +24,9 @@
 		android:icon="@drawable/icon"
 		android:label="@string/app_name"
 		android:theme="@style/AppTheme">
-
+		<provider android:authorities="com.facebook.app.FacebookContentProvider897988177030305"
+				  android:name="com.facebook.FacebookContentProvider"
+				  android:exported="true"/>
 		<activity
 			android:name="com.tns.NativeScriptActivity"
 			android:label="@string/title_activity_kimera"

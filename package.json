@@ -37,7 +37,9 @@
     "start.ionic.client": "cd apps/ionic-client && npm start",
     "clean.ionic.client": "cd apps/ionic-client && npx rimraf -- hooks node_modules platforms www plugins ios android package-lock.json && npm i && rimraf -- package-lock.json",
     "start.nativescript.client.ios": "cd apps/nativescript-client && tns run ios --emulator --bundle",
+    "start.nativescript.client.ios.debug": "cd apps/nativescript-client && tns debug ios --emulator --bundle",
     "start.nativescript.client.android": "cd apps/nativescript-client && tns run android --emulator --bundle",
+    "start.nativescript.client.android.debug": "cd apps/nativescript-client && tns debug android --emulator --bundle",
     "clean.nativescript.client": "cd apps/nativescript-client && npx rimraf -- hooks node_modules platforms package-lock.json && npm i && npx rimraf -- package-lock.json"
   },
   "private": true,
@@ -79,6 +81,7 @@
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.11",
     "ngx-facebook": "^2.4.0",
+    "nativescript-facebook": "^2.3.1",
     "reflect-metadata": "^0.1.12",
     "rxjs": "~6.3.3",
     "zone.js": "^0.8.26",

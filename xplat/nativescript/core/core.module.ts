@@ -5,6 +5,7 @@ import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
 import { device } from 'tns-core-modules/platform';
 import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
+import { NativeScriptFacebookModule } from 'nativescript-facebook/angular';
 
 // libs
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -32,6 +33,7 @@ export function createTranslateLoader() {
 @NgModule({
   imports: [
     NativeScriptModule,
+    NativeScriptFacebookModule,
     NativeScriptHttpClientModule,
     TNSFontIconModule.forRoot({
       fa: './assets/fontawesome.min.css'

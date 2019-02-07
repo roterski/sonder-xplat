@@ -6,6 +6,7 @@ import * as tnsApp from 'tns-core-modules/application';
 import * as tnsUtils from 'tns-core-modules/utils/utils';
 import { device, isIOS, isAndroid } from 'tns-core-modules/platform';
 import { DeviceOrientation } from 'tns-core-modules/ui/enums';
+import * as tnsFacebook from 'nativescript-facebook';
 
 // libs
 import { TranslateService } from '@ngx-translate/core';
@@ -41,6 +42,7 @@ export class AppService {
     this._initLocale();
     this._initOrientation();
     this._initAppEvents();
+    this._initFacebookPlugin();
   }
 
   public get orientation() {
@@ -124,6 +126,10 @@ export class AppService {
         }
       }
     });
+  }
+
+  private _initFacebookPlugin() {
+    tnsFacebook.init('897988177030305');
   }
 }
 

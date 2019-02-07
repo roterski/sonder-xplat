@@ -37,6 +37,7 @@
     "@sonder/nativescript": "file:../../xplat/nativescript",
     "@sonder/scss": "file:../../libs/scss",
     "nativescript-angular": "file:../../node_modules/nativescript-angular",
+    "nativescript-facebook": "file:../../node_modules/nativescript-facebook",
     "nativescript-localstorage": "^2.0.0",
     "nativescript-ngx-fonticon": "file:../../node_modules/nativescript-ngx-fonticon",
     "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
