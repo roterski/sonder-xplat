@@ -1,24 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SignInWithFacebookPageComponent, SignInPageComponent, SignUpPageComponent } from '@sonder/web/features/auth/components';
-import { UnauthenticatedGuard } from '@sonder/features/auth/guards';
 
 export const authRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: SignInWithFacebookPageComponent,
-    canActivate: [UnauthenticatedGuard]
+    component: SignInWithFacebookPageComponent
   },
   {
     path: 'sign-in',
-    component: SignInPageComponent,
-    canActivate: [UnauthenticatedGuard]
+    component: SignInPageComponent
   },
   {
     path: 'sign-up',
-    component: SignUpPageComponent,
-    canActivate: [UnauthenticatedGuard]
+    component: SignUpPageComponent
   }
 ];
 

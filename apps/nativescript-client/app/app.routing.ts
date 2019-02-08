@@ -7,7 +7,7 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
 
 // app
 import { SharedModule } from './features/shared/shared.module';
-import { AuthenticatedGuard } from '@sonder/features/auth/guards';
+import { AuthenticatedGuard, UnauthenticatedGuard } from '@sonder/features/auth/guards';
 
 const routes: Routes = [
   {
@@ -22,6 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
+    canActivate: [UnauthenticatedGuard],
     loadChildren: '~/features/auth/auth.module#AuthModule'
   }
 ];

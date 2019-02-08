@@ -10,8 +10,7 @@ export const authRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: LoginPageComponent,
-    // canActivate: [UnauthenticatedGuard]
+    component: LoginPageComponent
   }
 ];
 
