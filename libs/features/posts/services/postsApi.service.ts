@@ -4,7 +4,9 @@ import { map, tap } from 'rxjs/operators';
 import { Post, PostComment, Tag } from '../models';
 import { BackendService } from '@sonder/features/auth/services/backend.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PostsApiService {
   constructor(private backend: BackendService) {}
 
