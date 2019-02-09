@@ -12,6 +12,8 @@ import {
   GetPostsGQLResponse
 } from '@sonder/features';
 
+import { RouterExtensions } from 'nativescript-angular/router';
+import { AuthService } from '@sonder/features/auth';
 @Component({
   moduleId: module.id,
   selector: 'sonder-posts-list-page',
@@ -22,17 +24,36 @@ export class PostsListPageComponent extends PostsBaseComponent implements OnInit
   loading = true;
   posts$: Observable<Post[]>;
 
-  constructor(private apollo: Apollo, private getPostsGQL: GetPostsGQL) {
+  constructor(private getPostsGQL: GetPostsGQL, private authService: AuthService, private routerExtensions: RouterExtensions) {
     super();
   }
 
   ngOnInit() {
+    debugger
+    console.log('ON INIT');
+  }
+
+  loadPosts() {
+    // debugger
+    // this.posts = [
+    //   {
+    //     id: 5,
+    //     title: 'test',
+    //     body: 'body'
+    //   }
+    // ]
     this.getPostsGQL
       .watch()
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((result: ApolloQueryResult<GetPostsGQLResponse>) => {
+        debugger
+        console.log('FETCHED POSTS');
         this.posts = result.data.getPosts;
         this.loading = result.loading;
       });
+  }
+
+  logOut() {
+    this.authService.logOut().subscribe(() => this.routerExtensions.navigate(['/login'], { clearHistory: true }));
   }
 }

@@ -23,7 +23,7 @@ export class PostsListPageComponent extends PostsBaseComponent
   loading = true;
   posts$: Observable<Post[]>;
 
-  constructor(private apollo: Apollo, private getPostsGQL: GetPostsGQL) {
+  constructor(private getPostsGQL: GetPostsGQL) {
     super();
   }
 

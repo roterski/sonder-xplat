@@ -27,7 +27,6 @@ export class AppApolloModule {
     const http = httpLink.create({
       uri: `${environment.backendUrl}/graphql`
     });
-
     const cache = new InMemoryCache();
 
     const errorLink = onError(({ graphQLErrors, response, networkError }) => {

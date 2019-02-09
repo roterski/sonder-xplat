@@ -8,6 +8,7 @@ import { AppApolloModule } from '@sonder/features/app-apollo';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './features/shared/shared.module';
 import { AuthModule } from './features/auth';
+import { PostsModule } from './features/posts/posts.module';
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 
@@ -17,7 +18,8 @@ import { AppComponent } from './app.component';
     SharedModule,
     AppRoutingModule,
     AppApolloModule,
-    AuthModule
+    AuthModule,
+    PostsModule
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
