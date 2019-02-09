@@ -12,8 +12,13 @@ import { AuthenticatedGuard, UnauthenticatedGuard } from '@sonder/features/auth/
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/posts',
     pathMatch: 'full'
+  },
+  {
+    path: 'posts',
+    canActivate: [AuthenticatedGuard],
+    loadChildren: './features/posts/posts.module#PostsModule'
   },
   {
     path: 'home',

@@ -4,7 +4,6 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
 
 import { SharedModule } from '../shared/shared.module';
 import { LoginPageComponent, AuthModule as AuthTnsModule } from '@sonder/nativescript/features/auth';
-import { UnauthenticatedGuard } from '@sonder/features/auth/guards';
 
 export const authRoutes: Routes = [
   {
