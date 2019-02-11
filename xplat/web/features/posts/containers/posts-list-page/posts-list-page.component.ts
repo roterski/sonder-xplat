@@ -17,26 +17,23 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'sonder-posts-list-page',
   templateUrl: 'posts-list-page.component.html'
 })
-export class PostsListPageComponent extends PostsBaseComponent implements OnInit {
+export class PostsListPageComponent extends PostsBaseComponent
+  implements OnInit {
   posts: Post[];
   loading = true;
   posts$: Observable<Post[]>;
 
-  constructor(private apollo: Apollo, private getPostsGQL: GetPostsGQL) {
+  constructor(private getPostsGQL: GetPostsGQL) {
     super();
   }
 
   ngOnInit() {
     this.getPostsGQL
       .watch()
-      .valueChanges
-      .pipe(
-        takeUntil(this.destroy$)
-      ).subscribe(
-        (result: ApolloQueryResult<GetPostsGQLResponse>) => {
-          this.posts = result.data.getPosts;
-          this.loading = result.loading;
-        }
-      );
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((result: ApolloQueryResult<GetPostsGQLResponse>) => {
+        this.posts = result.data.getPosts;
+        this.loading = result.loading;
+      });
   }
 }

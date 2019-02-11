@@ -6,7 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from './features/shared/shared.module';
 
 import { AuthenticatedAppComponent } from '@sonder/web/features/ui/containers';
-import { AuthenticatedGuard } from '@sonder/features/auth/guards';
+import { AuthenticatedGuard, UnauthenticatedGuard } from '@sonder/features/auth/guards';
 import { authRoutes } from './features/auth/auth-routing.module';
 import { postsRoutes } from './features/posts/posts-routing.module';
 
@@ -33,6 +33,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
+    canActivate: [UnauthenticatedGuard],
     loadChildren: './features/auth/auth.module#AuthModule'
   }
 ];

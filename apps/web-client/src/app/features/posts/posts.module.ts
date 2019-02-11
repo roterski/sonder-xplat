@@ -3,12 +3,6 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-
-import {
-  PostsApiService,
-  VotesApiService,
-  TagsApiService
-} from '@sonder/features/posts/services';
 import {
   POSTS_COMPONENTS,
   POSTS_CONTAINERS,
@@ -30,9 +24,6 @@ import { PostsRoutingModule } from './posts-routing.module';
   exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
   entryComponents: [CommentItemComponent, NewCommentFormComponent],
   providers: [
-    PostsApiService,
-    VotesApiService,
-    TagsApiService,
   ]
 })
 export class PostsModule {}

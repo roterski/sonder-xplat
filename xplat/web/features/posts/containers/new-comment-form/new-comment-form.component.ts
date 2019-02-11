@@ -10,7 +10,12 @@ import {
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 
 import { PostComment, createComment } from '@sonder/features/posts/models';
-import { CreateCommentGQL, GetPostGQL, GetPostGQLResponse, PostsBaseComponent } from '@sonder/features/posts';
+import {
+  CreateCommentGQL,
+  GetPostGQL,
+  GetPostGQLResponse,
+  PostsBaseComponent
+} from '@sonder/features/posts';
 import { parseValidationErrors } from '@sonder/features/app-apollo';
 
 @Component({
@@ -18,7 +23,8 @@ import { parseValidationErrors } from '@sonder/features/app-apollo';
   templateUrl: './new-comment-form.component.html',
   styleUrls: ['./new-comment-form.component.scss']
 })
-export class NewCommentFormComponent extends PostsBaseComponent implements OnInit {
+export class NewCommentFormComponent extends PostsBaseComponent
+  implements OnInit {
   commentForm: FormGroup;
   errors: any;
 
@@ -49,33 +55,32 @@ export class NewCommentFormComponent extends PostsBaseComponent implements OnIni
       .subscribe(() => {
         this.commentForm.reset();
         this.bottomSheetRef.dismiss();
-      }, error => this.errors = parseValidationErrors(error));
+      }, error => (this.errors = parseValidationErrors(error)));
   }
 
   private createComment(): Observable<any> {
     const commentData = { ...this.commentForm.value, ...this.inputData };
 
-    return this.createCommentGQL
-      .mutate(commentData, {
-        optimisticResponse: {
-          __typename: 'Mutation',
-          createComment: {
-            __typename: 'Comment',
-            id: Math.round(Math.random() * -1000000),
-            ...commentData
-          }
-        },
-        update: (store, { data: { createComment: createdComment } }) => {
-          const query = this.getPostGQL.document;
-          const variables = { postId: this.inputData.postId };
-          const data: GetPostGQLResponse = store.readQuery({
-            query,
-            variables
-          });
-
-          data.getPost.comments.push(createdComment);
-          store.writeQuery({ query, data });
+    return this.createCommentGQL.mutate(commentData, {
+      optimisticResponse: {
+        __typename: 'Mutation',
+        createComment: {
+          __typename: 'Comment',
+          id: Math.round(Math.random() * -1000000),
+          ...commentData
         }
-      })
+      },
+      update: (store, { data: { createComment: createdComment } }) => {
+        const query = this.getPostGQL.document;
+        const variables = { postId: this.inputData.postId };
+        const data: GetPostGQLResponse = store.readQuery({
+          query,
+          variables
+        });
+
+        data.getPost.comments.push(createdComment);
+        store.writeQuery({ query, data });
+      }
+    });
   }
 }

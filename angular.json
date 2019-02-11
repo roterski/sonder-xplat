@@ -196,6 +196,17 @@
           "styleext": "scss"
         }
       }
+    },
+    "nativescript-client": {
+      "root": "apps/nativescript-client/",
+      "sourceRoot": "apps/nativescript-client/app",
+      "projectType": "application",
+      "prefix": "sonder",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

@@ -35,7 +35,12 @@
     "open.ionic.client.android": "cd apps/ionic-client && npm run cap.android",
     "sync.ionic.client": "cd apps/ionic-client && npm run cap.copy",
     "start.ionic.client": "cd apps/ionic-client && npm start",
-    "clean.ionic.client": "cd apps/ionic-client && npx rimraf -- hooks node_modules platforms www plugins ios android package-lock.json && npm i && rimraf -- package-lock.json"
+    "clean.ionic.client": "cd apps/ionic-client && npx rimraf -- hooks node_modules platforms www plugins ios android package-lock.json && npm i && rimraf -- package-lock.json",
+    "start.nativescript.client.ios": "cd apps/nativescript-client && tns run ios --emulator --bundle",
+    "start.nativescript.client.ios.debug": "cd apps/nativescript-client && tns debug ios --emulator --bundle",
+    "start.nativescript.client.android": "cd apps/nativescript-client && tns run android --emulator --bundle",
+    "start.nativescript.client.android.debug": "cd apps/nativescript-client && tns debug android --emulator --bundle",
+    "clean.nativescript.client": "cd apps/nativescript-client && npx rimraf -- hooks node_modules platforms package-lock.json && npm i && npx rimraf -- package-lock.json"
   },
   "private": true,
   "dependencies": {
@@ -59,11 +64,9 @@
     "@ngrx/effects": "6.1.0",
     "@ngrx/router-store": "6.1.0",
     "@ngrx/store": "6.1.0",
-    "@ngx-translate/core": "~10.0.1",
-    "@ngx-translate/http-loader": "~3.0.1",
+    "@ngx-translate/core": "~11.0.0",
+    "@ngx-translate/http-loader": "~4.0.0",
     "@nrwl/nx": "7.0.2",
-    "@sonder/scss": "file:libs/scss",
-    "@sonder/web": "file:xplat/web",
     "apollo-angular": "^1.5.0",
     "apollo-angular-link-http": "^1.4.0",
     "apollo-cache-inmemory": "^1.3.11",
@@ -78,9 +81,17 @@
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.11",
     "ngx-facebook": "^2.4.0",
+    "nativescript-facebook": "^2.3.1",
     "reflect-metadata": "^0.1.12",
     "rxjs": "~6.3.3",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "nativescript-angular": "~7.1.0",
+    "@sonder/scss": "file:libs/scss",
+    "@sonder/web": "file:xplat/web",
+    "tns-core-modules": "~5.1.0",
+    "nativescript-ngx-fonticon": "^4.2.0",
+    "nativescript-theme-core": "^1.0.4",
+    "rxjs-compat": "~6.3.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.12.1",
@@ -90,7 +101,7 @@
     "@ngrx/store-devtools": "6.1.0",
     "@nrwl/builders": "7.0.2",
     "@nrwl/schematics": "7.0.2",
-    "@nstudio/schematics": "^6.3.1",
+    "@nstudio/schematics": "^7.2.3",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "@types/jest": "^23.0.0",
@@ -113,7 +124,8 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.1.3"
+    "typescript": "~3.1.3",
+    "tns-platform-declarations": "~5.1.0"
   },
   "xplat": {
     "prefix": "sonder"

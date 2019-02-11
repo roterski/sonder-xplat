@@ -11,10 +11,7 @@ import { AuthService } from '@sonder/features/auth';
 export class AuthenticatedAppComponent implements OnInit {
   public loggedIn$: Observable<boolean>;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.loggedIn$ = this.authService.isLoggedIn();

@@ -1,0 +1,9 @@
+<ActionBar class="action-bar">
+  <Label class="action-bar-title" text="Sonder"></Label>
+    <ActionItem android.position="actionBar" ios.position="right" (tap)="logOut()">
+        <Label text="&#xf2bd;" class="fa action-button"></Label>
+    </ActionItem>
+</ActionBar>
+<StackLayout class="p-20">
+  <Label automationText="helloLabel" [text]="'hello' | translate" class="h1 p-10 text-center"></Label>
+</StackLayout>

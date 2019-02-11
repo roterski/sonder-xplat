@@ -3,7 +3,9 @@ import { Observable } from 'rxjs';
 import { Tag } from '../models';
 import { BackendService } from '@sonder/features/auth/services/backend.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TagsApiService {
   constructor(private backend: BackendService) {}
 
