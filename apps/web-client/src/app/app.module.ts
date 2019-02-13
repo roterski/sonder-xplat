@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 // libs
 import { AppApolloModule } from '@sonder/features/app-apollo';
+import { environment } from '@sonder/core';
 
 // app
 import { CoreModule } from './core/core.module';

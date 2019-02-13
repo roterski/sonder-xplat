@@ -36,15 +36,11 @@ export class PostShowPageComponent extends PostsBaseComponent
   constructor(
     private route: ActivatedRoute,
     private newCommentBottomSheet: MatBottomSheet,
-<<<<<<< HEAD
-    private getPostGQL: GetPostGQL
-=======
     private getPostGQL: GetPostGQL,
     private commentsStore: CommentsStore,
     private commentsQuery: CommentsQuery,
     private postsStore: PostsStore,
     private postsQuery: PostsQuery,
->>>>>>> WIP add comments state
   ) {
     super();
   }
@@ -64,20 +60,6 @@ export class PostShowPageComponent extends PostsBaseComponent
 
       const loadPostWithComments$ = this.getPostGQL.watch({ postId }).valueChanges.pipe(
         map(
-<<<<<<< HEAD
-          (result: ApolloQueryResult<GetPostGQLResponse>) => result.data.getPost
-        )
-      );
-
-      this.commentsLoaded$ = query$.pipe(
-        map((result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading)
-      );
-
-      this.comments$ = this.post$.pipe(
-        map((post: PostWithComments) => post.comments)
-      );
-    });
-=======
           (result: ApolloQueryResult<GetPostGQLResponse>) =>
             result.data.getPost
         ),
@@ -92,7 +74,6 @@ export class PostShowPageComponent extends PostsBaseComponent
         .pipe(takeUntil(this.destroy$))
         .subscribe();
     })
->>>>>>> WIP add comments state
   }
 
   openNewCommentBottomSheet() {
