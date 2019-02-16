@@ -5,12 +5,29 @@ import { platformNativeScriptDynamic } from 'nativescript-angular/platform';
 import { AppOptions } from 'nativescript-angular/platform-common';
 import { enableProdMode } from '@angular/core';
 import { AppModule } from './app.module';
+import {
+  enableAkitaProdMode,
+  persistState,
+  akitaConfig
+} from '@datorama/akita';
+import { environment } from '@sonder/core';
 
 // If built with env.uglify
 declare const __UGLIFIED__;
 if (typeof __UGLIFIED__ !== 'undefined' && __UGLIFIED__) {
   require('@angular/core').enableProdMode();
 }
+
+if (environment.production) {
+  enableProdMode();
+  enableAkitaProdMode();
+}
+
+akitaConfig({
+  resettable: true
+});
+
+persistState({ include: ['session'] });
 
 let options: AppOptions = {};
 if (module['hot']) {
