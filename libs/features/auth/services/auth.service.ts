@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, from, of } from 'rxjs';
 import { map, catchError, exhaustMap, tap, switchMap, first } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
-import { Apollo } from 'apollo-angular';
 import { LogOutService } from './log-out.service';
 import { BackendService } from './backend.service';
 import { FacebookService } from './facebook.service';
@@ -16,7 +15,6 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private facebookService: FacebookService,
-    private apollo: Apollo,
     private logOutService: LogOutService,
     private backendService: BackendService,
     private sessionStore: SessionStore,

@@ -10,6 +10,7 @@ import {
 import { environment } from '@sonder/core/environments/environment';
 import { SessionQuery } from '../state';
 import { LogOutService } from './log-out.service';
+import * as urlJoin from 'url-join';
 
 @Injectable({
   providedIn: 'root'
@@ -63,7 +64,7 @@ export class BackendService {
   }
 
   private url(path) {
-    return `${this.apiRoot()}/${path}`;
+    return urlJoin(this.apiRoot(), path);
   }
 
   private apiRoot(): string {
