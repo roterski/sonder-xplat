@@ -2,7 +2,7 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
 // libs
-// import { AppApolloModule } from '@sonder/features/app-apollo';
+import { LogOutService } from '@sonder/features/auth';
 
 // app
 import { CoreModule } from './core/core.module';
@@ -17,12 +17,12 @@ import { AppComponent } from './app.component';
     CoreModule,
     SharedModule,
     AppRoutingModule,
-    // AppApolloModule,
     AuthModule,
     PostsModule
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
+  providers: [LogOutService]
 })
 export class AppModule {}

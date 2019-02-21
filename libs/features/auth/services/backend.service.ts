@@ -9,7 +9,7 @@ import {
 } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
 import { SessionQuery } from '../state';
-import { LogOutService } from './log-out.service';
+import { LogOutService } from './log-out';
 import * as urlJoin from 'url-join';
 
 @Injectable({
