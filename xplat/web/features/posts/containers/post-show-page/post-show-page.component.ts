@@ -8,9 +8,7 @@ import { NewCommentFormComponent } from '../../containers/new-comment-form/new-c
 import { MatBottomSheet } from '@angular/material';
 
 import {
-  CommentsStore,
   CommentsQuery,
-  PostsStore,
   PostsQuery,
   PostsService,
 } from '@sonder/features/posts';
@@ -33,9 +31,7 @@ export class PostShowPageComponent extends PostsBaseComponent
   constructor(
     private route: ActivatedRoute,
     private newCommentBottomSheet: MatBottomSheet,
-    private commentsStore: CommentsStore,
     private commentsQuery: CommentsQuery,
-    private postsStore: PostsStore,
     private postsQuery: PostsQuery,
     private postsService: PostsService
   ) {
@@ -53,13 +49,10 @@ export class PostShowPageComponent extends PostsBaseComponent
       this.comments$ = this.commentsQuery.selectPostComments(postId);
       this.commentsLoaded$ = this.commentsQuery.selectPostCommentsLoaded(postId);
       this.post$ = this.postsQuery.selectEntity(postId);
-      this.postsService.loadPostWithComments(postId)
-        .pipe(
-          takeUntil(this.destroy$)
-        ).subscribe(({ post, comments }: { post: Post, comments: PostComment[] }) => {
-          this.postsStore.createOrReplace(post.id, post);
-          this.commentsStore.addPostComments(post.id, comments);
-        })
+      this.postsService
+        .loadPostWithComments(postId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe();
     })
   }
 

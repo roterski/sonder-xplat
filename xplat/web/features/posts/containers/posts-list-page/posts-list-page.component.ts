@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {
   PostsBaseComponent,
   Post,
-  PostsStore,
   PostsQuery,
   PostsService,
 } from '@sonder/features';
@@ -20,7 +19,6 @@ export class PostsListPageComponent extends PostsBaseComponent
 
   constructor(
     private postsQuery: PostsQuery,
-    private postsStore: PostsStore,
     private postsService: PostsService) {
     super();
   }
@@ -31,6 +29,6 @@ export class PostsListPageComponent extends PostsBaseComponent
     this.postsService
       .loadPosts()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((posts: Post[]) => this.postsStore.set(posts));
+      .subscribe();
   }
 }
