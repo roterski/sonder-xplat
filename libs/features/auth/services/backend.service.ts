@@ -8,7 +8,9 @@ import {
   switchMap
 } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
-import { LogOutService } from './log-out.service';
+import { SessionQuery } from '../state';
+import { LogOutService } from './log-out';
+import * as urlJoin from 'url-join';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,7 @@ import { LogOutService } from './log-out.service';
 export class BackendService {
   constructor(
     private http: HttpClient,
+    private sessionQuery: SessionQuery,
     private logOutService: LogOutService
   ) {}
 
@@ -56,12 +59,12 @@ export class BackendService {
   }
 
   requestHeaders(authenticated: boolean = true): { headers: any } {
-    const token = localStorage.getItem('authToken');
+    const token = this.sessionQuery.backendToken();
     return authenticated && token ? this.headers(token) : this.staticHeaders();
   }
 
   private url(path) {
-    return `${this.apiRoot()}/${path}`;
+    return urlJoin(this.apiRoot(), path);
   }
 
   private apiRoot(): string {

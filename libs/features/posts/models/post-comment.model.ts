@@ -8,7 +8,7 @@ export interface PostComment {
   parentIds: Array<number | string>;
   points: number;
   voted: number;
-  childrenIds: Array<number | string>;
+  childrenIds?: Array<number | string>;
 }
 
 export function createComment(params: Partial<PostComment>) {

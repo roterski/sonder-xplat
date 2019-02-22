@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import { ApolloQueryResult } from 'apollo-client';
+// import { Apollo } from 'apollo-angular';
+// import { ApolloQueryResult } from 'apollo-client';
 
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, pluck } from 'rxjs/operators';
 
 import {
   PostsBaseComponent,
   Post,
-  GetPostsGQL,
-  GetPostsGQLResponse
-} from '@sonder/features';
+  PostsStore,
+  PostsApiService,
+  PostsQuery
+} from '@sonder/features/posts';
 
 import { RouterExtensions } from 'nativescript-angular/router';
 import { AuthService } from '@sonder/features/auth';
@@ -20,37 +21,34 @@ import { AuthService } from '@sonder/features/auth';
   templateUrl: './posts-list-page.component.html'
 })
 export class PostsListPageComponent extends PostsBaseComponent implements OnInit {
-  posts: Post[];
-  loading = true;
+  // posts: Post[];
+  // loading = true;
+  loading$: Observable<boolean>;
   posts$: Observable<Post[]>;
 
-  constructor(private getPostsGQL: GetPostsGQL, private authService: AuthService, private routerExtensions: RouterExtensions) {
+  constructor(
+    private authService: AuthService,
+    private routerExtensions: RouterExtensions,
+    private postsApiService: PostsApiService,
+    private postsStore: PostsStore,
+    private postsQuery: PostsQuery) {
     super();
   }
 
   ngOnInit() {
-    debugger
-    console.log('ON INIT');
+    this.posts$ = this.postsQuery.selectAll();
+    this.loading$ = this.postsQuery.selectLoading();
+    this.loadPosts();
   }
 
   loadPosts() {
-    // debugger
-    // this.posts = [
-    //   {
-    //     id: 5,
-    //     title: 'test',
-    //     body: 'body'
-    //   }
-    // ]
-    this.getPostsGQL
-      .watch()
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((result: ApolloQueryResult<GetPostsGQLResponse>) => {
-        debugger
-        console.log('FETCHED POSTS');
-        this.posts = result.data.getPosts;
-        this.loading = result.loading;
-      });
+    this.postsApiService
+      .getPosts()
+      .pipe(
+        pluck('data'),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((posts) => this.postsStore.set(posts));
   }
 
   logOut() {

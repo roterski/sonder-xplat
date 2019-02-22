@@ -1,17 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map, takeUntil } from 'rxjs/operators';
-import { Observable, of, Subscription } from 'rxjs';
+import { map, takeUntil, tap } from 'rxjs/operators';
+import { Observable, of, Subscription, zip, combineLatest } from 'rxjs';
 
 import { Post, PostComment, PostsBaseComponent } from '@sonder/features/posts';
 import { NewCommentFormComponent } from '../../containers/new-comment-form/new-comment-form.component';
 import { MatBottomSheet } from '@angular/material';
-import { ApolloQueryResult } from 'apollo-client';
 
 import {
-  GetPostGQL,
-  GetPostGQLResponse,
-  PostWithComments
+  CommentsQuery,
+  PostsQuery,
+  PostsService,
 } from '@sonder/features/posts';
 
 @Component({
@@ -32,7 +31,9 @@ export class PostShowPageComponent extends PostsBaseComponent
   constructor(
     private route: ActivatedRoute,
     private newCommentBottomSheet: MatBottomSheet,
-    private getPostGQL: GetPostGQL
+    private commentsQuery: CommentsQuery,
+    private postsQuery: PostsQuery,
+    private postsService: PostsService
   ) {
     super();
   }
@@ -45,23 +46,14 @@ export class PostShowPageComponent extends PostsBaseComponent
 
     postId$.subscribe((postId: number) => {
       this.postId = postId;
-
-      const query$ = this.getPostGQL.watch({ postId }).valueChanges;
-
-      this.post$ = query$.pipe(
-        map(
-          (result: ApolloQueryResult<GetPostGQLResponse>) => result.data.getPost
-        )
-      );
-
-      this.commentsLoaded$ = query$.pipe(
-        map((result: ApolloQueryResult<GetPostGQLResponse>) => !result.loading)
-      );
-
-      this.comments$ = this.post$.pipe(
-        map((post: PostWithComments) => post.comments)
-      );
-    });
+      this.comments$ = this.commentsQuery.selectPostComments(postId);
+      this.commentsLoaded$ = this.commentsQuery.selectPostCommentsLoaded(postId);
+      this.post$ = this.postsQuery.selectEntity(postId);
+      this.postsService
+        .loadPostWithComments(postId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe();
+    })
   }
 
   openNewCommentBottomSheet() {

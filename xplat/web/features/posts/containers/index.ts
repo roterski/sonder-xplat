@@ -7,7 +7,7 @@ export const POSTS_CONTAINERS = [
   PostShowPageComponent,
   NewPostPageComponent,
   NewCommentFormComponent,
-  PostsListPageComponent
+  PostsListPageComponent,
 ];
 
 export * from './post-show-page/post-show-page.component';

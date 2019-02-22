@@ -2,16 +2,13 @@
   <Label class="action-bar-title" text="Sonder"></Label>
   <ActionItem android.position="actionBar" ios.position="right" (tap)="logOut()">
     <Label text="&#xf2bd;" class="fa action-button"></Label>
-  </ActionItem><ActionItem android.position="actionBar" ios.position="left" (tap)="loadPosts()">
-    <Label text="&#xf2bd;" class="fa action-button"></Label>
   </ActionItem>
 </ActionBar>
 
 <GridLayout class="page page-content">
-  <ListView [items]="posts" class="list-group">
+  <ListView [items]="(posts$ | async)" class="list-group">
     <ng-template let-post="item">
       <StackLayout orientation="horizontal" class="list-group-item">
-        <Label text="Post: " textWrap="true"></Label>
         <Label [text]="post.title"></Label>
       </StackLayout>
     </ng-template>

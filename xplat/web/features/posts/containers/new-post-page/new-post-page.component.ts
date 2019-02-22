@@ -10,13 +10,11 @@ import {
 } from '@angular/forms';
 
 import {
-  CreatePostGQL,
-  GetPostsGQL,
-  GetPostsGQLResponse,
-  PostsBaseComponent
+  PostsBaseComponent,
+  PostsService,
+  Post,
+  Tag
 } from '@sonder/features/posts';
-import { Post, createPost, Tag } from '@sonder/features/posts/models';
-import { parseValidationErrors } from '@sonder/features/app-apollo';
 
 @Component({
   selector: 'sonder-new-post-page',
@@ -34,8 +32,7 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private createPostGQL: CreatePostGQL,
-    private getPostsGQL: GetPostsGQL
+    private postsService: PostsService
   ) {
     super();
   }
@@ -52,32 +49,13 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   }
 
   addPost() {
-    this.createPost()
+    this.postsService
+      .createPost(this.postForm.value)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        result => this.router.navigate(['/']),
-        error => (this.errors = parseValidationErrors(error))
+        (post: Post) => this.router.navigate(['/']),
+        (errors) => this.errors = errors
       );
-  }
-
-  private createPost(): Observable<any> {
-    return this.createPostGQL.mutate(this.postForm.value, {
-      optimisticResponse: {
-        __typename: 'Mutation',
-        createPost: {
-          __typename: 'Post',
-          id: Math.round(Math.random() * -1000000),
-          ...this.postForm.value
-        }
-      },
-      update: (store, { data: { createPost: createdPost } }) => {
-        const query = this.getPostsGQL.document;
-        const data: GetPostsGQLResponse = store.readQuery({ query });
-
-        data.getPosts.push(createdPost);
-        store.writeQuery({ query, data });
-      }
-    });
   }
 
   tagAdded(tag: Tag) {
