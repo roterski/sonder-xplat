@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -30,6 +30,7 @@ export class NewCommentFormComponent extends PostsBaseComponent
     private postsService: PostsService,
     private formBuilder: FormBuilder,
     private bottomSheetRef: MatBottomSheetRef<NewCommentFormComponent>,
+    private changeDetectorRef: ChangeDetectorRef,
     @Inject(MAT_BOTTOM_SHEET_DATA)
     public inputData: { postId: number; parentIds: number[] }
   ) {
@@ -56,6 +57,9 @@ export class NewCommentFormComponent extends PostsBaseComponent
           this.commentForm.reset();
           this.bottomSheetRef.dismiss();
         },
-        (errors) => this.errors = errors);
+        (errors) => {
+          this.errors = errors;
+          this.changeDetectorRef.markForCheck(); // https://github.com/angular/material2/issues/12931
+        });
   }
 }
