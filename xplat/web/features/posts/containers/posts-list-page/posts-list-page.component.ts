@@ -1,19 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
-
 import {
   PostsBaseComponent,
   Post,
-  GetPostsGQL,
-  GetPostsGQLResponse,
   PostsStore,
-  PostsQuery
+  PostsQuery,
+  PostsService,
 } from '@sonder/features';
-import { ApolloQueryResult } from 'apollo-client';
-
 import { Observable, of } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap, pluck } from 'rxjs/operators';
 
 @Component({
   selector: 'sonder-posts-list-page',
@@ -25,24 +19,18 @@ export class PostsListPageComponent extends PostsBaseComponent
   loading$ = of(true);
 
   constructor(
-    private apollo: Apollo,
-    private getPostsGQL: GetPostsGQL,
     private postsQuery: PostsQuery,
-    private postsStore: PostsStore) {
+    private postsStore: PostsStore,
+    private postsService: PostsService) {
     super();
   }
 
   ngOnInit() {
     this.posts$ = this.postsQuery.selectAll();
     this.loading$ = this.postsQuery.selectLoading();
-
-    this.getPostsGQL
-      .watch()
-      .valueChanges.pipe(
-        takeUntil(this.destroy$)
-      )
-      .subscribe((result: ApolloQueryResult<GetPostsGQLResponse>) => {
-        this.postsStore.set(result.data.getPosts);
-      });
+    this.postsService
+      .loadPosts()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((posts: Post[]) => this.postsStore.set(posts));
   }
 }

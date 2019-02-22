@@ -6,16 +6,13 @@ import { Observable, of, Subscription, zip, combineLatest } from 'rxjs';
 import { Post, PostComment, PostsBaseComponent } from '@sonder/features/posts';
 import { NewCommentFormComponent } from '../../containers/new-comment-form/new-comment-form.component';
 import { MatBottomSheet } from '@angular/material';
-import { ApolloQueryResult } from 'apollo-client';
 
 import {
-  GetPostGQL,
-  GetPostGQLResponse,
-  PostWithComments,
   CommentsStore,
   CommentsQuery,
   PostsStore,
-  PostsQuery
+  PostsQuery,
+  PostsService,
 } from '@sonder/features/posts';
 
 @Component({
@@ -36,11 +33,11 @@ export class PostShowPageComponent extends PostsBaseComponent
   constructor(
     private route: ActivatedRoute,
     private newCommentBottomSheet: MatBottomSheet,
-    private getPostGQL: GetPostGQL,
     private commentsStore: CommentsStore,
     private commentsQuery: CommentsQuery,
     private postsStore: PostsStore,
     private postsQuery: PostsQuery,
+    private postsService: PostsService
   ) {
     super();
   }
@@ -53,26 +50,16 @@ export class PostShowPageComponent extends PostsBaseComponent
 
     postId$.subscribe((postId: number) => {
       this.postId = postId;
-
       this.comments$ = this.commentsQuery.selectPostComments(postId);
       this.commentsLoaded$ = this.commentsQuery.selectPostCommentsLoaded(postId);
       this.post$ = this.postsQuery.selectEntity(postId);
-
-      const loadPostWithComments$ = this.getPostGQL.watch({ postId }).valueChanges.pipe(
-        map(
-          (result: ApolloQueryResult<GetPostGQLResponse>) =>
-            result.data.getPost
-        ),
-        tap((post: PostWithComments) => {
+      this.postsService.loadPostWithComments(postId)
+        .pipe(
+          takeUntil(this.destroy$)
+        ).subscribe(({ post, comments }: { post: Post, comments: PostComment[] }) => {
           this.postsStore.createOrReplace(post.id, post);
-          this.commentsStore.addPostComments(post.id, post.comments);
+          this.commentsStore.addPostComments(post.id, comments);
         })
-      );
-
-
-      zip(this.commentsLoaded$, this.comments$, loadPostWithComments$)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe();
     })
   }
 

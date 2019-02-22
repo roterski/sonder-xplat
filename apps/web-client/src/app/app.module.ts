@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 
 // libs
 import { AppApolloModule } from '@sonder/features/app-apollo';
-import { Apollo } from 'apollo-angular';
 import { environment } from '@sonder/core';
-import { ApolloLogOutService, LogOutService } from '@sonder/features/auth';
+import { LogOutApolloService, LogOutService } from '@sonder/features/auth';
+import { PostsService, PostsApolloService, PostsAkitaService } from '@sonder/features/posts';
 
 // app
 import { CoreModule } from './core/core.module';
@@ -34,7 +34,10 @@ import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
   declarations: [AppComponent],
   bootstrap: [AppComponent],
   providers: [
-    { provide: LogOutService, useClass: ApolloLogOutService, deps: [Apollo] }
+    // { provide: LogOutService, useClass: LogOutApolloService },
+    // { provide: PostsService, useClass: PostsApolloService },
+    LogOutService,
+    { provide: PostsService, useClass: PostsAkitaService }
   ]
 })
 export class AppModule {}

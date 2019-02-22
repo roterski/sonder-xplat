@@ -3,6 +3,11 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
 // libs
 import { LogOutService } from '@sonder/features/auth';
+import {
+  PostsService,
+  PostsApolloService,
+  PostsAkitaService
+} from '@sonder/features/posts';
 
 // app
 import { CoreModule } from './core/core.module';
@@ -23,6 +28,9 @@ import { AppComponent } from './app.component';
   declarations: [AppComponent],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA],
-  providers: [LogOutService]
+  providers: [
+    LogOutService,
+    { provide: PostsService, useClass: PostsAkitaService }
+  ]
 })
 export class AppModule {}

@@ -10,7 +10,7 @@ import { BackendService } from '@sonder/features/auth/services/backend.service';
 export class PostsApiService {
   constructor(private backend: BackendService) {}
 
-  getPosts(params: any = {}): Observable<any> {
+  getPosts(params: any = {}): Observable<Post[]> {
     return this.backend.get('/posts', params);
   }
 
@@ -26,7 +26,7 @@ export class PostsApiService {
       .pipe(map(response => response.data));
   }
 
-  getPostComments(postId: number | string): Observable<any> {
+  getPostComments(postId: number | string): Observable<PostComment[]> {
     return this.backend
       .get(`/posts/${postId}/comments`)
       .pipe(map(response => response.data));
