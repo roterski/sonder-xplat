@@ -11,12 +11,9 @@ import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 
 import { PostComment, createComment } from '@sonder/features/posts/models';
 import {
-  CreateCommentGQL,
-  GetPostGQL,
-  GetPostGQLResponse,
+  PostsService,
   PostsBaseComponent
 } from '@sonder/features/posts';
-import { parseValidationErrors } from '@sonder/features/app-apollo';
 
 @Component({
   selector: 'sonder-new-comment-form',
@@ -27,19 +24,20 @@ export class NewCommentFormComponent extends PostsBaseComponent
   implements OnInit {
   commentForm: FormGroup;
   errors: any;
+  postId: number;
 
   constructor(
-    private createCommentGQL: CreateCommentGQL,
-    private getPostGQL: GetPostGQL,
+    private postsService: PostsService,
     private formBuilder: FormBuilder,
     private bottomSheetRef: MatBottomSheetRef<NewCommentFormComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA)
-    public inputData: { postId: number | string; parentIds: number[] }
+    public inputData: { postId: number; parentIds: number[] }
   ) {
     super();
   }
 
   ngOnInit() {
+    this.postId = this.inputData.postId;
     this.createForm();
   }
 
@@ -50,37 +48,14 @@ export class NewCommentFormComponent extends PostsBaseComponent
   }
 
   addComment() {
-    this.createComment()
+    this.postsService
+      .createComment(this.postId, { ...this.commentForm.value, ...this.inputData })
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.commentForm.reset();
-        this.bottomSheetRef.dismiss();
-      }, error => (this.errors = parseValidationErrors(error)));
-  }
-
-  private createComment(): Observable<any> {
-    const commentData = { ...this.commentForm.value, ...this.inputData };
-
-    return this.createCommentGQL.mutate(commentData, {
-      optimisticResponse: {
-        __typename: 'Mutation',
-        createComment: {
-          __typename: 'Comment',
-          id: Math.round(Math.random() * -1000000),
-          ...commentData
-        }
-      },
-      update: (store, { data: { createComment: createdComment } }) => {
-        const query = this.getPostGQL.document;
-        const variables = { postId: this.inputData.postId };
-        const data: GetPostGQLResponse = store.readQuery({
-          query,
-          variables
-        });
-
-        data.getPost.comments.push(createdComment);
-        store.writeQuery({ query, data });
-      }
-    });
+      .subscribe(
+        () => {
+          this.commentForm.reset();
+          this.bottomSheetRef.dismiss();
+        },
+        (errors) => this.errors = errors);
   }
 }

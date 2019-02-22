@@ -7,8 +7,10 @@ import { Post, PostComment } from '../../models';
 import { PostsStore, CommentsStore } from '../../state';
 import {
   CreatePostGQL,
+  CreateCommentGQL,
   GetPostsGQL,
   GetPostGQL,
+  GetPostGQLResponse,
   GetPostsGQLResponse,
   PostWithComments
 } from '../../graphql';
@@ -23,6 +25,7 @@ export class PostsApolloService extends PostsService {
     private getPostsGQL: GetPostsGQL,
     private getPostGQL: GetPostGQL,
     private createPostGQL: CreatePostGQL,
+    private createCommentGQL: CreateCommentGQL,
     private postsStore: PostsStore,
     private commentsStore: CommentsStore
   ) {
@@ -53,28 +56,61 @@ export class PostsApolloService extends PostsService {
   }
 
   createPost(post: Post): Observable<Post> {
-    return this.createPostGQL.mutate(post, {
+    return this.createPostGQL
+      .mutate(post, {
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createPost: {
+            __typename: 'Post',
+            id: Math.round(Math.random() * -1000000),
+            ...post
+          }
+        },
+        update: (store, { data: { createPost: createdPost } }) => {
+          const query = this.getPostsGQL.document;
+          const data: GetPostsGQLResponse = store.readQuery({ query });
+
+          data.getPosts.push(createdPost);
+          store.writeQuery({ query, data });
+        }
+      })
+      .pipe(
+        tap((post: Post) => this.postsStore.createOrReplace(post.id, post)),
+        catchError(error => {
+          const message = _.get(error, 'graphQLErrors[0].message.message');
+          throw message ? this.parseValidationErrors(message) : error;
+        })
+      );
+  }
+
+  createComment(postId: number, comment: PostComment): Observable<PostComment> {
+    return this.createCommentGQL.mutate(comment, {
       optimisticResponse: {
         __typename: 'Mutation',
-        createPost: {
-          __typename: 'Post',
+        createComment: {
+          __typename: 'Comment',
           id: Math.round(Math.random() * -1000000),
-          ...post
+          ...comment
         }
       },
-      update: (store, { data: { createPost: createdPost } }) => {
-        const query = this.getPostsGQL.document;
-        const data: GetPostsGQLResponse = store.readQuery({ query });
+      update: (store, { data: { createComment: createdComment } }) => {
+        const query = this.getPostGQL.document;
+        const variables = { postId };
+        const data: GetPostGQLResponse = store.readQuery({
+          query,
+          variables
+        });
 
-        data.getPosts.push(createdPost);
+        data.getPost.comments.push(createdComment);
         store.writeQuery({ query, data });
       }
-    }).pipe(
-        tap((post: Post) => this.postsStore.createOrReplace(post.id, post)),
-        catchError((error) => {
-          const message = _.get(error, 'graphQLErrors[0].message.message');
-          throw(message ? this.parseValidationErrors(message) : error);
-        })
-      );;
+    })
+    .pipe(
+      tap((comment: PostComment) => this.commentsStore.createOrReplace(comment.id, comment)),
+      catchError(error => {
+        const message = _.get(error, 'graphQLErrors[0].message.message');
+        throw message ? this.parseValidationErrors(message) : error;
+      })
+    );
   }
 };
