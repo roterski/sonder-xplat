@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of, from } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
@@ -9,14 +10,14 @@ import { LogOutService } from './log-out.service';
   providedIn: 'root'
 })
 export class LogOutApolloService extends LogOutService {
-  constructor(private apollo: Apollo) {
-    super();
+  constructor(private apollo: Apollo, router: Router) {
+    super(router);
   }
 
   logOut(): Observable<boolean> {
     return from(this.apollo.getClient().resetStore()).pipe(
       tap(() => resetStores()),
-      switchMap(() => of(true))
+      switchMap(() => from(this.router.navigate(['/login'])))
     );
   }
 }

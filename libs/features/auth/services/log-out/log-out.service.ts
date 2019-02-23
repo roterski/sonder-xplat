@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of, from } from 'rxjs';
 import { resetStores } from '@datorama/akita';
 
@@ -6,10 +7,10 @@ import { resetStores } from '@datorama/akita';
   providedIn: 'root'
 })
 export class LogOutService {
-  constructor() {}
+  constructor(public router: Router) {}
 
   logOut(): Observable<boolean> {
     resetStores();
-    return of(true);
+    return from(this.router.navigate(['/login']));
   }
 }
