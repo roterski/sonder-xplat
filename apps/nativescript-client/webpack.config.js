@@ -86,7 +86,7 @@ module.exports = env => {
             globalObject: "global",
         },
         resolve: {
-            extensions: [".ts", ".js", ".scss", ".css"],
+            extensions: ['.mjs', ".ts", ".js", ".scss", ".css"],
             // Resolve {N} system modules from tns-core-modules
             modules: [
                 resolve(__dirname, "node_modules/tns-core-modules"),
