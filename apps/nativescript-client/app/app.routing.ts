@@ -7,7 +7,10 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
 
 // app
 import { SharedModule } from './features/shared/shared.module';
-import { AuthenticatedGuard, UnauthenticatedGuard } from '@sonder/features/auth/guards';
+import {
+  AuthenticatedGuard,
+  UnauthenticatedGuard
+} from '@sonder/features/auth/guards';
 
 const routes: Routes = [
   {
@@ -33,10 +36,6 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    SharedModule,
-    NativeScriptRouterModule.forRoot(routes)
-  ]
+  imports: [SharedModule, NativeScriptRouterModule.forRoot(routes)]
 })
 export class AppRoutingModule {}
-

@@ -10,11 +10,18 @@ import { BaseComponent } from '@sonder/core';
   templateUrl: './home.component.html'
 })
 export class HomeComponent extends BaseComponent {
-  constructor(private authService: AuthService, private routerExtensions: RouterExtensions) {
+  constructor(
+    private authService: AuthService,
+    private routerExtensions: RouterExtensions
+  ) {
     super();
   }
 
   logOut() {
-    this.authService.logOut().subscribe(() => this.routerExtensions.navigate(['/login'], { clearHistory: true }));
+    this.authService
+      .logOut()
+      .subscribe(() =>
+        this.routerExtensions.navigate(['/login'], { clearHistory: true })
+      );
   }
 }

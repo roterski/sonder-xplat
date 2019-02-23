@@ -31,10 +31,9 @@ persistState({ include: ['session'] });
 
 let options: AppOptions = {};
 if (module['hot']) {
-  
   // attach to livesync hooks and perform navigation
   require('@sonder/nativescript').attachLivesyncNavigation();
-  
+
   const hmrUpdate = require('nativescript-dev-webpack/hmr').hmrUpdate;
 
   options.hmrOptions = {

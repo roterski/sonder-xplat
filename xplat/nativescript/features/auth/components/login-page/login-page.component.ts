@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { BaseComponent } from '@sonder/core';
-import { takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '@sonder/features/auth';
 
@@ -11,7 +11,10 @@ import { AuthService } from '@sonder/features/auth';
   templateUrl: './login-page.component.html'
 })
 export class LoginPageComponent extends BaseComponent {
-  constructor(private authService: AuthService, private routerExtensions: RouterExtensions) {
+  constructor(
+    private authService: AuthService,
+    private routerExtensions: RouterExtensions
+  ) {
     super();
   }
 
@@ -19,6 +22,8 @@ export class LoginPageComponent extends BaseComponent {
     this.authService
       .facebookLogIn()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.routerExtensions.navigate(['/'], { clearHistory: true }));
+      .subscribe(() =>
+        this.routerExtensions.navigate(['/'], { clearHistory: true })
+      );
   }
 }

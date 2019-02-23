@@ -10,7 +10,7 @@ import { MatBottomSheet } from '@angular/material';
 import {
   CommentsQuery,
   PostsQuery,
-  PostsService,
+  PostsService
 } from '@sonder/features/posts';
 
 @Component({
@@ -47,13 +47,15 @@ export class PostShowPageComponent extends PostsBaseComponent
     postId$.subscribe((postId: number) => {
       this.postId = postId;
       this.comments$ = this.commentsQuery.selectPostComments(postId);
-      this.commentsLoaded$ = this.commentsQuery.selectPostCommentsLoaded(postId);
+      this.commentsLoaded$ = this.commentsQuery.selectPostCommentsLoaded(
+        postId
+      );
       this.post$ = this.postsQuery.selectEntity(postId);
       this.postsService
         .loadPostWithComments(postId)
         .pipe(takeUntil(this.destroy$))
         .subscribe();
-    })
+    });
   }
 
   openNewCommentBottomSheet() {

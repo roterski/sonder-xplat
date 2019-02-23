@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable , of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import {
-  map,
-  tap,
-  catchError,
-  switchMap
-} from 'rxjs/operators';
+import { map, tap, catchError, switchMap } from 'rxjs/operators';
 import { environment } from '@sonder/core/environments/environment';
 import { SessionQuery } from '../state';
 import { LogOutService } from './log-out';
@@ -22,40 +17,72 @@ export class BackendService {
     private logOutService: LogOutService
   ) {}
 
-  get(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest((url: string, headers: { headers: any }) => (
-      this.http.get(url, { ...headers, params })
-    ), path, authenticated)
+  get(
+    path: string,
+    params: any = {},
+    authenticated: boolean = true
+  ): Observable<any> {
+    return this.performRequest(
+      (url: string, headers: { headers: any }) =>
+        this.http.get(url, { ...headers, params }),
+      path,
+      authenticated
+    );
   }
 
-  post(path: string, data: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest((url: string, headers: { headers: any }) => (
-      this.http.post(url, data, headers)
-    ), path, authenticated)
+  post(
+    path: string,
+    data: any = {},
+    authenticated: boolean = true
+  ): Observable<any> {
+    return this.performRequest(
+      (url: string, headers: { headers: any }) =>
+        this.http.post(url, data, headers),
+      path,
+      authenticated
+    );
   }
 
-  put(path: string, data: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest((url: string, headers: { headers: any }) => (
-      this.http.put(url, data, headers)
-    ), path, authenticated)
+  put(
+    path: string,
+    data: any = {},
+    authenticated: boolean = true
+  ): Observable<any> {
+    return this.performRequest(
+      (url: string, headers: { headers: any }) =>
+        this.http.put(url, data, headers),
+      path,
+      authenticated
+    );
   }
 
-  delete(path: string, params: any = {}, authenticated: boolean = true): Observable<any> {
-    return this.performRequest((url: string, headers: { headers: any }) => (
-      this.http.get(url, { ...headers, params })
-    ), path, authenticated)
+  delete(
+    path: string,
+    params: any = {},
+    authenticated: boolean = true
+  ): Observable<any> {
+    return this.performRequest(
+      (url: string, headers: { headers: any }) =>
+        this.http.get(url, { ...headers, params }),
+      path,
+      authenticated
+    );
   }
 
-  performRequest(method, path: string, authenticated: boolean): Observable<any> {
+  performRequest(
+    method,
+    path: string,
+    authenticated: boolean
+  ): Observable<any> {
     return of(this.requestHeaders(authenticated)).pipe(
-      switchMap((headers) => method(this.url(path), headers)),
+      switchMap(headers => method(this.url(path), headers)),
       catchError(error => {
         if (error.status === 401) {
           this.logOutService.logOut();
         }
-        throw(error);
+        throw error;
       })
-    )
+    );
   }
 
   requestHeaders(authenticated: boolean = true): { headers: any } {

@@ -15,30 +15,25 @@ export class PostsApiService {
   }
 
   getPost(postId: number | string): Observable<Post> {
-    return this.backend
-      .get(`/posts/${postId}`)
-      .pipe(pluck('data'));
+    return this.backend.get(`/posts/${postId}`).pipe(pluck('data'));
   }
 
   createPost(post: Post): Observable<Post> {
-    return this.backend
-      .post('/posts', { post })
-      .pipe(pluck('data'));
+    return this.backend.post('/posts', { post }).pipe(pluck('data'));
   }
 
   createPostWithTags(post: Post, tags: Tag[]): Observable<Post> {
-    return this.backend
-      .post('/posts', { post, tags })
-      .pipe(pluck('data'));
+    return this.backend.post('/posts', { post, tags }).pipe(pluck('data'));
   }
 
   getPostComments(postId: number | string): Observable<PostComment[]> {
-    return this.backend
-      .get(`/posts/${postId}/comments`)
-      .pipe(pluck('data'));
+    return this.backend.get(`/posts/${postId}/comments`).pipe(pluck('data'));
   }
 
-  createComment(postId: number | string, comment: PostComment): Observable<PostComment> {
+  createComment(
+    postId: number | string,
+    comment: PostComment
+  ): Observable<PostComment> {
     return this.backend
       .post(`/posts/${postId}/comments`, { comment })
       .pipe(pluck('data'));

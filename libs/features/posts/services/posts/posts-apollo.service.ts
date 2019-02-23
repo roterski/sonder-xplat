@@ -84,33 +84,36 @@ export class PostsApolloService extends PostsService {
   }
 
   createComment(postId: number, comment: PostComment): Observable<PostComment> {
-    return this.createCommentGQL.mutate(comment, {
-      optimisticResponse: {
-        __typename: 'Mutation',
-        createComment: {
-          __typename: 'Comment',
-          id: Math.round(Math.random() * -1000000),
-          ...comment
-        }
-      },
-      update: (store, { data: { createComment: createdComment } }) => {
-        const query = this.getPostGQL.document;
-        const variables = { postId };
-        const data: GetPostGQLResponse = store.readQuery({
-          query,
-          variables
-        });
+    return this.createCommentGQL
+      .mutate(comment, {
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createComment: {
+            __typename: 'Comment',
+            id: Math.round(Math.random() * -1000000),
+            ...comment
+          }
+        },
+        update: (store, { data: { createComment: createdComment } }) => {
+          const query = this.getPostGQL.document;
+          const variables = { postId };
+          const data: GetPostGQLResponse = store.readQuery({
+            query,
+            variables
+          });
 
-        data.getPost.comments.push(createdComment);
-        store.writeQuery({ query, data });
-      }
-    })
-    .pipe(
-      tap((comment: PostComment) => this.commentsStore.createOrReplace(comment.id, comment)),
-      catchError(error => {
-        const message = _.get(error, 'graphQLErrors[0].message.message');
-        throw message ? this.parseValidationErrors(message) : error;
+          data.getPost.comments.push(createdComment);
+          store.writeQuery({ query, data });
+        }
       })
-    );
+      .pipe(
+        tap((comment: PostComment) =>
+          this.commentsStore.createOrReplace(comment.id, comment)
+        ),
+        catchError(error => {
+          const message = _.get(error, 'graphQLErrors[0].message.message');
+          throw message ? this.parseValidationErrors(message) : error;
+        })
+      );
   }
-};
+}

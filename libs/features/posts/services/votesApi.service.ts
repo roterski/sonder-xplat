@@ -22,19 +22,28 @@ export class VotesApiService {
       .pipe(map(response => response.data));
   }
 
-  upvote(targetClass: 'posts' | 'comments', targetId: number | string): Observable<any> {
+  upvote(
+    targetClass: 'posts' | 'comments',
+    targetId: number | string
+  ): Observable<any> {
     return this.backend
       .post(`/${targetClass}/${targetId}/upvote`)
       .pipe(map(response => response.data));
   }
 
-  downvote(targetClass: 'posts' | 'comments', targetId: number | string): Observable<any> {
+  downvote(
+    targetClass: 'posts' | 'comments',
+    targetId: number | string
+  ): Observable<any> {
     return this.backend
       .post(`/${targetClass}/${targetId}/downvote`)
       .pipe(map(response => response.data));
   }
 
-  revokeVote(targetClass: 'posts' | 'comments', targetId: number | string): Observable<any> {
+  revokeVote(
+    targetClass: 'posts' | 'comments',
+    targetId: number | string
+  ): Observable<any> {
     return this.backend
       .post(`/${targetClass}/${targetId}/revoke_vote`)
       .pipe(map(response => response.data));

@@ -21,8 +21,8 @@ export class AuthenticatedGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this.authService.isLoggedIn().pipe(
-      switchMap((loggedIn) => loggedIn ? of(true) : of(false)),
-      tap((loggedIn) => loggedIn ? null : this.router.navigate(['/login']))
+      switchMap(loggedIn => (loggedIn ? of(true) : of(false))),
+      tap(loggedIn => (loggedIn ? null : this.router.navigate(['/login'])))
     );
   }
 }

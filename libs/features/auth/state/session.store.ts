@@ -18,7 +18,7 @@ export class SessionStore extends Store<SessionState> {
     super(createInitialState());
   }
 
-  @action({ type: 'Sign In'})
+  @action({ type: 'Sign In' })
   authenticateBackend(backendAuthToken: string): void {
     this.update({ backendAuthToken });
   }

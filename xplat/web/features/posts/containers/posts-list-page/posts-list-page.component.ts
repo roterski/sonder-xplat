@@ -3,7 +3,7 @@ import {
   PostsBaseComponent,
   Post,
   PostsQuery,
-  PostsService,
+  PostsService
 } from '@sonder/features';
 import { Observable, of } from 'rxjs';
 import { takeUntil, tap, pluck } from 'rxjs/operators';
@@ -19,7 +19,8 @@ export class PostsListPageComponent extends PostsBaseComponent
 
   constructor(
     private postsQuery: PostsQuery,
-    private postsService: PostsService) {
+    private postsService: PostsService
+  ) {
     super();
   }
 

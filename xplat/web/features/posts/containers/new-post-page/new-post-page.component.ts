@@ -54,7 +54,7 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (post: Post) => this.router.navigate(['/']),
-        (errors) => this.errors = errors
+        errors => (this.errors = errors)
       );
   }
 

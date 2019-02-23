@@ -6,11 +6,7 @@ import { PostsRoutingModule } from './posts-routing.module';
 import { PostsModule as PostsTnsModule } from '@sonder/nativescript/features/posts';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    PostsTnsModule,
-    PostsRoutingModule,
-  ],
+  imports: [SharedModule, PostsTnsModule, PostsRoutingModule],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class PostsModule {}

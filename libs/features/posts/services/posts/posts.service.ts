@@ -8,7 +8,9 @@ export class PostsService {
     throw new Error('must be reimplemented in a subclass');
   }
 
-  loadPostWithComments(postId: number): Observable<{post: Post, comments: PostComment[]}> {
+  loadPostWithComments(
+    postId: number
+  ): Observable<{ post: Post; comments: PostComment[] }> {
     throw new Error('must be reimplemented in a subclass');
   }
 

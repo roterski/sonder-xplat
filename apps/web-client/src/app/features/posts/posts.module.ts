@@ -23,7 +23,6 @@ import { PostsRoutingModule } from './posts-routing.module';
   declarations: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
   exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
   entryComponents: [CommentItemComponent, NewCommentFormComponent],
-  providers: [
-  ]
+  providers: []
 })
 export class PostsModule {}

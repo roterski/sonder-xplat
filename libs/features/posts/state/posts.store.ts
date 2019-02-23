@@ -7,8 +7,7 @@ import {
 } from '@datorama/akita';
 import { Post } from '../models/post.model';
 
-export interface PostsState extends EntityState<Post> {
-}
+export interface PostsState extends EntityState<Post> {}
 
 const initialState = {
   ...getInitialActiveState()

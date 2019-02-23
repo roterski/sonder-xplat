@@ -17,9 +17,12 @@ export class CommentsQuery extends QueryEntity<CommentsState, PostComment> {
   }
 
   selectPostCommentsLoaded(postId: ID): Observable<boolean> {
-    return this.select((state: CommentsState) => (
-      !!(state.postCommentsLoaded[postId] &&
-      state.postCommentsLoaded[postId].loaded)
-    ))
+    return this.select(
+      (state: CommentsState) =>
+        !!(
+          state.postCommentsLoaded[postId] &&
+          state.postCommentsLoaded[postId].loaded
+        )
+    );
   }
 }

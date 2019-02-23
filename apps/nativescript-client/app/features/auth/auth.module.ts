@@ -3,7 +3,10 @@ import { Routes } from '@angular/router';
 import { NativeScriptRouterModule } from 'nativescript-angular/router';
 
 import { SharedModule } from '../shared/shared.module';
-import { LoginPageComponent, AuthModule as AuthTnsModule } from '@sonder/nativescript/features/auth';
+import {
+  LoginPageComponent,
+  AuthModule as AuthTnsModule
+} from '@sonder/nativescript/features/auth';
 
 export const authRoutes: Routes = [
   {
@@ -14,7 +17,11 @@ export const authRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [SharedModule, AuthTnsModule, NativeScriptRouterModule.forChild(authRoutes)],
+  imports: [
+    SharedModule,
+    AuthTnsModule,
+    NativeScriptRouterModule.forChild(authRoutes)
+  ],
   schemas: [NO_ERRORS_SCHEMA]
 })
-export class AuthModule { }
+export class AuthModule {}

@@ -1,2 +1,1 @@
-export const POSTS_COMPONENTS = [
-];
+export const POSTS_COMPONENTS = [];

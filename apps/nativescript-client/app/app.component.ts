@@ -9,10 +9,7 @@ import { AppBaseComponent, AppService } from '@sonder/nativescript';
   <page-router-outlet></page-router-outlet>`
 })
 export class AppComponent extends AppBaseComponent {
-
-  constructor(
-    appService: AppService
-  ) {
+  constructor(appService: AppService) {
     super(appService);
   }
 }

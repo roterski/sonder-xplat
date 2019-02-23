@@ -50,25 +50,25 @@ export class CommentTreeComponent extends PostsBaseComponent implements OnInit {
     zip(this.comments, commentEntities$)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-      ([comments, entities]: [PostComment[], { number: PostComment }]) => {
-        this.treeFlattener = new MatTreeFlattener(
-          this.transformer,
-          this.getNodeLevel,
-          this.isNodeExpendable,
-          this.getChildren(entities)
-        );
-        this.dataSource = new MatTreeFlatDataSource(
-          this.treeControl,
-          this.treeFlattener
-        );
+        ([comments, entities]: [PostComment[], { number: PostComment }]) => {
+          this.treeFlattener = new MatTreeFlattener(
+            this.transformer,
+            this.getNodeLevel,
+            this.isNodeExpendable,
+            this.getChildren(entities)
+          );
+          this.dataSource = new MatTreeFlatDataSource(
+            this.treeControl,
+            this.treeFlattener
+          );
 
-        this.dataSource.data = comments
-          .map(({ id }) => entities[id])
-          .filter((comment: PostComment) => comment.parentIds.length === 0)
-          .map((comment: PostComment) => new CommentNode(comment));
-        this.treeControl.expandAll();
-      }
-    );
+          this.dataSource.data = comments
+            .map(({ id }) => entities[id])
+            .filter((comment: PostComment) => comment.parentIds.length === 0)
+            .map((comment: PostComment) => new CommentNode(comment));
+          this.treeControl.expandAll();
+        }
+      );
   }
 
   private transformer(node: CommentNode, level: number) {

@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, Inject, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Inject,
+  ChangeDetectorRef
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -10,10 +16,7 @@ import {
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 
 import { PostComment, createComment } from '@sonder/features/posts/models';
-import {
-  PostsService,
-  PostsBaseComponent
-} from '@sonder/features/posts';
+import { PostsService, PostsBaseComponent } from '@sonder/features/posts';
 
 @Component({
   selector: 'sonder-new-comment-form',
@@ -50,16 +53,20 @@ export class NewCommentFormComponent extends PostsBaseComponent
 
   addComment() {
     this.postsService
-      .createComment(this.postId, { ...this.commentForm.value, ...this.inputData })
+      .createComment(this.postId, {
+        ...this.commentForm.value,
+        ...this.inputData
+      })
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
           this.commentForm.reset();
           this.bottomSheetRef.dismiss();
         },
-        (errors) => {
+        errors => {
           this.errors = errors;
           this.changeDetectorRef.markForCheck(); // https://github.com/angular/material2/issues/12931
-        });
+        }
+      );
   }
 }

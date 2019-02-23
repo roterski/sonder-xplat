@@ -10,4 +10,4 @@ import { POSTS_CONTAINERS } from './containers';
   declarations: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
   exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS]
 })
-export class PostsModule { }
+export class PostsModule {}

@@ -4,7 +4,11 @@ import { NgModule } from '@angular/core';
 import { AppApolloModule } from '@sonder/features/app-apollo';
 import { environment } from '@sonder/core';
 import { LogOutApolloService, LogOutService } from '@sonder/features/auth';
-import { PostsService, PostsApolloService, PostsAkitaService } from '@sonder/features/posts';
+import {
+  PostsService,
+  PostsApolloService,
+  PostsAkitaService
+} from '@sonder/features/posts';
 
 // app
 import { CoreModule } from './core/core.module';

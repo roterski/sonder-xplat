@@ -28,7 +28,8 @@ export class AppApolloModule {
     httpLink: HttpLink,
     router: Router,
     sessionQuery: SessionQuery,
-    logOutService: LogOutService) {
+    logOutService: LogOutService
+  ) {
     const http = httpLink.create({
       uri: `${environment.backendUrl}/graphql`
     });
@@ -37,9 +38,7 @@ export class AppApolloModule {
     const errorLink = onError(({ graphQLErrors, response, networkError }) => {
       const statusCode = _.get(response, 'errors[0].message.statusCode');
       if (statusCode === 401) {
-        logOutService
-          .logOut()
-          .subscribe(() => router.navigate(['/login']));
+        logOutService.logOut().subscribe(() => router.navigate(['/login']));
       }
     });
 

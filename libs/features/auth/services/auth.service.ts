@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, from, of } from 'rxjs';
-import { map, catchError, exhaustMap, tap, switchMap, first } from 'rxjs/operators';
+import {
+  map,
+  catchError,
+  exhaustMap,
+  tap,
+  switchMap,
+  first
+} from 'rxjs/operators';
 import { LogOutService } from './log-out';
 import { BackendService } from './backend.service';
 import { FacebookService } from './facebook.service';
@@ -18,12 +25,13 @@ export class AuthService {
     private backendService: BackendService,
     private sessionStore: SessionStore,
     private sessionQuery: SessionQuery
-  ) {
-  }
+  ) {}
 
   facebookLogIn(): Observable<boolean> {
     return this.facebookService.authenticateFacebook().pipe(
-      exhaustMap((facebookToken: string) => this.authenticateBackend(facebookToken)),
+      exhaustMap((facebookToken: string) =>
+        this.authenticateBackend(facebookToken)
+      ),
       this.persistAuthToken()
     );
   }

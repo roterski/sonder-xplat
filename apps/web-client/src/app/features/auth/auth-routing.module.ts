@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SignInWithFacebookPageComponent, SignInPageComponent, SignUpPageComponent } from '@sonder/web/features/auth/components';
+import {
+  SignInWithFacebookPageComponent,
+  SignInPageComponent,
+  SignUpPageComponent
+} from '@sonder/web/features/auth/components';
 
 export const authRoutes: Routes = [
   {

@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { FacebookService as NgxFacebookService, InitParams, AuthResponse } from 'ngx-facebook';
+import {
+  FacebookService as NgxFacebookService,
+  InitParams,
+  AuthResponse
+} from 'ngx-facebook';
 import { environment } from '@sonder/core/environments/environment';
 import { Observable, from, of } from 'rxjs';
 import { map, exhaustMap } from 'rxjs/operators';
@@ -8,9 +12,7 @@ import { FacebookService } from '@sonder/features/auth';
 
 @Injectable()
 export class FacebookWebService extends FacebookService {
-  constructor(
-    private facebookService: NgxFacebookService,
-  ) {
+  constructor(private facebookService: NgxFacebookService) {
     super();
     const params: InitParams = {
       version: 'v2.10',

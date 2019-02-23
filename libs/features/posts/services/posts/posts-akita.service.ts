@@ -42,26 +42,24 @@ export class PostsAkitaService extends PostsService {
   }
 
   createPost(post: Post): Observable<Post> {
-    return this.postsApi
-      .createPost(post)
-      .pipe(
-        tap((post: Post) => this.postsStore.createOrReplace(post.id, post)),
-        catchError((error) => {
-          const message = _.get(error, 'error.message');
-          throw(message ? this.parseValidationErrors(message) : error);
-        })
-      );
+    return this.postsApi.createPost(post).pipe(
+      tap((post: Post) => this.postsStore.createOrReplace(post.id, post)),
+      catchError(error => {
+        const message = _.get(error, 'error.message');
+        throw message ? this.parseValidationErrors(message) : error;
+      })
+    );
   }
 
   createComment(postId: number, comment: PostComment): Observable<PostComment> {
-    return this.postsApi
-      .createComment(postId, comment)
-      .pipe(
-        tap((comment: PostComment) => this.commentsStore.createOrReplace(comment.id, comment)),
-        catchError((error) => {
-          const message = _.get(error, 'error.message');
-          throw(message ? this.parseValidationErrors(message) : error);
-        })
-      )
+    return this.postsApi.createComment(postId, comment).pipe(
+      tap((comment: PostComment) =>
+        this.commentsStore.createOrReplace(comment.id, comment)
+      ),
+      catchError(error => {
+        const message = _.get(error, 'error.message');
+        throw message ? this.parseValidationErrors(message) : error;
+      })
+    );
   }
 }
