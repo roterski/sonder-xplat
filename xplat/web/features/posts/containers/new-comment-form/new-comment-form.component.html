@@ -7,7 +7,7 @@
       <mat-error *ngIf="errors && errors.body">{{errors.body}}</mat-error>
     </mat-card-title>
     <mat-card-actions>
-      <button mat-raised-button (click)="addComment()">Add</button>
+      <button mat-raised-button (click)="addCommentButtonClicks$.next()">Add</button>
       <mat-error *ngIf="errors">Something went wrong. 😓</mat-error>
     </mat-card-actions>
   </form>

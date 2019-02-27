@@ -5,8 +5,8 @@ import {
   Inject,
   ChangeDetectorRef
 } from '@angular/core';
-import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil, switchMap, catchError } from 'rxjs/operators';
 import {
   FormControl,
   FormBuilder,
@@ -25,6 +25,7 @@ import { PostsService, PostsBaseComponent } from '@sonder/features/posts';
 })
 export class NewCommentFormComponent extends PostsBaseComponent
   implements OnInit {
+  addCommentButtonClicks$ = new Subject<Event>();
   commentForm: FormGroup;
   errors: any;
   postId: number;
@@ -43,6 +44,7 @@ export class NewCommentFormComponent extends PostsBaseComponent
   ngOnInit() {
     this.postId = this.inputData.postId;
     this.createForm();
+    this.handleAddComment();
   }
 
   createForm() {
@@ -51,22 +53,25 @@ export class NewCommentFormComponent extends PostsBaseComponent
     });
   }
 
-  addComment() {
-    this.postsService
-      .createComment(this.postId, {
-        ...this.commentForm.value,
-        ...this.inputData
-      })
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        () => {
-          this.commentForm.reset();
-          this.bottomSheetRef.dismiss();
-        },
-        errors => {
-          this.errors = errors;
+  handleAddComment() {
+    this.addCommentButtonClicks$
+      .pipe(
+        switchMap(() =>
+          this.postsService.createComment(this.postId, {
+            ...this.commentForm.value,
+            ...this.inputData
+          })
+        ),
+        catchError((error, caught$) => {
+          this.errors = error;
           this.changeDetectorRef.markForCheck(); // https://github.com/angular/material2/issues/12931
-        }
-      );
+          return caught$;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.commentForm.reset();
+        this.bottomSheetRef.dismiss();
+      });
   }
 }

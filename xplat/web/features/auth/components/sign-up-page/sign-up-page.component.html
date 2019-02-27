@@ -17,7 +17,7 @@
       <mat-error *ngIf="errors && errors.password">{{ errors.password }}</mat-error>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-flat-button (click)="signUp()">Sign Up</button>
+      <button mat-flat-button (click)="signUpButtonClicks$.next()">Sign Up</button>
       <button mat-flat-button [routerLink]="['../sign-in']">Sign In</button>
       <mat-error *ngIf="errors">Something went wrong. 😓</mat-error>
     </mat-card-actions>

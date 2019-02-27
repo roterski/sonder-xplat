@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '@sonder/features/auth';
 import { AppBaseComponent } from '@sonder/web/core';
 
@@ -13,6 +13,7 @@ import { AppBaseComponent } from '@sonder/web/core';
 export class AuthenticatedAppComponent extends AppBaseComponent
   implements OnInit {
   public loggedIn$: Observable<boolean>;
+  logOutButtonClicks$ = new Subject<Event>();
 
   constructor(private authService: AuthService, private router: Router) {
     super();
@@ -20,12 +21,13 @@ export class AuthenticatedAppComponent extends AppBaseComponent
 
   ngOnInit() {
     this.loggedIn$ = this.authService.isLoggedIn();
+    this.handleLogOut();
   }
 
-  logOut() {
-    this.authService
-      .logOut()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
+  handleLogOut() {
+    this.logOutButtonClicks$.pipe(
+      switchMap(() => this.authService.logOut()),
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 }

@@ -21,11 +21,4 @@ export class PostsService {
   createComment(postId: number, comment: PostComment): Observable<PostComment> {
     throw new Error('must be reimplemented in a subclass');
   }
-
-  parseValidationErrors(errors: any): { [key: string]: string } {
-    return errors.reduce((acc, err) => {
-      acc[err.property] = Object.values(err.constraints).join(', ');
-      return acc;
-    }, {});
-  }
 }
