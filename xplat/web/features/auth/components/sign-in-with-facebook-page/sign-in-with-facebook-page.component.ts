@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { AuthService } from '@sonder/features/auth';
 import { AuthBaseComponent } from '@sonder/features';
@@ -10,15 +11,30 @@ import { AuthBaseComponent } from '@sonder/features';
   templateUrl: 'sign-in-with-facebook-page.component.html',
   styleUrls: ['../auth.component.css']
 })
-export class SignInWithFacebookPageComponent extends AuthBaseComponent {
+export class SignInWithFacebookPageComponent extends AuthBaseComponent
+  implements OnInit {
+  logInButtonClicks$ = new Subject<Event>();
+  errors: any;
+
   constructor(private authService: AuthService, private router: Router) {
     super();
   }
 
-  logIn() {
-    this.authService
-      .facebookLogIn()
-      .pipe(takeUntil(this.destroy$))
+  ngOnInit() {
+    this.handleLogIn();
+  }
+
+  handleLogIn() {
+    this.logInButtonClicks$
+      .pipe(
+        tap(() => this.errors = undefined),
+        switchMap(() => this.authService.facebookLogIn()),
+        catchError((error, caught$) => {
+          this.errors = error;
+          return caught$;
+        }),
+        takeUntil(this.destroy$)
+      )
       .subscribe(() => this.router.navigate(['/']));
   }
 }

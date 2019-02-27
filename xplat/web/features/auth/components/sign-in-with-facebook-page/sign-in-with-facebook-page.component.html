@@ -2,7 +2,7 @@
   <mat-card-title>
     <h1>Sonder</h1>
   </mat-card-title>
-  <button mat-flat-button (click)="logIn()">Log In With Facebook</button>
+  <button mat-flat-button (click)="logInButtonClicks$.next()">Log In With Facebook</button>
   <br>
   <button mat-flat-button [routerLink]="['../sign-up']">Sign Up With Email</button>
   <button mat-flat-button [routerLink]="['../sign-in']">Sign In With Email</button>

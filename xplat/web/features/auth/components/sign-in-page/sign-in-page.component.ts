@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil, switchMap, catchError } from 'rxjs/operators';
 import {
   FormControl,
   FormBuilder,
@@ -18,6 +19,7 @@ import * as _ from 'lodash';
   styleUrls: ['../auth.component.css']
 })
 export class SignInPageComponent extends AuthBaseComponent implements OnInit {
+  signInButtonClicks$ = new Subject<Event>();
   signInForm: FormGroup;
   errors: any;
 
@@ -31,6 +33,7 @@ export class SignInPageComponent extends AuthBaseComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    this.handleSignIn();
   }
 
   createForm() {
@@ -40,20 +43,18 @@ export class SignInPageComponent extends AuthBaseComponent implements OnInit {
     });
   }
 
-  signIn() {
-    this.authService
-      .signIn(this.signInForm.value)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        () => {
+  handleSignIn() {
+    this.signInButtonClicks$
+      .pipe(
+        switchMap(() => this.authService.signIn(this.signInForm.value)),
+        catchError((error, caught$) => {
+          this.errors = error.status === 409 ? { email: _.get(error, 'error.message') } : true;
+          return caught$;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
           this.router.navigate(['/']);
-        },
-        error => {
-          if (error.status === 409) {
-            this.errors = { email: _.get(error, 'error.message') };
-          } else {
-            this.errors = true;
-          }
         }
       );
   }

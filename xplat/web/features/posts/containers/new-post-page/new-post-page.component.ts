@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { takeUntil, exhaustMap, switchMap, tap, catchError } from 'rxjs/operators';
+import { of, Observable, Subject } from 'rxjs';
 import {
   FormControl,
   FormBuilder,
@@ -22,6 +22,7 @@ import {
   styleUrls: ['./new-post-page.component.css']
 })
 export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
+  createButtonClicks$ = new Subject<Event>();
   postForm: FormGroup;
   errors: any;
   post$: Observable<Post>;
@@ -39,6 +40,7 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    this.handleCreate();
   }
 
   createForm() {
@@ -48,14 +50,18 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
     });
   }
 
-  addPost() {
-    this.postsService
-      .createPost(this.postForm.value)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (post: Post) => this.router.navigate(['/']),
-        errors => (this.errors = errors)
-      );
+  handleCreate() {
+    this.createButtonClicks$
+      .pipe(
+        tap(() => this.errors = undefined),
+        exhaustMap(() => this.postsService.createPost(this.postForm.value)),
+        catchError((errors, caught$) => {
+          this.errors = errors;
+          return caught$;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => this.router.navigate(['/']));
   }
 
   tagAdded(tag: Tag) {

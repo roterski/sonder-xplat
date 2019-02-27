@@ -1,4 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
+import { parseValidationErrors } from '@sonder/utils';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { pluck, map, tap, catchError } from 'rxjs/operators';
@@ -78,7 +79,7 @@ export class PostsApolloService extends PostsService {
         tap((post: Post) => this.postsStore.createOrReplace(post.id, post)),
         catchError(error => {
           const message = _.get(error, 'graphQLErrors[0].message.message');
-          throw message ? this.parseValidationErrors(message) : error;
+          throw message ? parseValidationErrors(message) : error;
         })
       );
   }
@@ -112,7 +113,7 @@ export class PostsApolloService extends PostsService {
         ),
         catchError(error => {
           const message = _.get(error, 'graphQLErrors[0].message.message');
-          throw message ? this.parseValidationErrors(message) : error;
+          throw message ? parseValidationErrors(message) : error;
         })
       );
   }

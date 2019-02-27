@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
+import { parseValidationErrors } from '@sonder/utils';
 import { Observable, zip, throwError } from 'rxjs';
-import { pluck, map, tap, catchError } from 'rxjs/operators';
+import { pluck, map, tap, catchError, delay } from 'rxjs/operators';
 import { PostsService } from './posts.service';
 import { PostsApiService } from '../postsApi.service';
 import { Post, PostComment } from '../../models';
@@ -46,7 +47,7 @@ export class PostsAkitaService extends PostsService {
       tap((post: Post) => this.postsStore.createOrReplace(post.id, post)),
       catchError(error => {
         const message = _.get(error, 'error.message');
-        throw message ? this.parseValidationErrors(message) : error;
+        throw message ? parseValidationErrors(message) : error;
       })
     );
   }
@@ -58,7 +59,7 @@ export class PostsAkitaService extends PostsService {
       ),
       catchError(error => {
         const message = _.get(error, 'error.message');
-        throw message ? this.parseValidationErrors(message) : error;
+        throw message ? parseValidationErrors(message) : error;
       })
     );
   }
