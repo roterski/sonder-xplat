@@ -48,7 +48,10 @@ export class SignUpPageComponent extends AuthBaseComponent implements OnInit {
       .pipe(
         switchMap(() => this.authService.signUp(this.signUpForm.value)),
         catchError((error, caught$) => {
-          this.errors = error.status === 409 ? { email: _.get(error, 'error.message') } : true;
+          this.errors =
+            error.status === 409
+              ? { email: _.get(error, 'error.message') }
+              : true;
           return caught$;
         }),
         takeUntil(this.destroy$)

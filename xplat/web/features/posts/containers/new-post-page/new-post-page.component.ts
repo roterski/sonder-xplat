@@ -1,6 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { takeUntil, exhaustMap, switchMap, tap, catchError } from 'rxjs/operators';
+import {
+  takeUntil,
+  exhaustMap,
+  switchMap,
+  tap,
+  catchError
+} from 'rxjs/operators';
 import { of, Observable, Subject } from 'rxjs';
 import {
   FormControl,
@@ -53,7 +59,7 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   handleCreate() {
     this.createButtonClicks$
       .pipe(
-        tap(() => this.errors = undefined),
+        tap(() => (this.errors = undefined)),
         exhaustMap(() => this.postsService.createPost(this.postForm.value)),
         catchError((errors, caught$) => {
           this.errors = errors;

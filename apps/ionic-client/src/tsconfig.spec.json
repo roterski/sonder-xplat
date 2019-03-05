@@ -3,35 +3,16 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "module": "commonjs",
-    "types": [
-      "jasmine",
-      "node"
-    ],
+    "types": ["jasmine", "node"],
     "baseUrl": "./",
     "paths": {
-        "@sonder/*": [
-          "../../../libs/*"
-        ],
-        "@sonder/ionic": [
-          "../../../xplat/ionic/index.ts"
-        ],
-        "@sonder/ionic/*": [
-          "../../../xplat/ionic/*"
-        ],
-        "@sonder/web": [
-          "../../../xplat/web/index.ts"
-        ],
-        "@sonder/web/*": [
-          "../../../xplat/web/*"
-        ]
+      "@sonder/*": ["../../../libs/*"],
+      "@sonder/ionic": ["../../../xplat/ionic/index.ts"],
+      "@sonder/ionic/*": ["../../../xplat/ionic/*"],
+      "@sonder/web": ["../../../xplat/web/index.ts"],
+      "@sonder/web/*": ["../../../xplat/web/*"]
     }
   },
-  "files": [
-    "test.ts"
-  ],
-  "include": [
-    "polyfills.ts",
-    "**/*.spec.ts",
-    "**/*.d.ts"
-  ]
+  "files": ["test.ts"],
+  "include": ["polyfills.ts", "**/*.spec.ts", "**/*.d.ts"]
 }

@@ -8,34 +8,15 @@
     "noEmitOnError": true,
     "removeComments": true,
     "skipLibCheck": true,
-    "lib": [
-        "es2017",
-        "dom",
-        "es6"
-    ],
+    "lib": ["es2017", "dom", "es6"],
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-          "app/*"
-      ],
-      "@sonder/*": [
-        "../../libs/*"
-      ],
-      "@sonder/nativescript": [
-        "../../xplat/nativescript/index.ts"
-      ],
-      "@sonder/nativescript/*": [
-        "../../xplat/nativescript/*"
-      ],
-      "*": [
-        "./node_modules/tns-core-modules/*",
-        "./node_modules/*"
-      ]
+      "~/*": ["app/*"],
+      "@sonder/*": ["../../libs/*"],
+      "@sonder/nativescript": ["../../xplat/nativescript/index.ts"],
+      "@sonder/nativescript/*": ["../../xplat/nativescript/*"],
+      "*": ["./node_modules/tns-core-modules/*", "./node_modules/*"]
     }
   },
-  "include": [
-    "references.d.ts",
-    "app/main.ts",
-    "app/**/*.module.ts"
-  ]
+  "include": ["references.d.ts", "app/main.ts", "app/**/*.module.ts"]
 }

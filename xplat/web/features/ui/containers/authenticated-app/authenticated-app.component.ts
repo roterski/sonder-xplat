@@ -25,9 +25,11 @@ export class AuthenticatedAppComponent extends AppBaseComponent
   }
 
   handleLogOut() {
-    this.logOutButtonClicks$.pipe(
-      switchMap(() => this.authService.logOut()),
-      takeUntil(this.destroy$)
-    ).subscribe();
+    this.logOutButtonClicks$
+      .pipe(
+        switchMap(() => this.authService.logOut()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 }

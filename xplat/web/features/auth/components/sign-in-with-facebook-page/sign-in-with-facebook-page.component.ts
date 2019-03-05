@@ -27,7 +27,7 @@ export class SignInWithFacebookPageComponent extends AuthBaseComponent
   handleLogIn() {
     this.logInButtonClicks$
       .pipe(
-        tap(() => this.errors = undefined),
+        tap(() => (this.errors = undefined)),
         switchMap(() => this.authService.facebookLogIn()),
         catchError((error, caught$) => {
           this.errors = error;

@@ -48,14 +48,16 @@ export class SignInPageComponent extends AuthBaseComponent implements OnInit {
       .pipe(
         switchMap(() => this.authService.signIn(this.signInForm.value)),
         catchError((error, caught$) => {
-          this.errors = error.status === 409 ? { email: _.get(error, 'error.message') } : true;
+          this.errors =
+            error.status === 409
+              ? { email: _.get(error, 'error.message') }
+              : true;
           return caught$;
         }),
         takeUntil(this.destroy$)
       )
       .subscribe(() => {
-          this.router.navigate(['/']);
-        }
-      );
+        this.router.navigate(['/']);
+      });
   }
 }
