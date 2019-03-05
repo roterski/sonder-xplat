@@ -31,6 +31,9 @@
     },
     "nativescript-client": {
       "tags": []
+    },
+    "nest-server": {
+      "tags": []
     }
   }
 }
