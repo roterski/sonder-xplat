@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -18,17 +19,13 @@ import {
   MatBottomSheetModule,
   MatChipsModule,
   MatToolbarModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatRippleModule
 } from '@angular/material';
 import { UI_COMPONENTS } from './components';
 import { UI_CONTAINERS } from './containers';
 
-const MODULES = [
-  CommonModule,
-  RouterModule,
-  FormsModule,
-  ReactiveFormsModule,
-  UISharedModule,
+const MATERIAL_MODULES = [
   MatListModule,
   MatButtonModule,
   MatCardModule,
@@ -40,7 +37,17 @@ const MODULES = [
   MatBottomSheetModule,
   MatChipsModule,
   MatToolbarModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatRippleModule
+];
+const MODULES = [
+  CommonModule,
+  RouterModule,
+  FormsModule,
+  ReactiveFormsModule,
+  UISharedModule,
+  FlexLayoutModule,
+  ...MATERIAL_MODULES
 ];
 
 @NgModule({
