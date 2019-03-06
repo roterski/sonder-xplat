@@ -80,7 +80,8 @@
             "tsConfig": "apps/web-client/tsconfig.app.json",
             "assets": [
               "apps/web-client/src/favicon.ico",
-              "apps/web-client/src/assets"
+              "apps/web-client/src/assets",
+              { "glob": "**/*", "input": "./libs/shared-assets/", "output": "./assets" }
             ],
             "styles": [
               {
