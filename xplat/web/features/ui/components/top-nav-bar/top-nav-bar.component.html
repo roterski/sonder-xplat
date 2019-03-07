@@ -1,5 +1,5 @@
-<mat-toolbar>
-  <span routerLink="/">Sonder</span>
-  <span class="fill-remaining-space"></span>
-  <button mat-raised-button (click)="logOut.emit()">Log out</button>
-</mat-toolbar>
+<mat-card class="nav-bar" fxLayout="row" fxLayoutAlign="space-between center">
+  <img class="profile-icon" src="../assets/images/hoof-icon.png">
+  <span routerLink="/" class="title">e-klerki</span>
+  <button mat-button (click)="logOut.emit()">Log out</button>
+</mat-card>

@@ -1,3 +1,6 @@
-<sonder-top-nav-bar [loggedIn]="loggedIn$ | async" (logOut)="logOutButtonClicks$.next()"></sonder-top-nav-bar>
-<router-outlet></router-outlet>
-<sonder-bottom-buttons></sonder-bottom-buttons>
+<div fxLayout="column" fxLayoutAlign="start">
+  <sonder-top-nav-bar [loggedIn]="loggedIn$ | async" (logOut)="logOutButtonClicks$.next()"></sonder-top-nav-bar>
+  <router-outlet></router-outlet>
+  <sonder-bottom-buttons></sonder-bottom-buttons>
+</div>
+

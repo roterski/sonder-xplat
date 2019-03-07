@@ -1,7 +1,10 @@
-<mat-card mat-list-item  role="listitem">
+<mat-card class="post-item" mat-list-item  role="listitem">
   <mat-card-title [routerLink]="['/posts', post.id]">
     {{post.title}}
   </mat-card-title>
+  <mat-card-content>
+    {{post.body}}
+  </mat-card-content>
   <mat-card-actions>
     <sonder-vote-buttons
       [points]="post.points"
