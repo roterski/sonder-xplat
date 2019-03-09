@@ -55,7 +55,7 @@ export class PostsAkitaService extends PostsService {
   createComment(postId: number, comment: PostComment): Observable<PostComment> {
     return this.postsApi.createComment(postId, comment).pipe(
       tap((comment: PostComment) =>
-        this.commentsStore.createOrReplace(comment.id, comment)
+        this.commentsStore.createOrReplace(comment.id, {...comment, childrenIds: []})
       ),
       catchError(error => {
         const message = _.get(error, 'error.message');
