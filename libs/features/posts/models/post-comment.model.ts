@@ -1,10 +1,7 @@
-import { Author } from './author.model';
-
 export interface PostComment {
   id: number;
   postId: number;
   body: string;
-  author: Author;
   parentIds: Array<number>;
   points: number;
   voted: number;
