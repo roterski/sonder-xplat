@@ -1,5 +1,5 @@
 export interface Vote {
-  id: number | string;
+  id: number;
   voterId: number;
   postId: number;
   commentId: number;

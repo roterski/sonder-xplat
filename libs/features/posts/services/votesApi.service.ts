@@ -16,7 +16,7 @@ export class VotesApiService {
       .pipe(map(response => response.data));
   }
 
-  getCommentVotes(postId: number | string): Observable<Vote[]> {
+  getCommentVotes(postId: number): Observable<Vote[]> {
     return this.backend
       .get(`/votes/posts/${postId}/comments`)
       .pipe(map(response => response.data));
@@ -24,7 +24,7 @@ export class VotesApiService {
 
   upvote(
     targetClass: 'posts' | 'comments',
-    targetId: number | string
+    targetId: number
   ): Observable<any> {
     return this.backend
       .post(`/${targetClass}/${targetId}/upvote`)
@@ -33,7 +33,7 @@ export class VotesApiService {
 
   downvote(
     targetClass: 'posts' | 'comments',
-    targetId: number | string
+    targetId: number
   ): Observable<any> {
     return this.backend
       .post(`/${targetClass}/${targetId}/downvote`)
@@ -42,7 +42,7 @@ export class VotesApiService {
 
   revokeVote(
     targetClass: 'posts' | 'comments',
-    targetId: number | string
+    targetId: number
   ): Observable<any> {
     return this.backend
       .post(`/${targetClass}/${targetId}/revoke_vote`)

@@ -14,7 +14,7 @@ export class PostsApiService {
     return this.backend.get('/posts', params);
   }
 
-  getPost(postId: number | string): Observable<Post> {
+  getPost(postId: number): Observable<Post> {
     return this.backend.get(`/posts/${postId}`).pipe(pluck('data'));
   }
 
@@ -26,12 +26,12 @@ export class PostsApiService {
     return this.backend.post('/posts', { post, tags }).pipe(pluck('data'));
   }
 
-  getPostComments(postId: number | string): Observable<PostComment[]> {
+  getPostComments(postId: number): Observable<PostComment[]> {
     return this.backend.get(`/posts/${postId}/comments`).pipe(pluck('data'));
   }
 
   createComment(
-    postId: number | string,
+    postId: number,
     comment: PostComment
   ): Observable<PostComment> {
     return this.backend

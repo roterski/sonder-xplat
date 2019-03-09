@@ -2,7 +2,7 @@ import { Author } from './author.model';
 import { Tag } from './tag.model';
 
 export interface Post {
-  id: number | string;
+  id: number;
   title: string;
   body: string;
   author: Author;

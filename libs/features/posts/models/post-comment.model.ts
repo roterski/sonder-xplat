@@ -1,14 +1,14 @@
 import { Author } from './author.model';
 
 export interface PostComment {
-  id: number | string;
-  postId: number | string;
+  id: number;
+  postId: number;
   body: string;
   author: Author;
-  parentIds: Array<number | string>;
+  parentIds: Array<number>;
   points: number;
   voted: number;
-  childrenIds?: Array<number | string>;
+  childrenIds?: Array<number>;
 }
 
 export function createComment(params: Partial<PostComment>) {

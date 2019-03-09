@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { QueryEntity, ID } from '@datorama/akita';
+import { QueryEntity } from '@datorama/akita';
 import { CommentsStore, CommentsState } from './comments.store';
 import { PostComment } from '../models';
 import { Observable } from 'rxjs';
@@ -10,13 +10,13 @@ export class CommentsQuery extends QueryEntity<CommentsState, PostComment> {
     super(store);
   }
 
-  selectPostComments(postId: ID): Observable<PostComment[]> {
+  selectPostComments(postId: number): Observable<PostComment[]> {
     return this.selectAll({
       filterBy: (comment: PostComment) => comment.postId === postId
     });
   }
 
-  selectPostCommentsLoaded(postId: ID): Observable<boolean> {
+  selectPostCommentsLoaded(postId: number): Observable<boolean> {
     return this.select(
       (state: CommentsState) =>
         !!(
