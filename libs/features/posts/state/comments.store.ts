@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   EntityState,
   EntityStore,
-  ID,
   StoreConfig,
   getInitialActiveState,
   transaction
@@ -12,7 +11,7 @@ import * as _ from 'lodash';
 
 export interface CommentIds {
   postId: number;
-  ids: Array<ID>;
+  ids: Array<number>;
   loaded: boolean;
 }
 
@@ -33,7 +32,7 @@ export class CommentsStore extends EntityStore<CommentsState, PostComment> {
   }
 
   @transaction()
-  addPostComments(postId: ID, comments: PostComment[]) {
+  addPostComments(postId: number, comments: PostComment[]) {
     postId = Number(postId);
     const commentEntities = this.appendChildrenIds(comments);
     this.add(comments.map(({ id }) => commentEntities[id]));
