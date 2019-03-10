@@ -1,6 +1,7 @@
 export interface PostComment {
   id: number;
   postId: number;
+  profileId: number;
   body: string;
   parentIds: Array<number>;
   points: number;

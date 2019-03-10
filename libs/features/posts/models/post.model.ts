@@ -2,6 +2,7 @@ import { Tag } from './tag.model';
 
 export interface Post {
   id: number;
+  profileId: number;
   title: string;
   body: string;
   points: number;
