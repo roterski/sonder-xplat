@@ -5,10 +5,12 @@ import {
   PostsQuery,
   PostsService,
   ProfilesQuery,
+  PostsState,
 } from '@sonder/features';
 import { ProfilesService } from '@sonder/features/profiles/services';
 import { Observable, of } from 'rxjs';
-import { takeUntil, tap, pluck, map, switchMap } from 'rxjs/operators';
+import { takeUntil, tap, pluck, map, switchMap, filter } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sonder-posts-list-page',
@@ -31,14 +33,15 @@ export class PostsListPageComponent extends PostsBaseComponent
 
   ngOnInit() {
     this.posts$ = this.postsQuery.selectAll();
-    // this.profiles$ = this.profilesQuery.sele
     this.loading$ = this.postsQuery.selectLoading();
     this.postsService
       .loadPosts()
       .pipe(takeUntil(this.destroy$))
       .subscribe();
     this.posts$.pipe(
-      map(posts => posts.map(post => post.profileId)),
+      filter((posts: Post[]) => posts.length > 0),
+      map((posts: Post[]) => posts.map(post => post.profileId)),
+      map((ids: number[]) => _.uniq(ids)),
       switchMap((ids: number[]) => this.profilesService.loadProfiles(ids)),
       takeUntil(this.destroy$)
     ).subscribe();

@@ -17,9 +17,9 @@ export class ProfilesService {
   ) {
   }
 
-  loadProfiles(ids: number[]): Observable<any> {
+  loadProfiles(id: number[]): Observable<any> {
     return this.profilesApi
-      .getProfiles({ ids })
+      .getProfiles({ id })
       .pipe(
         pluck('data'),
         tap((profiles: Profile[]) => this.profilesStore.set(profiles))
