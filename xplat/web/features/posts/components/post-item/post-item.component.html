@@ -5,12 +5,15 @@
   <mat-card-content>
     {{post.body}}
   </mat-card-content>
-  <mat-card-actions>
-    <sonder-vote-buttons
+  <mat-card-actions fxLayout="row" fxLayoutAlign="space-between start">
+    <!-- <sonder-profile [profile]="profile"> -->
+    <sonder-profile [profile]="{id: 5, name: 'unicorn'}">
+    </sonder-profile>
+    <!-- <sonder-vote-buttons
       [points]="post.points"
       [voted]="voted"
       (upvoted)="upvote()"
       (downvoted)="downvote()">
-    </sonder-vote-buttons>
+    </sonder-vote-buttons> -->
   </mat-card-actions>
 </mat-card>

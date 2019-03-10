@@ -9,7 +9,7 @@ import {
   CommentItemComponent,
   NewCommentFormComponent
 } from '@sonder/web/features/posts';
-
+import { ProfileComponent } from '@sonder/web/features/profiles';
 import { PostsRoutingModule } from './posts-routing.module';
 
 @NgModule({
@@ -20,8 +20,8 @@ import { PostsRoutingModule } from './posts-routing.module';
     ReactiveFormsModule,
     PostsRoutingModule
   ],
-  declarations: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
-  exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
+  declarations: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS, ProfileComponent],
+  exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS, ProfileComponent],
   entryComponents: [CommentItemComponent, NewCommentFormComponent],
   providers: []
 })

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '@sonder/features/posts/models';
+import { Profile } from '@sonder/features/profiles'; 
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -9,6 +10,7 @@ import { take } from 'rxjs/operators';
 })
 export class PostItemComponent implements OnInit {
   @Input() post: Post;
+  @Input() profile: Profile;
   @Input() voted: number;
 
   constructor() {}
