@@ -1,4 +1,4 @@
 export * from './postsApi.service';
 export * from './votesApi.service';
 export * from './tagsApi.service';
-export * from './posts';
+export * from './posts-service';
