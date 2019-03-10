@@ -1,11 +1,10 @@
-import { Author } from './author.model';
 import { Tag } from './tag.model';
 
 export interface Post {
   id: number;
+  profileId: number;
   title: string;
   body: string;
-  author: Author;
   points: number;
   voted: number;
   commentCount: number;
