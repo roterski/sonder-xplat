@@ -3,7 +3,7 @@ import { parseValidationErrors } from '@sonder/utils';
 import { Observable, zip, throwError } from 'rxjs';
 import { pluck, map, tap, catchError, delay } from 'rxjs/operators';
 import { PostsService } from './posts.service';
-import { PostsApiService } from '../postsApi.service';
+import { PostsApiService } from '../posts-api.service';
 import { Post, PostComment } from '../../models';
 import { PostsStore, CommentsStore } from '../../state';
 import * as _ from 'lodash';
