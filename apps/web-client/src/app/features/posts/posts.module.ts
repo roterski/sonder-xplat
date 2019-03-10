@@ -9,6 +9,11 @@ import {
   CommentItemComponent,
   NewCommentFormComponent
 } from '@sonder/web/features/posts';
+import {
+  PostsService,
+  PostsApolloService,
+  PostsAkitaService
+} from '@sonder/features/posts';
 import { ProfileComponent } from '@sonder/web/features/profiles';
 import { PostsRoutingModule } from './posts-routing.module';
 
@@ -21,8 +26,13 @@ import { PostsRoutingModule } from './posts-routing.module';
     PostsRoutingModule
   ],
   declarations: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS, ProfileComponent],
-  exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS, ProfileComponent],
-  entryComponents: [CommentItemComponent, NewCommentFormComponent],
-  providers: []
+  exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
+  entryComponents: [
+    CommentItemComponent,
+    NewCommentFormComponent
+  ],
+  providers: [
+    { provide: PostsService, useClass: PostsAkitaService },
+  ]
 })
 export class PostsModule {}
