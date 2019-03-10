@@ -9,7 +9,10 @@ import { AuthBaseComponent } from '@sonder/features';
 @Component({
   selector: 'sonder-sign-in-with-facebook-page',
   templateUrl: 'sign-in-with-facebook-page.component.html',
-  styleUrls: ['../auth.component.css']
+  styleUrls: [
+    './sign-in-with-facebook-page.component.scss',
+    '../auth.component.css'
+  ]
 })
 export class SignInWithFacebookPageComponent extends AuthBaseComponent
   implements OnInit {
