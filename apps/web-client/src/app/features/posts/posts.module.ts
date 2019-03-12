@@ -14,7 +14,6 @@ import {
   PostsApolloService,
   PostsAkitaService
 } from '@sonder/features/posts';
-import { ProfileComponent } from '@sonder/web/features/profiles';
 import { PostsRoutingModule } from './posts-routing.module';
 
 @NgModule({
@@ -25,14 +24,12 @@ import { PostsRoutingModule } from './posts-routing.module';
     ReactiveFormsModule,
     PostsRoutingModule
   ],
-  declarations: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS, ProfileComponent],
-  exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
-  entryComponents: [
-    CommentItemComponent,
-    NewCommentFormComponent
+  declarations: [
+    ...POSTS_COMPONENTS,
+    ...POSTS_CONTAINERS,
   ],
-  providers: [
-    { provide: PostsService, useClass: PostsAkitaService },
-  ]
+  exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
+  entryComponents: [CommentItemComponent, NewCommentFormComponent],
+  providers: [{ provide: PostsService, useClass: PostsAkitaService }]
 })
 export class PostsModule {}

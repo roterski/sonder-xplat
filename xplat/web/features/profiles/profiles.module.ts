@@ -5,7 +5,7 @@ import { PROFILES_COMPONENTS } from './components';
 
 @NgModule({
   imports: [SharedProfilesModule, UIModule],
-  // declarations: [...PROFILES_COMPONENTS],
-  // exports: [...PROFILES_COMPONENTS]
+  declarations: [...PROFILES_COMPONENTS],
+  exports: [...PROFILES_COMPONENTS]
 })
 export class ProfilesModule {}
