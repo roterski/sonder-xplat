@@ -1,4 +1,4 @@
-<div [routerLink]="profile && ['/profiles', profile.id]" fxLayout="row" fxLayoutAlign="space-between end" >
+<div [routerLink]="profile && ['/profiles', profile.id]" fxLayout="row" fxLayoutAlign="start end" >
   <img class="icon" src="../assets/images/profile-pic.png">
   <span *ngIf="profile" class="name">{{profile.name || "🕶"}}</span>
 </div>

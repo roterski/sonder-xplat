@@ -14,7 +14,8 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'sonder-posts-list-page',
-  templateUrl: 'posts-list-page.component.html'
+  templateUrl: 'posts-list-page.component.html',
+  styleUrls: ['./posts-list-page.component.scss']
 })
 export class PostsListPageComponent extends PostsBaseComponent
   implements OnInit {

@@ -3,6 +3,8 @@ import { PostComment } from '@sonder/features/posts/models';
 import { take } from 'rxjs/operators';
 import { NewCommentFormComponent } from '../../containers';
 import { MatBottomSheet } from '@angular/material';
+import { Observable } from 'rxjs';
+import { ProfilesQuery, Profile } from '@sonder/features/profiles';
 
 @Component({
   selector: 'sonder-comment-item',
@@ -14,10 +16,15 @@ export class CommentItemComponent implements OnInit {
   @Input() expanded: boolean;
   @Input() expandable: boolean;
   @Input() voted: number;
+  profile$: Observable<Profile>;
 
-  constructor(private newCommentBottomSheet: MatBottomSheet) {}
+  constructor(
+    private newCommentBottomSheet: MatBottomSheet,
+    private profilesQuery: ProfilesQuery) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.profile$ = this.profilesQuery.selectEntity(this.comment.profileId);
+  }
 
   upvote() {
     // if (this.voted > 0) {

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { map, takeUntil, tap, switchMap, filter } from 'rxjs/operators';
 import { Observable, of, Subscription, zip, combineLatest } from 'rxjs';
 
 import { Post, PostComment, PostsBaseComponent } from '@sonder/features/posts';
@@ -12,11 +12,13 @@ import {
   PostsQuery,
   PostsService
 } from '@sonder/features/posts';
+import { ProfilesService } from '@sonder/features/profiles';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sonder-post-show-page',
   templateUrl: './post-show-page.component.html',
-  styleUrls: ['./post-show-page.component.css']
+  styleUrls: ['./post-show-page.component.scss']
 })
 export class PostShowPageComponent extends PostsBaseComponent
   implements OnInit {
@@ -33,7 +35,8 @@ export class PostShowPageComponent extends PostsBaseComponent
     private newCommentBottomSheet: MatBottomSheet,
     private commentsQuery: CommentsQuery,
     private postsQuery: PostsQuery,
-    private postsService: PostsService
+    private postsService: PostsService,
+    private profilesService: ProfilesService
   ) {
     super();
   }
@@ -55,6 +58,15 @@ export class PostShowPageComponent extends PostsBaseComponent
         .loadPostWithComments(postId)
         .pipe(takeUntil(this.destroy$))
         .subscribe();
+      zip(this.post$, this.comments$).pipe(
+        map(([post, comments]: [Post, PostComment[]]) => (
+          [(post && post.profileId), ...comments.map(comment => comment.profileId)]
+        )),
+        map((profileIds) => _.uniq(_.compact(profileIds))),
+        filter((profileIds: number[]) => (profileIds.length > 0)),
+        switchMap((ids: number[]) => this.profilesService.loadProfiles(ids)),
+        takeUntil(this.destroy$)
+      ).subscribe();
     });
   }
 

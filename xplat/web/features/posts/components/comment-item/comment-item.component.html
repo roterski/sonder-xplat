@@ -1,15 +1,9 @@
-<mat-card>
-  <mat-card-content>
-    {{ comment.body }}
-  </mat-card-content>
-  <mat-card-actions>
-    <sonder-vote-buttons
-      [points]="comment.points"
-      [voted]="voted"
-      (upvoted)="upvote()"
-      (downvoted)="downvote()">
-    </sonder-vote-buttons>
-    <button mat-mini-fab (click)="openNewCommentBottomSheet()">+</button>
-    <button *ngIf="expandable" mat-button matTreeNodeToggle [matTreeNodeToggleRecursive]="true">{{ expanded ? 'Collapse' : 'Expand' }}</button>
-  </mat-card-actions>
-</mat-card>
+<div class="comment">
+  <sonder-profile-item [profile]="profile$ | async"></sonder-profile-item>
+  <div class="body">{{comment.body}}</div>
+  <div class="action-bar" fxLayout="row" fxLayoutAlign="space-between start">
+    <button *ngIf="expandable" mat-button matTreeNodeToggle [matTreeNodeToggleRecursive]="true">{{ expanded ? '-' : '+' }}</button>
+    <img class="new-comment-icon" matRipple src="../assets/images/comment-icon.png" (click)="openNewCommentBottomSheet()">
+  </div>
+</div>
+
