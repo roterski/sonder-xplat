@@ -12,6 +12,7 @@ import {
 } from '@sonder/features/auth/guards';
 import { authRoutes } from './features/auth/auth-routing.module';
 import { postsRoutes } from './features/posts/posts-routing.module';
+import { profilesRoutes } from './features/profiles/profiles-routing.module';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,10 @@ export const routes: Routes = [
       {
         path: 'posts',
         loadChildren: './features/posts/posts.module#PostsModule'
+      },
+      {
+        path: 'profiles',
+        loadChildren: './features/profiles/profiles.module#ProfilesModule'
       }
     ]
   },
