@@ -7,5 +7,5 @@
   fxLayoutAlign="space-evenly none"
   role="list"
   *ngFor="let post of (posts$ | async)">
-  <sonder-post-item *ngIf="post" [post]="post"></sonder-post-item>
+  <sonder-post-item *ngIf="post" [post]="post" [profile]="profilesQuery.getEntity(post.profileId)"></sonder-post-item>
 </mat-nav-list>

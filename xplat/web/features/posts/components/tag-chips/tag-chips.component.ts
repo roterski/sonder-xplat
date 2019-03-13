@@ -71,7 +71,10 @@ export class TagChipsComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent) {
-    const tag: Tag = { id: parseInt(event.option.id, 10), name: event.option.value };
+    const tag: Tag = {
+      id: parseInt(event.option.id, 10),
+      name: event.option.value
+    };
     this.added.emit(tag);
     this.tagInput.nativeElement.value = '';
     this.tagCtrl.setValue(null);

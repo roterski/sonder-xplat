@@ -1,7 +1,5 @@
-import { ProfilesComponent } from './profiles/profiles.component';
+// import { ProfileComponent } from './profile/profile.component';
 
-export const PROFILES_COMPONENTS = [
-  ProfilesComponent
-];
+export const PROFILES_COMPONENTS = [];
 
-export * from './profiles/profiles.component';
+// export * from './profile/profile.component';

@@ -9,7 +9,11 @@ import {
   CommentItemComponent,
   NewCommentFormComponent
 } from '@sonder/web/features/posts';
-
+import {
+  PostsService,
+  PostsApolloService,
+  PostsAkitaService
+} from '@sonder/features/posts';
 import { PostsRoutingModule } from './posts-routing.module';
 
 @NgModule({
@@ -20,9 +24,12 @@ import { PostsRoutingModule } from './posts-routing.module';
     ReactiveFormsModule,
     PostsRoutingModule
   ],
-  declarations: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
+  declarations: [
+    ...POSTS_COMPONENTS,
+    ...POSTS_CONTAINERS,
+  ],
   exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
   entryComponents: [CommentItemComponent, NewCommentFormComponent],
-  providers: []
+  providers: [{ provide: PostsService, useClass: PostsAkitaService }]
 })
 export class PostsModule {}

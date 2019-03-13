@@ -8,7 +8,6 @@ import { BaseComponent } from '@sonder/core';
   templateUrl: './profiles.component.html'
 })
 export class ProfilesComponent extends BaseComponent {
-
   constructor() {
     super();
   }
