@@ -113,7 +113,6 @@
     "pg": "^7.4.3",
     "reflect-metadata": "^0.1.12",
     "rxjs": "~6.4.0",
-    "rxjs-compat": "~6.3.3",
     "tns-core-modules": "~5.1.0",
     "url-join": "^4.0.0",
     "zone.js": "^0.8.26"
