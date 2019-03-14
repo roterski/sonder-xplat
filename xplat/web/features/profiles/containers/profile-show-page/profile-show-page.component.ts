@@ -5,10 +5,7 @@ import { Observable } from 'rxjs';
 
 import { Profile, ProfilesBaseComponent } from '@sonder/features/profiles';
 
-import {
-  ProfilesQuery,
-  ProfilesService
-} from '@sonder/features/profiles';
+import { ProfilesQuery, ProfilesService } from '@sonder/features/profiles';
 
 @Component({
   selector: 'sonder-profile-show-page',
@@ -34,12 +31,18 @@ export class ProfileShowPageComponent extends ProfilesBaseComponent
     );
 
     this.profile$ = profileId$.pipe(
-      switchMap((profileId: number) => this.profilesQuery.selectEntity(profileId))
+      switchMap((profileId: number) =>
+        this.profilesQuery.selectEntity(profileId)
+      )
     );
-    
-    profileId$.pipe(
-      switchMap((profileId: number) => this.profilesService.loadProfiles([profileId])),
-      takeUntil(this.destroy$)
-    ).subscribe();
+
+    profileId$
+      .pipe(
+        switchMap((profileId: number) =>
+          this.profilesService.loadProfiles([profileId])
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 }

@@ -24,10 +24,7 @@ import { PostsRoutingModule } from './posts-routing.module';
     ReactiveFormsModule,
     PostsRoutingModule
   ],
-  declarations: [
-    ...POSTS_COMPONENTS,
-    ...POSTS_CONTAINERS,
-  ],
+  declarations: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
   exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
   entryComponents: [CommentItemComponent, NewCommentFormComponent],
   providers: [{ provide: PostsService, useClass: PostsAkitaService }]

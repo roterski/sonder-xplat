@@ -29,9 +29,7 @@ import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
     PostsModule,
     BrowserAnimationsModule
   ],
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   bootstrap: [AppComponent],
   providers: []
 })

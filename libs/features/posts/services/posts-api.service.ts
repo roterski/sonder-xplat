@@ -30,10 +30,7 @@ export class PostsApiService {
     return this.backend.get(`/posts/${postId}/comments`).pipe(pluck('data'));
   }
 
-  createComment(
-    postId: number,
-    comment: PostComment
-  ): Observable<PostComment> {
+  createComment(postId: number, comment: PostComment): Observable<PostComment> {
     return this.backend
       .post(`/posts/${postId}/comments`, { comment })
       .pipe(pluck('data'));

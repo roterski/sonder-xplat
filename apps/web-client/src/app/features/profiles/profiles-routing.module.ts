@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {
-  ProfileShowPageComponent
-} from '@sonder/web/features/profiles/containers';
+import { ProfileShowPageComponent } from '@sonder/web/features/profiles/containers';
 
 export const profilesRoutes: Routes = [
   {

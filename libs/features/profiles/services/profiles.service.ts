@@ -7,22 +7,17 @@ import { Profile } from '../models';
 import { ProfilesStore } from '../state';
 import * as _ from 'lodash';
 
-@Injectable(
-  { providedIn: 'root' }
-)
+@Injectable({ providedIn: 'root' })
 export class ProfilesService {
   constructor(
     private profilesApi: ProfilesApiService,
     private profilesStore: ProfilesStore
-  ) {
-  }
+  ) {}
 
   loadProfiles(id: number[]): Observable<any> {
-    return this.profilesApi
-      .getProfiles({ id })
-      .pipe(
-        pluck('data'),
-        tap((profiles: Profile[]) => this.profilesStore.set(profiles))
-      );
+    return this.profilesApi.getProfiles({ id }).pipe(
+      pluck('data'),
+      tap((profiles: Profile[]) => this.profilesStore.set(profiles))
+    );
   }
 }

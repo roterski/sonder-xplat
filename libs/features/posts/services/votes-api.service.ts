@@ -22,10 +22,7 @@ export class VotesApiService {
       .pipe(map(response => response.data));
   }
 
-  upvote(
-    targetClass: 'posts' | 'comments',
-    targetId: number
-  ): Observable<any> {
+  upvote(targetClass: 'posts' | 'comments', targetId: number): Observable<any> {
     return this.backend
       .post(`/${targetClass}/${targetId}/upvote`)
       .pipe(map(response => response.data));

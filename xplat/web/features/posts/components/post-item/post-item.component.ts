@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '@sonder/features/posts/models';
-import { Profile } from '@sonder/features/profiles'; 
+import { Profile } from '@sonder/features/profiles';
 import { take } from 'rxjs/operators';
 
 @Component({

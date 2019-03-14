@@ -107,14 +107,17 @@ export class PostsApolloService extends PostsService {
           store.writeQuery({ query, data });
         }
       })
-      .pipe( tap((comment: PostComment) =>
+      .pipe(
+        tap((comment: PostComment) =>
           this.commentsStore.createOrReplace(comment.id, {
             ...comment,
             childrenIds: []
           })
-        ), catchError(error => {
+        ),
+        catchError(error => {
           const message = _.get(error, 'graphQLErrors[0].message.message');
           throw message ? parseValidationErrors(message) : error;
-        }) );
+        })
+      );
   }
 }

@@ -8,7 +8,7 @@ import { LogOutApolloService, LogOutService } from '@sonder/features/auth';
   imports: [CommonModule, AuthWebModule, AuthRoutingModule],
   providers: [
     // { provide: LogOutService, useClass: LogOutApolloService },
-    LogOutService,
+    LogOutService
   ]
 })
 export class AuthModule {}

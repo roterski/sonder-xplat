@@ -20,7 +20,8 @@ export class CommentItemComponent implements OnInit {
 
   constructor(
     private newCommentBottomSheet: MatBottomSheet,
-    private profilesQuery: ProfilesQuery) {}
+    private profilesQuery: ProfilesQuery
+  ) {}
 
   ngOnInit() {
     this.profile$ = this.profilesQuery.selectEntity(this.comment.profileId);

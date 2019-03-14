@@ -58,15 +58,18 @@ export class PostShowPageComponent extends PostsBaseComponent
         .loadPostWithComments(postId)
         .pipe(takeUntil(this.destroy$))
         .subscribe();
-      zip(this.post$, this.comments$).pipe(
-        map(([post, comments]: [Post, PostComment[]]) => (
-          [(post && post.profileId), ...comments.map(comment => comment.profileId)]
-        )),
-        map((profileIds) => _.uniq(_.compact(profileIds))),
-        filter((profileIds: number[]) => (profileIds.length > 0)),
-        switchMap((ids: number[]) => this.profilesService.loadProfiles(ids)),
-        takeUntil(this.destroy$)
-      ).subscribe();
+      zip(this.post$, this.comments$)
+        .pipe(
+          map(([post, comments]: [Post, PostComment[]]) => [
+            post && post.profileId,
+            ...comments.map(comment => comment.profileId)
+          ]),
+          map(profileIds => _.uniq(_.compact(profileIds))),
+          filter((profileIds: number[]) => profileIds.length > 0),
+          switchMap((ids: number[]) => this.profilesService.loadProfiles(ids)),
+          takeUntil(this.destroy$)
+        )
+        .subscribe();
     });
   }
 
