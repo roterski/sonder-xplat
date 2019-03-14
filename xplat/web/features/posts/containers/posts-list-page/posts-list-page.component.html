@@ -3,9 +3,11 @@
 </sonder-tag-chips> -->
 
 <mat-nav-list
+  class="list"
   fxLayout="column"
   fxLayoutAlign="space-evenly none"
-  role="list"
-  *ngFor="let post of (posts$ | async)">
-  <sonder-post-item *ngIf="post" [post]="post" [profile]="profilesQuery.getEntity(post.profileId)"></sonder-post-item>
+  role="list">
+  <div *ngFor="let post of (posts$ | async)" role="listitem">
+    <sonder-post-item *ngIf="post" [post]="post" [profile]="profilesQuery.getEntity(post.profileId)"></sonder-post-item>
+  </div>
 </mat-nav-list>
