@@ -1,4 +1,4 @@
-import * as environmentCore from '@sonder/core/environments/environment.prod';
+import { environment as environmentCore } from '@sonder/core/environments/environment.prod';
 
 export const environment = {
   ...environmentCore,

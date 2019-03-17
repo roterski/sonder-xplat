@@ -1,7 +1,8 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-import * as environmentCore from '@sonder/core/environments/environment';
+import { environment as environmentCore } from '@sonder/core/environments/environment';
+
 export const environment = {
   ...environmentCore,
   // app specific environment vars can be extended here

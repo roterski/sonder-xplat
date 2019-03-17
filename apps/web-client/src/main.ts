@@ -8,7 +8,7 @@ import {
 import 'hammerjs';
 
 // libs
-import { environment } from '@sonder/core';
+import { environment } from './environments/environment';
 
 // app
 import { AppModule } from './app/app.module';
