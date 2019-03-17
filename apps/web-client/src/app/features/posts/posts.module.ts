@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import {
-  POSTS_COMPONENTS,
-  POSTS_CONTAINERS,
   CommentItemComponent,
   NewCommentFormComponent
 } from '@sonder/web/features/posts';
@@ -14,6 +12,7 @@ import {
   PostsApolloService,
   PostsAkitaService
 } from '@sonder/features/posts';
+import { PostsModule as PostsWebModule } from '@sonder/web/features/posts';
 import { PostsRoutingModule } from './posts-routing.module';
 
 @NgModule({
@@ -22,10 +21,9 @@ import { PostsRoutingModule } from './posts-routing.module';
     SharedModule,
     RouterModule,
     ReactiveFormsModule,
+    PostsWebModule,
     PostsRoutingModule
   ],
-  declarations: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
-  exports: [...POSTS_COMPONENTS, ...POSTS_CONTAINERS],
   entryComponents: [CommentItemComponent, NewCommentFormComponent],
   providers: [{ provide: PostsService, useClass: PostsAkitaService }]
 })
