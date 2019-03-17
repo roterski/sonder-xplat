@@ -1,11 +1,10 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
+import * as environmentCore from '@sonder/core/environments/environment';
 export const environment = {
-  production: false,
-  facebookAppId: '897988177030305',
-  backendUrl: 'http://0.0.0.0:4000'
+  ...environmentCore,
+  // app specific environment vars can be extended here
 };
 
 /*

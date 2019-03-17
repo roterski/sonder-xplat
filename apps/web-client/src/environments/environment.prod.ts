@@ -1,5 +1,6 @@
+import * as environmentCore from '@sonder/core/environments/environment.prod';
+
 export const environment = {
-  production: true,
-  facebookAppId: '792414137613293',
-  backendUrl: 'https://kopytko.herokuapp.com/'
+  ...environmentCore,
+  // app specific environment vars can be extended here
 };
