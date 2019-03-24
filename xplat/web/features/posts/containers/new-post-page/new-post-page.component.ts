@@ -14,6 +14,7 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 
 import {
   PostsBaseComponent,
@@ -23,6 +24,13 @@ import {
   TagsQuery,
   TagsService,
 } from '@sonder/features/posts';
+
+export interface NewPostFormState {
+  newPost: {
+    title: string;
+    body: string;
+  }
+};
 
 @Component({
   selector: 'sonder-new-post-page',
@@ -39,6 +47,7 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private formsManager: AkitaNgFormsManager<NewPostFormState>,
     private router: Router,
     private postsService: PostsService,
     private tagsQuery: TagsQuery,
@@ -62,6 +71,8 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
       title: ['', Validators.required],
       body: ['']
     });
+    this.formsManager.upsert('newPost', this.postForm);
+    this.destroy$.subscribe(() => {}, () => {}, () => this.formsManager.unsubscribe());
   }
 
   handleCreate() {
