@@ -36,7 +36,7 @@ export class PostsAkitaService extends PostsService {
     return zip(post$, comments$).pipe(
       map(([post, comments]: [Post, PostComment[]]) => ({ post, comments })),
       tap(({ post, comments }: { post: Post; comments: PostComment[] }) => {
-        this.postsStore.createOrReplace(post.id, post);
+        this.postsStore.upsert(post.id, post);
         this.commentsStore.addPostComments(post.id, comments);
       })
     );
@@ -44,7 +44,7 @@ export class PostsAkitaService extends PostsService {
 
   createPost(post: Post): Observable<Post> {
     return this.postsApi.createPost(post).pipe(
-      tap((post: Post) => this.postsStore.createOrReplace(post.id, post)),
+      tap((post: Post) => this.postsStore.upsert(post.id, post)),
       catchError(error => {
         const message = _.get(error, 'error.message');
         throw message ? parseValidationErrors(message) : error;
@@ -55,7 +55,7 @@ export class PostsAkitaService extends PostsService {
   createComment(postId: number, comment: PostComment): Observable<PostComment> {
     return this.postsApi.createComment(postId, comment).pipe(
       tap((comment: PostComment) =>
-        this.commentsStore.createOrReplace(comment.id, {
+        this.commentsStore.upsert(comment.id, {
           ...comment,
           childrenIds: []
         })

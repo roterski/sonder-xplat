@@ -3,7 +3,7 @@ import {
   EntityState,
   EntityStore,
   StoreConfig,
-  getInitialActiveState,
+  getInitialEntitiesState,
   transaction
 } from '@datorama/akita';
 import { PostComment } from '../models';
@@ -20,7 +20,7 @@ export interface CommentsState extends EntityState<PostComment> {
 }
 
 const initialState = {
-  ...getInitialActiveState(),
+  ...getInitialEntitiesState(),
   postCommentsLoaded: {}
 };
 
@@ -36,7 +36,7 @@ export class CommentsStore extends EntityStore<CommentsState, PostComment> {
     postId = Number(postId);
     const commentEntities = this.appendChildrenIds(comments);
     this.add(comments.map(({ id }) => commentEntities[id]));
-    this.updateRoot((state: CommentsState) => ({
+    this.update((state: CommentsState) => ({
       ...state,
       postCommentsLoaded: {
         ...state.postCommentsLoaded,

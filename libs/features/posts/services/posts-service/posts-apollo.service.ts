@@ -50,7 +50,7 @@ export class PostsApolloService extends PostsService {
         return { post, comments };
       }),
       tap(({ post, comments }: { post: Post; comments: PostComment[] }) => {
-        this.postsStore.createOrReplace(post.id, post);
+        this.postsStore.upsert(post.id, post);
         this.commentsStore.addPostComments(post.id, comments);
       })
     );
@@ -76,7 +76,7 @@ export class PostsApolloService extends PostsService {
         }
       })
       .pipe(
-        tap((post: Post) => this.postsStore.createOrReplace(post.id, post)),
+        tap((post: Post) => this.postsStore.upsert(post.id, post)),
         catchError(error => {
           const message = _.get(error, 'graphQLErrors[0].message.message');
           throw message ? parseValidationErrors(message) : error;
@@ -109,7 +109,7 @@ export class PostsApolloService extends PostsService {
       })
       .pipe(
         tap((comment: PostComment) =>
-          this.commentsStore.createOrReplace(comment.id, {
+          this.commentsStore.upsert(comment.id, {
             ...comment,
             childrenIds: []
           })

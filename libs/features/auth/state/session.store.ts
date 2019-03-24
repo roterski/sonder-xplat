@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store, StoreConfig, applyAction, action } from '@datorama/akita';
+import { Store, StoreConfig, action } from '@datorama/akita';
 
 export interface SessionState {
   backendAuthToken: string;
@@ -18,7 +18,7 @@ export class SessionStore extends Store<SessionState> {
     super(createInitialState());
   }
 
-  @action({ type: 'Sign In' })
+  @action('Sign In')
   authenticateBackend(backendAuthToken: string): void {
     this.update({ backendAuthToken });
   }

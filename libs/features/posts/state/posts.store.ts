@@ -3,14 +3,14 @@ import {
   EntityState,
   EntityStore,
   StoreConfig,
-  getInitialActiveState
+  getInitialEntitiesState
 } from '@datorama/akita';
 import { Post } from '../models/post.model';
 
 export interface PostsState extends EntityState<Post> {}
 
 const initialState = {
-  ...getInitialActiveState()
+  ...getInitialEntitiesState()
 };
 
 @Injectable({ providedIn: 'root' })

@@ -17,10 +17,10 @@ export class SessionQuery extends Query<SessionState> {
   }
 
   backendToken(): string {
-    return this.getSnapshot().backendAuthToken;
+    return this.getValue().backendAuthToken;
   }
 
   isLoggedIn(): boolean {
-    return toBoolean(this.getSnapshot().backendAuthToken);
+    return toBoolean(this.getValue().backendAuthToken);
   }
 }
