@@ -25,7 +25,7 @@ import {
 @Component({
   selector: 'sonder-new-post-page',
   templateUrl: './new-post-page.component.html',
-  styleUrls: ['./new-post-page.component.css']
+  styleUrls: ['./new-post-page.component.scss']
 })
 export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   createButtonClicks$ = new Subject<Event>();
