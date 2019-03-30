@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Post, PostComment } from '@sonder/features';
+import { Post, PostComment, Tag } from '@sonder/features';
 
 export class PostsService {
   constructor() {}
@@ -14,7 +14,7 @@ export class PostsService {
     throw new Error('must be reimplemented in a subclass');
   }
 
-  createPost(post: Post): Observable<Post> {
+  createPost(post: Post, tags: Tag[]): Observable<Post> {
     throw new Error('must be reimplemented in a subclass');
   }
 

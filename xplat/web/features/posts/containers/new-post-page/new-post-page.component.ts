@@ -19,7 +19,9 @@ import {
   PostsBaseComponent,
   PostsService,
   Post,
-  Tag
+  Tag,
+  TagsQuery,
+  TagsService,
 } from '@sonder/features/posts';
 
 @Component({
@@ -33,13 +35,14 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   errors: any;
   post$: Observable<Post>;
   newPostTags$: Observable<Tag[]>;
-  newPostTags: Tag[];
   tags$: Observable<Tag[]>;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private postsService: PostsService
+    private postsService: PostsService,
+    private tagsQuery: TagsQuery,
+    private tagsService: TagsService,
   ) {
     super();
   }
@@ -47,6 +50,11 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   ngOnInit() {
     this.createForm();
     this.handleCreate();
+    this.newPostTags$ = this.tagsQuery.selectNewTags();
+    this.tags$ = this.tagsQuery.selectAll();
+    this.tagsService.loadTags().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 
   createForm() {
@@ -60,7 +68,8 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
     this.createButtonClicks$
       .pipe(
         tap(() => (this.errors = undefined)),
-        exhaustMap(() => this.postsService.createPost(this.postForm.value)),
+        switchMap(() => this.newPostTags$),
+        exhaustMap((tags: Tag[]) => this.postsService.createPost(this.postForm.value, tags)),
         catchError((errors, caught$) => {
           this.errors = errors;
           return caught$;
@@ -71,10 +80,10 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   }
 
   tagAdded(tag: Tag) {
-    // this.tagsService.addNewPostTag(tag);
+    this.tagsService.addNewPostTag(tag);
   }
 
   tagRemoved(tag: Tag) {
-    // this.tagsService.removeNewPostTag(tag);
+    this.tagsService.removeNewPostTag(tag);
   }
 }

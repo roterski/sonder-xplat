@@ -18,8 +18,8 @@ export class PostsApiService {
     return this.backend.get(`/posts/${postId}`).pipe(pluck('data'));
   }
 
-  createPost(post: Post): Observable<Post> {
-    return this.backend.post('/posts', { post }).pipe(pluck('data'));
+  createPost(post: Post, tags: Tag[]): Observable<Post> {
+    return this.backend.post('/posts', { post, tags }).pipe(pluck('data'));
   }
 
   createPostWithTags(post: Post, tags: Tag[]): Observable<Post> {

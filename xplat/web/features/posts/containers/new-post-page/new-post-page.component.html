@@ -14,10 +14,10 @@
         </mat-form-field>
         <mat-error *ngIf="errors && errors.body">{{ errors.body }}</mat-error>
       </mat-card-content>
-      <!-- <sonder-tag-chips [selectedTags]="newPostTags$"
+      <sonder-tag-chips [selectedTags]="newPostTags$"
                         [tags]="tags$"
                         (added)="tagAdded($event)"
-                        (removed)="tagRemoved($event)"></sonder-tag-chips> -->
+                        (removed)="tagRemoved($event)"></sonder-tag-chips>
       <mat-card-actions>
         <button mat-raised-button (click)="createButtonClicks$.next()">Create</button>
         <mat-error *ngIf="errors">Something went wrong. 😓</mat-error>
