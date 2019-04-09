@@ -5,9 +5,10 @@ import {
   exhaustMap,
   switchMap,
   tap,
+  pluck,
   catchError
 } from 'rxjs/operators';
-import { of, Observable, Subject } from 'rxjs';
+import { of, Observable, Subject, combineLatest } from 'rxjs';
 import {
   FormControl,
   FormBuilder,
@@ -24,13 +25,7 @@ import {
   TagsQuery,
   TagsService,
 } from '@sonder/features/posts';
-
-export interface NewPostFormState {
-  newPost: {
-    title: string;
-    body: string;
-  }
-};
+import { Profile, ProfilesQuery, ProfilesService } from '@sonder/features/profiles';
 
 @Component({
   selector: 'sonder-new-post-page',
@@ -43,15 +38,18 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   errors: any;
   post$: Observable<Post>;
   newPostTags$: Observable<Tag[]>;
+  myProfiles$: Observable<Profile[]>;
   tags$: Observable<Tag[]>;
 
   constructor(
     private formBuilder: FormBuilder,
-    private formsManager: AkitaNgFormsManager<NewPostFormState>,
+    private formsManager: AkitaNgFormsManager<any>,
     private router: Router,
     private postsService: PostsService,
     private tagsQuery: TagsQuery,
     private tagsService: TagsService,
+    private profilesQuery: ProfilesQuery,
+    private profilesService: ProfilesService
   ) {
     super();
   }
@@ -59,20 +57,28 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   ngOnInit() {
     this.createForm();
     this.handleCreate();
-    this.newPostTags$ = this.tagsQuery.selectNewTags();
+    this.newPostTags$ = this.formsManager.selectValue('newPost').pipe(pluck('tags'));
+    this.myProfiles$ = this.profilesQuery.selectMyProfiles();
     this.tags$ = this.tagsQuery.selectAll();
-    this.tagsService.loadTags().pipe(
-      takeUntil(this.destroy$)
-    ).subscribe();
+    combineLatest(
+      this.profilesService.loadMyProfiles(),
+      this.tagsService.loadTags()
+    ).pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   createForm() {
     this.postForm = this.formBuilder.group({
       title: ['', Validators.required],
-      body: ['']
+      body: [''],
+      tags: this.formBuilder.array([]),
+      profileId: ['', Validators.required]
     });
-    this.formsManager.upsert('newPost', this.postForm);
-    this.destroy$.subscribe(() => {}, () => {}, () => this.formsManager.unsubscribe());
+    this.formsManager.upsert('newPost', this.postForm, {
+      arrControlFactory: {
+        tags: () => this.formBuilder.control('')
+      }
+    });
+    this.destroy$.subscribe({ complete: () => this.formsManager.unsubscribe() });
   }
 
   handleCreate() {

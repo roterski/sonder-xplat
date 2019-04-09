@@ -8,12 +8,10 @@ import {
 import { Tag } from '../models';
 
 export interface TagsState extends EntityState<Tag> {
-  newPostTags: Tag[];
   postFilterTags: number[];
 }
 
 const initialState = {
-  newPostTags: [],
   postFilterTags: [],
   ...getInitialEntitiesState()
 };
