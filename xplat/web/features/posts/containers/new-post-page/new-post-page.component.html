@@ -18,6 +18,11 @@
                         [tags]="tags$"
                         (added)="tagAdded($event)"
                         (removed)="tagRemoved($event)"></sonder-tag-chips>
+      <div>
+        <div *ngFor="let profile of (myProfiles$ | async)" role="listitem">
+          {{ profile.name }}
+        </div>
+      </div>
       <mat-card-actions>
         <button mat-raised-button (click)="createButtonClicks$.next()">Create</button>
         <mat-error *ngIf="errors">Something went wrong. 😓</mat-error>

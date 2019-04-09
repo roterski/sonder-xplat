@@ -16,8 +16,15 @@ export class ProfilesService {
 
   loadProfiles(id: number[]): Observable<any> {
     return this.profilesApi.getProfiles({ id }).pipe(
-      pluck('data'),
       tap((profiles: Profile[]) => this.profilesStore.set(profiles))
+    );
+  }
+
+  loadMyProfiles(): Observable<any> {
+    return this.profilesApi.getMyProfiles().pipe(
+      tap((profiles: Profile[]) => this.profilesStore.set(profiles)),
+      map((profiles: Profile[]) => profiles.map(({ id }: Profile) => id)),
+      tap((myProfiles: number[]) => this.profilesStore.update(state => ({...state, myProfiles })))
     );
   }
 }
