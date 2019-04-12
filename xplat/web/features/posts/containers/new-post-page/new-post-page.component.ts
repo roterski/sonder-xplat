@@ -5,6 +5,7 @@ import {
   exhaustMap,
   switchMap,
   tap,
+  filter,
   pluck,
   catchError
 } from 'rxjs/operators';
@@ -35,6 +36,7 @@ import { Profile, ProfilesQuery, ProfilesService } from '@sonder/features/profil
 export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
   createButtonClicks$ = new Subject<Event>();
   postForm: FormGroup;
+  profileId: number;
   errors: any;
   post$: Observable<Post>;
   newPostTags$: Observable<Tag[]>;
@@ -60,10 +62,12 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
     this.newPostTags$ = this.formsManager.selectValue('newPost').pipe(pluck('tags'));
     this.myProfiles$ = this.profilesQuery.selectMyProfiles();
     this.tags$ = this.tagsQuery.selectAll();
-    combineLatest(
-      this.profilesService.loadMyProfiles(),
-      this.tagsService.loadTags()
-    ).pipe(takeUntil(this.destroy$)).subscribe();
+    this.tagsService.loadTags().pipe(takeUntil(this.destroy$)).subscribe();
+    this.profilesService.loadMyProfiles().pipe(
+      takeUntil(this.destroy$),
+      filter((profiles: Profile[]) => profiles.length > 0),
+      tap((profiles: Profile[]) => (this.profileId = profiles[0].id))
+    ).subscribe();
   }
 
   createForm() {
@@ -86,7 +90,14 @@ export class NewPostPageComponent extends PostsBaseComponent implements OnInit {
       .pipe(
         tap(() => (this.errors = undefined)),
         switchMap(() => this.newPostTags$),
-        exhaustMap((tags: Tag[]) => this.postsService.createPost(this.postForm.value, tags)),
+        exhaustMap((tags: Tag[]) =>
+          this.postsService.createPost(
+            {
+              ...this.postForm.value,
+              profileId: this.profileId
+            },
+            tags)),
+        tap(() => this.formsManager.remove('newPost')),
         catchError((errors, caught$) => {
           this.errors = errors;
           return caught$;
