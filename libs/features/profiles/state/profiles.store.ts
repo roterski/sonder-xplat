@@ -7,10 +7,13 @@ import {
 } from '@datorama/akita';
 import { Profile } from '../models/profile.model';
 
-export interface ProfilesState extends EntityState<Profile> {}
+export interface ProfilesState extends EntityState<Profile> {
+  myProfiles: number[];
+}
 
 const initialState = {
-  ...getInitialEntitiesState()
+  ...getInitialEntitiesState(),
+  myProfiles: []
 };
 
 @Injectable({ providedIn: 'root' })

@@ -18,6 +18,15 @@
                         [tags]="tags$"
                         (added)="tagAdded($event)"
                         (removed)="tagRemoved($event)"></sonder-tag-chips>
+      <div>
+        <!-- <label>Post as</label>
+        <mat-radio-group>
+          <mat-radio-button *ngFor="let profile of (myProfiles$ | async)" [value]="profile">
+            <sonder-profile-item [profile]="profile"></sonder-profile-item>
+          </mat-radio-button>
+        </mat-radio-group>
+        <button mat-button>New profile</button> -->
+      </div>
       <mat-card-actions>
         <button mat-raised-button (click)="createButtonClicks$.next()">Create</button>
         <mat-error *ngIf="errors">Something went wrong. 😓</mat-error>
