@@ -7,6 +7,7 @@ export interface Post {
   body: string;
   points: number;
   voted: number;
+  tags: Tag[];
   commentCount: number;
 }
 

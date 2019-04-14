@@ -26,6 +26,7 @@ export class TagChipsComponent implements OnInit {
   @Input() selectedTags: Observable<Tag[]>;
   @Input() tags: Observable<Tag[]>;
   @Input() allowNew = true;
+  @Input() removable = true;
 
   @Output() added = new EventEmitter<Tag>();
   @Output() removed = new EventEmitter<Tag>();
