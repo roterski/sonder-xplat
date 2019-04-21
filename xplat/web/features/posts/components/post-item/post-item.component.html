@@ -1,11 +1,14 @@
 <mat-card class="post-item" mat-list-item  role="listitem">
-  <mat-card-title [routerLink]="['/posts', post.id]">
-    {{post.title}}
-  </mat-card-title>
-    {{post.tags}}
-  <mat-card-content>
-    {{post.body}}
-  </mat-card-content>
+  <div fxLayout="row">
+    <mat-card-title [routerLink]="['/posts', post.id]" fxFlex="80">
+      {{post.title}}
+    </mat-card-title>
+    <mat-chip-list fxFlex="20">
+      <mat-chip *ngFor="let tag of post.tags">
+        {{ tag.name }}
+      </mat-chip>
+    </mat-chip-list>
+  </div>
   <mat-card-actions fxLayout="row" fxLayoutAlign="space-between start">
     <sonder-profile-item [profile]="profile">
     </sonder-profile-item>
