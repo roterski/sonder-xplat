@@ -1,8 +1,15 @@
 <div class="page">
   <mat-card class="post" *ngIf="(post$ | async) as post">
-    <mat-card-title>{{ post.title }}</mat-card-title>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-title>{{ post.title }}</mat-card-title>
+    </div>
     <mat-card-content>{{ post.body }}</mat-card-content>
-    <mat-card-actions fxLayout="row" fxLayoutAlign="end none">
+    <mat-card-actions fxLayout="row" fxLayoutAlign="space-between">
+      <mat-chip-list fxFlex="70">
+        <mat-chip *ngFor="let tag of post.tags">
+          {{ tag.name }}
+        </mat-chip>
+      </mat-chip-list>
       <img class="new-comment-icon" matRipple src="../assets/images/comment-icon.png" (click)="openNewCommentBottomSheet()">
     </mat-card-actions>
   </mat-card>
