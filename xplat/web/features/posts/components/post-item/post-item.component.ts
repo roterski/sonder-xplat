@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Post } from '@sonder/features/posts/models';
-import { Profile } from '@sonder/features/profiles';
+import { Post, Tag, TagsQuery } from '@sonder/features/posts';
+import { Profile, ProfilesQuery } from '@sonder/features/profiles';
+import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -10,12 +11,20 @@ import { take } from 'rxjs/operators';
 })
 export class PostItemComponent implements OnInit {
   @Input() post: Post;
-  @Input() profile: Profile;
   @Input() voted: number;
 
-  constructor() {}
+  profile$: Observable<Profile>;
+  tags$: Observable<Tag[]>;
 
-  ngOnInit() {}
+  constructor(
+    private profilesQuery: ProfilesQuery,
+    private tagsQuery: TagsQuery
+  ) {}
+
+  ngOnInit() {
+    this.profile$ = this.profilesQuery.selectEntity(this.post.profileId);
+    this.tags$ = this.tagsQuery.selectMany(this.post.tags)
+  }
 
   upvote() {
     // if (this.voted > 0) {

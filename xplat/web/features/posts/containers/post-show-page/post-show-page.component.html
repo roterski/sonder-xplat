@@ -6,7 +6,7 @@
     <mat-card-content>{{ post.body }}</mat-card-content>
     <mat-card-actions fxLayout="row" fxLayoutAlign="space-between">
       <mat-chip-list fxFlex="70">
-        <mat-chip *ngFor="let tag of post.tags">
+        <mat-chip *ngFor="let tag of (tags$ | async)">
           {{ tag.name }}
         </mat-chip>
       </mat-chip-list>

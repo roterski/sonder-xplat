@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { pluck, tap } from 'rxjs/operators';
-import { Tag } from '../models';
+import { Tag, Post } from '../models';
 import { TagsApiService } from '../services/tags-api.service';
 import { TagsStore, TagsState } from './tags.store';
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';

@@ -5,6 +5,7 @@ import {
   PostsQuery,
   PostsService,
   ProfilesQuery,
+  TagsQuery,
   PostsState
 } from '@sonder/features';
 import { ProfilesService } from '@sonder/features/profiles/services';
@@ -26,8 +27,9 @@ export class PostsListPageComponent extends PostsBaseComponent
   constructor(
     private postsQuery: PostsQuery,
     private postsService: PostsService,
-    private profilesQuery: ProfilesQuery,
-    private profilesService: ProfilesService
+    private profilesService: ProfilesService,
+    public profilesQuery: ProfilesQuery,
+    public tagsQuery: TagsQuery
   ) {
     super();
   }
