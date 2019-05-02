@@ -5,7 +5,7 @@ import { pluck, map, tap, catchError, delay } from 'rxjs/operators';
 import { PostsService } from './posts.service';
 import { PostsApiService } from '../posts-api.service';
 import { Post, PostWithFullTags, PostComment, Tag } from '../../models';
-import { PostsStore, CommentsStore, TagsStore } from '../../state';
+import { PostsStore, CommentsStore, TagsService } from '../../state';
 import * as _ from 'lodash';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class PostsAkitaService extends PostsService {
     private postsApi: PostsApiService,
     private postsStore: PostsStore,
     private commentsStore: CommentsStore,
-    private tagsStore: TagsStore
+    private tagsService: TagsService
   ) {
     super();
   }
@@ -24,7 +24,7 @@ export class PostsAkitaService extends PostsService {
   loadPosts(): Observable<Post[]> {
     return this.postsApi.getPosts().pipe(
       pluck('data'),
-      tap((posts: PostWithFullTags[]) => this.tagsStore.add(posts.reduce((acc, post) => [...acc, ...post.tags], []))),
+      tap((posts: PostWithFullTags[]) => this.tagsService.addTags(posts.reduce((acc, post) => [...acc, ...post.tags], []))),
       map((posts: PostWithFullTags[]) => posts.reduce((acc, post) =>
         [...acc, {...post, tags: post.tags.map(({id}: Tag) => id)}], [])),
       tap((posts: Post[]) => this.postsStore.set(posts))
@@ -37,7 +37,7 @@ export class PostsAkitaService extends PostsService {
     const post$ = this.postsApi
       .getPost(postId)
       .pipe(
-        tap((post: PostWithFullTags) => this.tagsStore.add(post.tags)),
+        tap((post: PostWithFullTags) => this.tagsService.addTags(post.tags)),
         map((post: PostWithFullTags) => ({
           ...post,
           tags: post.tags.map(({ id }) => id)
@@ -56,7 +56,7 @@ export class PostsAkitaService extends PostsService {
 
   createPost(post: Post, tags: Tag[]): Observable<Post> {
     return this.postsApi.createPost(post, tags).pipe(
-      tap((createdPost: PostWithFullTags) => this.tagsStore.add(createdPost.tags)),
+      tap((createdPost: PostWithFullTags) => this.tagsService.addTags(createdPost.tags)),
       map((createdPost: PostWithFullTags) => ({...createdPost, tags: createdPost.tags.map(({id}) => id)})),
       tap((createdPost: Post) => this.postsStore.upsert(createdPost.id, createdPost)),
       catchError(error => {

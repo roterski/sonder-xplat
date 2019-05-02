@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { Post, Tag, TagsQuery } from '@sonder/features/posts';
 import { Profile, ProfilesQuery } from '@sonder/features/profiles';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'sonder-post-item',
@@ -12,6 +11,7 @@ import { take } from 'rxjs/operators';
 export class PostItemComponent implements OnInit {
   @Input() post: Post;
   @Input() voted: number;
+  @Output() tagClicked = new EventEmitter<Tag>();
 
   profile$: Observable<Profile>;
   tags$: Observable<Tag[]>;
@@ -23,7 +23,11 @@ export class PostItemComponent implements OnInit {
 
   ngOnInit() {
     this.profile$ = this.profilesQuery.selectEntity(this.post.profileId);
-    this.tags$ = this.tagsQuery.selectMany(this.post.tags)
+    this.tags$ = this.tagsQuery.selectMany(this.post.tags);
+  }
+
+  clickedTag(tag: Tag) {
+    this.tagClicked.emit(tag);
   }
 
   upvote() {

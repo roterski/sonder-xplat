@@ -11,6 +11,12 @@ export class TagsQuery extends QueryEntity<TagsState, Tag> {
     super(store);
   }
 
+  selectPostFilterTags(): Observable<Tag[]> {
+    return this.select(state => state.postFilterTags).pipe(
+      switchMap((ids: number[]) => this.selectMany(ids))
+    );
+  }
+
   selectNewTags(): Observable<Tag[]> {
     return this.select(state => state.newPostTags);
   }
