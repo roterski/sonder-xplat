@@ -10,8 +10,18 @@ import {
   TagsService,
 } from '@sonder/features';
 import { ProfilesService } from '@sonder/features/profiles/services';
-import { Observable, of } from 'rxjs';
-import { takeUntil, tap, pluck, map, switchMap, filter, withLatestFrom, take, distinct } from 'rxjs/operators';
+import { Observable, of, zip } from 'rxjs';
+import {
+  takeUntil,
+  tap,
+  pluck,
+  map,
+  switchMap,
+  filter,
+  distinctUntilChanged,
+  withLatestFrom,
+  take,
+} from 'rxjs/operators';
 import * as _ from 'lodash';
 
 @Component({
@@ -25,6 +35,7 @@ export class PostsListPageComponent extends PostsBaseComponent
   profiles$: Observable<any>;
   selectedTags$: Observable<Tag[]>;
   tags$: Observable<Tag[]>;
+  tagsFromUrl$: Observable<string[]>;
   loading$ = of(true);
 
   constructor(
@@ -41,14 +52,15 @@ export class PostsListPageComponent extends PostsBaseComponent
 
   ngOnInit() {
     this.tags$ = this.tagsQuery.selectAll();
-    this.selectedTags$ = this.tagsQuery.selectPostFilterTags();
-    this.setStateFromParams();
+    this.tagsFromUrl$ = this.tagsFromUrl();
+    this.selectedTags$ = this.selectedTags();
+    this.selectedTags$.pipe(
+      switchMap((tags: Tag[]) => this.postsService.loadPosts(tags)),
+      takeUntil(this.destroy$)
+    ).subscribe();
+
     this.posts$ = this.postsQuery.selectAll();
     this.loading$ = this.postsQuery.selectLoading();
-    this.postsService
-      .loadPosts()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
     this.posts$
       .pipe(
         filter((posts: Post[]) => posts.length > 0),
@@ -62,54 +74,58 @@ export class PostsListPageComponent extends PostsBaseComponent
 
   tagAdded(tag: Tag) {
     this.tagsService.addPostFilterTag(tag);
-    this.setParamsFromState((tagsFromParams: string[]) =>
-      [...tagsFromParams, tag.name]);
+
+    const newTags$ = this.tagsFromUrl$.pipe(
+      map((tags: string[]) => _.uniq([...tags, tag.name]))
+    );
+    this.setTagsInUrl(newTags$).subscribe();
   }
 
   tagRemoved(tag: Tag) {
     this.tagsService.removePostFilterTag(tag);
-    this.setParamsFromState((tagsFromParams: string[]) =>
-      _.reject(tagsFromParams, (name: string) => name === tag.name));
+
+    const newTags$ = this.tagsFromUrl$.pipe(
+      map((tags: string[]) => _.reject(tags, (name: string) => name === tag.name))
+    );
+    this.setTagsInUrl(newTags$).subscribe();
   }
 
-  setParamsFromState(syncFunc: Function) {
-    this.activatedRoute.queryParams
-      .pipe(
-        switchMap((queryParams: Params) =>
-          of(_.get(queryParams, 'tags') || []).pipe(
-            map((tagsFromParams: string[]) => syncFunc(tagsFromParams)),
-            map(tags => _.flatten(tags)),
-            map(tags => _.compact(tags)),
-            map(tags => _.uniq(tags)),
-            map(tags => ({ ...queryParams, tags }))
-          )
-        ), distinct(), switchMap((queryParams: Params) =>
-          this.router.navigate([], {
-            relativeTo: this.activatedRoute,
-            queryParams,
-            queryParamsHandling: 'merge'
-          })
-        ), take(1) )
-      .subscribe();
+  setTagsInUrl(newTags$: Observable<string[]>): Observable<any> {
+    return zip(newTags$, this.activatedRoute.queryParams).pipe(
+      map(([tags, queryParams]: [string[], Params]) => ({...queryParams, tags})),
+      switchMap((queryParams: Params) =>
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParams,
+          queryParamsHandling: 'merge'
+        })),
+      take(1)
+    );
   }
 
-  setStateFromParams() {
-    return this.activatedRoute.queryParams
-      .pipe(
-        switchMap((queryParams) =>
-          of(_.get(queryParams, 'tags')|| []).pipe(
-            map((tags) => [...(tags)]),
-            map(tags => _.flatten(tags)),
-            map(tags => _.compact(tags)),
-            map(tags => _.uniq(tags))
-          )
-        ),
-        withLatestFrom(this.tagsQuery.selectPostFilterTags().pipe(pluck('name'))),
-        filter(([tagsFromParams, tagsFromState]) => !_.isEqual(tagsFromParams, tagsFromState)),
-        switchMap(([tagsFromParams, tagsFromState]) => this.tagsService.setPostFilterTags(tagsFromParams)),
-        tap(() => this.selectedTags$ = this.tagsQuery.selectPostFilterTags()),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
+  tagsFromUrl(): Observable<string[]> {
+    return this.activatedRoute.queryParams.pipe(
+      switchMap(queryParams =>
+        of(_.get(queryParams, 'tags', [])).pipe(
+          map(tags => _.flatten([tags])),
+          map(tags => _.compact(tags)),
+          map(tags => _.uniq(tags))
+        )
+      ),
+      distinctUntilChanged((x, y) => _.isEqual(x, y)),
+    );
+  }
+
+  selectedTags(): Observable<Tag[]> {
+    return zip(this.tagsFromUrl$, this.tagsQuery.selectPostFilterTags()).pipe(
+      switchMap(([params, state]) => {
+        if(!_.isEqual(params, state.map(({ name }) => name))) {
+          return this.tagsService.setPostFilterTags(params);
+        }
+        return of(true);
+      }),
+      switchMap(() => this.tagsQuery.selectPostFilterTags()),
+      distinctUntilChanged((x, y) => _.isEqual(x, y))
+    );
   }
 }

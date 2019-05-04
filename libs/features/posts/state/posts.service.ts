@@ -21,9 +21,15 @@ export class PostsService {
   ) {
   }
 
+  loadPosts(filterTags: Tag[]): Observable<Post[]> {
+    return of(filterTags || []).pipe(
+      map((tags: Tag[]) => _.map(tags, ({id}) => id )),
+      map((tags: Tag[]) => tags.length > 0 ? ({ tags }) : {}),
+      switchMap((params) => this.postsApi.getPosts(params)),
       pluck('data'),
       tap((posts: PostWithFullTags[]) => this.tagsService.addTags(posts.reduce((acc, post) => [...acc, ...post.tags], []))),
       map((posts: PostWithFullTags[]) => posts.reduce((acc, post) =>
+        [...acc, {...post, tags: (post.tags || []).map(({id}: Tag) => id)}], [])),
       tap((posts: Post[]) => this.postsStore.set(posts))
     );
   }
