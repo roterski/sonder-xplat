@@ -3,14 +3,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { map, takeUntil, tap, switchMap, filter } from 'rxjs/operators';
 import { Observable, of, Subscription, zip, combineLatest } from 'rxjs';
 
-import { Post, PostComment, PostsBaseComponent } from '@sonder/features/posts';
+import { Post, PostComment, Tag, PostsBaseComponent } from '@sonder/features/posts';
 import { NewCommentFormComponent } from '../../containers/new-comment-form/new-comment-form.component';
 import { MatBottomSheet } from '@angular/material';
 
 import {
   CommentsQuery,
   PostsQuery,
-  PostsService
+  PostsService,
+  TagsQuery
 } from '@sonder/features/posts';
 import { ProfilesService } from '@sonder/features/profiles';
 import * as _ from 'lodash';
@@ -23,6 +24,7 @@ import * as _ from 'lodash';
 export class PostShowPageComponent extends PostsBaseComponent
   implements OnInit {
   post$: Observable<Post>;
+  tags$: Observable<Tag[]>;
   postId: number;
   comments$: Observable<PostComment[]>;
   comments: PostComment[];
@@ -36,7 +38,8 @@ export class PostShowPageComponent extends PostsBaseComponent
     private commentsQuery: CommentsQuery,
     private postsQuery: PostsQuery,
     private postsService: PostsService,
-    private profilesService: ProfilesService
+    private profilesService: ProfilesService,
+    private tagsQuery: TagsQuery
   ) {
     super();
   }
@@ -54,6 +57,9 @@ export class PostShowPageComponent extends PostsBaseComponent
         postId
       );
       this.post$ = this.postsQuery.selectEntity(postId);
+      this.tags$ = this.post$.pipe(
+        switchMap((post: Post) => this.tagsQuery.selectMany(post.tags))
+      );
       this.postsService
         .loadPostWithComments(postId)
         .pipe(takeUntil(this.destroy$))

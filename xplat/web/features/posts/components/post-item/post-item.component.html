@@ -1,13 +1,17 @@
 <mat-card class="post-item" mat-list-item  role="listitem">
-  <mat-card-title [routerLink]="['/posts', post.id]">
-    {{post.title}}
-  </mat-card-title>
-  <mat-card-content>
-    {{post.body}}
-  </mat-card-content>
+  <div fxLayout="row">
+    <mat-card-title [routerLink]="['/posts', post.id]" fxFlex="80">
+      {{post.title}}
+    </mat-card-title>
+  </div>
   <mat-card-actions fxLayout="row" fxLayoutAlign="space-between start">
-    <sonder-profile-item [profile]="profile">
+    <sonder-profile-item [profile]="profile$ | async">
     </sonder-profile-item>
+    <mat-chip-list fxFlex="70">
+      <mat-chip (click)="tagClicked.emit(tag)" *ngFor="let tag of (tags$ | async)">
+        {{ tag.name }}
+      </mat-chip>
+    </mat-chip-list>
     <!-- <sonder-vote-buttons
       [points]="post.points"
       [voted]="voted"

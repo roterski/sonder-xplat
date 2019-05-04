@@ -20,7 +20,8 @@ import {
   MatChipsModule,
   MatToolbarModule,
   MatAutocompleteModule,
-  MatRippleModule
+  MatRippleModule,
+  MatRadioModule
 } from '@angular/material';
 import { UI_COMPONENTS } from './components';
 import { UI_CONTAINERS } from './containers';
@@ -38,7 +39,8 @@ const MATERIAL_MODULES = [
   MatChipsModule,
   MatToolbarModule,
   MatAutocompleteModule,
-  MatRippleModule
+  MatRippleModule,
+  MatRadioModule
 ];
 const MODULES = [
   CommonModule,

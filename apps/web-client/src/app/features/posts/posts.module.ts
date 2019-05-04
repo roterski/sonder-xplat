@@ -7,11 +7,7 @@ import {
   CommentItemComponent,
   NewCommentFormComponent
 } from '@sonder/web/features/posts';
-import {
-  PostsService,
-  PostsApolloService,
-  PostsAkitaService
-} from '@sonder/features/posts';
+import { PostsService } from '@sonder/features/posts';
 import { PostsModule as PostsWebModule } from '@sonder/web/features/posts';
 import { PostsRoutingModule } from './posts-routing.module';
 
@@ -25,6 +21,6 @@ import { PostsRoutingModule } from './posts-routing.module';
     PostsRoutingModule
   ],
   entryComponents: [CommentItemComponent, NewCommentFormComponent],
-  providers: [{ provide: PostsService, useClass: PostsAkitaService }]
+  providers: [PostsService]
 })
 export class PostsModule {}
