@@ -1,32 +1,29 @@
 import { Injectable, Inject } from '@angular/core';
 import { parseValidationErrors } from '@sonder/utils';
-import { Observable, zip, throwError } from 'rxjs';
-import { pluck, map, tap, catchError, delay } from 'rxjs/operators';
-import { PostsService } from './posts.service';
-import { PostsApiService } from '../posts-api.service';
-import { Post, PostWithFullTags, PostComment, Tag } from '../../models';
-import { PostsStore, CommentsStore, TagsService } from '../../state';
+import { Observable, zip, throwError, of } from 'rxjs';
+import { pluck, map, tap, catchError, switchMap } from 'rxjs/operators';
+import { PostsApiService } from '../services';
+import { Post, PostWithFullTags, PostComment, Tag } from '../models';
+import { PostsStore } from './posts.store';
+import { CommentsStore } from './comments.store';
+import { TagsService } from './tags.service';
 import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PostsAkitaService extends PostsService {
+export class PostsService {
   constructor(
     private postsApi: PostsApiService,
     private postsStore: PostsStore,
     private commentsStore: CommentsStore,
     private tagsService: TagsService
   ) {
-    super();
   }
 
-  loadPosts(): Observable<Post[]> {
-    return this.postsApi.getPosts().pipe(
       pluck('data'),
       tap((posts: PostWithFullTags[]) => this.tagsService.addTags(posts.reduce((acc, post) => [...acc, ...post.tags], []))),
       map((posts: PostWithFullTags[]) => posts.reduce((acc, post) =>
-        [...acc, {...post, tags: post.tags.map(({id}: Tag) => id)}], [])),
       tap((posts: Post[]) => this.postsStore.set(posts))
     );
   }

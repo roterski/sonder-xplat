@@ -25,7 +25,7 @@ export class TagsService {
   }
 
   addTags(newTags: Tag[]) {
-    return this.tagsStore.add(_.uniqBy(newTags, ({ id }) => id));
+    return this.tagsStore.add(_.uniqBy(_.compact(newTags), ({ id }) => id));
   }
 
   addPostFilterTag({ id }: Tag) {
